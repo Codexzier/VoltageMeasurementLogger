@@ -1,0 +1,18 @@
+﻿#define PIN_Input A0
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(PIN_Input, INPUT);
+}
+
+void loop() {
+  int rawMeasurement = analogRead(PIN_Input);
+
+  byte ba[2];
+  ba[0] = (byte)((rawMeasurement >> 8) & 0xff);
+  ba[1] = (byte)(rawMeasurement & 0xff);
+
+  Serial.write(ba, 2);
+
+  delay(20);
+}
