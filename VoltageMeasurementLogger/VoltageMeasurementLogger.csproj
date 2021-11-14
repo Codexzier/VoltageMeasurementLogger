@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net5.0-windows</TargetFramework>
+        <UseWPF>true</UseWPF>
+        <NeutralLanguage>de-DE</NeutralLanguage>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Codexzier.Wpf.ApplicationFramework" Version="0.1.6.1" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+      <PackageReference Include="System.IO.Ports" Version="6.0.0" />
+    </ItemGroup>
+
+</Project>

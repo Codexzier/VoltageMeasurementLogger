@@ -1,0 +1,23 @@
+<UserControl x:Class="VoltageMeasurementLogger.Views.Menu.MenuView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:menu="clr-namespace:VoltageMeasurementLogger.Views.Menu"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.DataContext>
+        <menu:MenuViewModel />
+    </UserControl.DataContext>
+    <Grid Background="{StaticResource BrushMonochromaticBlueGrayD}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="0" Orientation="Horizontal">
+            <Button Content="Main" Command="{Binding CommandOpenMain}" />
+            <Button Content="Second" Command="{Binding CommandOpenSecond}" />
+        </StackPanel>
+    </Grid>
+</UserControl>
