@@ -6,6 +6,17 @@
              xmlns:local="clr-namespace:VoltageMeasurementLogger.Views.MonitorLog"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.DataContext>
+        <local:MonitorLogViewModel />
+    </UserControl.DataContext>
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <Style TargetType="TextBlock">
+                <Setter Property="Foreground" Value="{StaticResource BrushMonochromaticBlueGrayE}" />
+                <Setter Property="Margin" Value="10 5" />
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20" />
@@ -14,9 +25,23 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <ProgressBar Grid.Row="1" Orientation="Vertical" />
+        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding ComPortname}" />
+        <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"  Orientation="Horizontal">
+            <TextBlock Text="{Binding MinRawValue}" />
+            <TextBlock Text="{Binding MaxRawValue}" />
+            <TextBlock Text="{Binding RawValue}" />
+        </StackPanel>
+        <ProgressBar Grid.Row="2" Grid.Column="0" 
+                     Orientation="Vertical" 
+                     Style="{x:Null}"
+                     Value="{Binding RawValue}" 
+                     Minimum="{Binding MinRawValue}" 
+                     Maximum="{Binding MaxRawValue}" />
+
+        <!--<ProgressBar Grid.Row="2" Grid.Column="2" Value="512" Maximum="1024" Orientation="Vertical" Style="{x:Null}" />-->
     </Grid>
 </UserControl>

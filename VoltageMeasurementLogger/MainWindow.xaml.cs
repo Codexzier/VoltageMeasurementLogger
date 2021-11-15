@@ -11,6 +11,7 @@ using System.Windows.Markup;
 using VoltageMeasurementLogger.Components;
 using VoltageMeasurementLogger.Components.UserSettings;
 using VoltageMeasurementLogger.Views.Main;
+using VoltageMeasurementLogger.Views.Menu;
 
 namespace VoltageMeasurementLogger
 {
@@ -41,12 +42,8 @@ namespace VoltageMeasurementLogger
                 new FrameworkPropertyMetadata(t));
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            // Start the main view
-            EventBusManager.OpenView<MainView>(1);
-            EventBusManager.Send<MainView, BaseMessage>(new BaseMessage(null), 1);
-        }
+        private void Window_Loaded(object sender, RoutedEventArgs e) =>
+            new ButtonCommandOpenMain().Execute(null);
 
         /// <summary>
         ///     Load the last size of the application

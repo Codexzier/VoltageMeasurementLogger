@@ -5,11 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:main="clr-namespace:VoltageMeasurementLogger.Views.Main"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="200" MinWidth="200">
     <UserControl.Resources>
         <ResourceDictionary>
             <Style TargetType="TextBlock">
-                <Setter Property="Foreground" Value="White" />
+                <Setter Property="Foreground" Value="{StaticResource BrushMonochromaticBlueGrayE}" />
+                <Setter Property="Margin" Value="10 5" />
             </Style>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -20,7 +21,7 @@
         <!-- Your Content -->
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="*" MinHeight="100" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
@@ -31,12 +32,25 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="0" Text="COM PORTS" />
-            <Button Grid.Column="1" Content="R" Style="{x:Null}" />
+            <Button Grid.Column="1" Content="R" Style="{x:Null}" Command="{Binding CommandRefreshComPortList}" />
         </Grid>
-       
-        <ListBox Grid.Row="1" ItemsSource="{Binding }">
-        </ListBox>
 
-        <Button Grid.Row="2" Content="Connect" Command="{Binding CommandConnectUart}" />
+        <ListBox Grid.Row="1" ItemsSource="{Binding ComPorts}" SelectedItem="{Binding SelectedPortName}" />
+
+        <Grid Grid.Row="2" Height="50" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" 
+                    Content="Disconnect" 
+                    Command="{Binding CommandDisconnectUart}" />
+            <Button Grid.Column="2" 
+                    FlowDirection="RightToLeft" 
+                    Content="Connect" 
+                    Command="{Binding CommandConnectUart}"  />
+        </Grid>
     </Grid>
 </UserControl>

@@ -1,31 +1,77 @@
-﻿using System.IO.Ports;
+﻿using System.Collections;
+using System.IO.Ports;
+using System.Linq;
 
 namespace VoltageMeasurementLogger.Components.ArduinoConnection
 {
     public class UartConnection
     {
-        public UartConnection()
-        {
+        private static UartConnection _instance;
+        private SerialPort _serialPort;
 
+        private UartConnection() { }
+
+        public static UartConnection GetInstance()
+        {
+            if(_instance == null)
+            {
+                _instance = new UartConnection();
+            }
+
+            return _instance;
         }
 
-        public void ConnectTo(string portname, int baud = 9600)
+        public UartConnectionResult ConnectTo(string portname, int baud = 9600)
         {
-            var sp = new SerialPort(portname, baud);
-            sp.DataReceived += this.Sp_DataReceived;
-            sp.Open();
+            if(this._serialPort != null)
+            {
+                return new UartConnectionResult("Serial Port is in used! Closed the connection before start new one!");
+            }
+
+            this._serialPort = new SerialPort(portname, baud);
+            this._serialPort.DataReceived += this.Sp_DataReceived;
+            this._serialPort.Open();
+
+            return new UartConnectionResult();
+        }
+
+        public UartConnectionResult Close()
+        {
+            if (this._serialPort == null || !this._serialPort.IsOpen)
+            {
+                return new UartConnectionResult("Connection is not open");
+            }
+
+            this._serialPort.Close();
+            this._serialPort = null;
+
+            return new UartConnectionResult();
         }
 
         private void Sp_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            var sp = (SerialPort)sender; 
-            byte[] buffer = new byte[2];
-            if (sp.Read(buffer, 0, 2) != 0)
+            byte[] buffer = new byte[3];
+            if (this._serialPort.Read(buffer, 0, 3) != 0)
             {
-                this.RawValue = (buffer[0] << 8) | buffer[1];
+                
+
+                var result = (buffer[0] << 8) | buffer[1];
+
+                var b = new BitArray(new int[] { result });
+                var bits = new bool[b.Count];
+                b.CopyTo(bits, 0);
+
+                if(bits.Sum(s => s ? 1:0) != buffer[2])
+                {
+                    return;
+                }
+
+                this.RawValue = result;
             }
         }
 
         public int RawValue { get; private set; }
+
+        public bool IsOpen => _instance == null ? false : _instance.IsOpen;
     }
 }
