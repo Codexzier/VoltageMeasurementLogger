@@ -1,4 +1,7 @@
-﻿using Codexzier.Wpf.ApplicationFramework.Views.Base;
+﻿using Codexzier.Wpf.ApplicationFramework.Controls.Diagram;
+using Codexzier.Wpf.ApplicationFramework.Views.Base;
+using System;
+using System.Collections.Generic;
 
 namespace VoltageMeasurementLogger.Views.MonitorLog
 {
@@ -8,6 +11,27 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
         private int _rawValue;
         private int _minRawValue = 0;
         private int _maxRawValue = 1024;
+        private List<DiagramLevelItem> _measurementValues;
+
+        public MonitorLogViewModel()
+        {
+            var r = new Random();
+
+            var diagramLevelItemsSource = new List<DiagramLevelItem>();
+
+            for (int i = 0; i < 10; i++)
+            {
+                diagramLevelItemsSource.Add(new DiagramLevelItem
+                {
+                    Value = r.NextDouble() * .5d,
+                    SetColor = 1,
+                    SetHighlightMark = false,
+                    ToolTipText = $"Value: {i}"
+                });
+            }
+
+            this.MeasurementValues = diagramLevelItemsSource;
+        }
 
         public string ComPortname
         {
@@ -32,12 +56,12 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
 
         private void RenewMinMax()
         {
-            if(this._rawValue < this._minRawValue)
+            if (this._rawValue < this._minRawValue)
             {
                 this.MinRawValue = this._rawValue;
             }
 
-            if(this._rawValue > this._maxRawValue)
+            if (this._rawValue > this._maxRawValue)
             {
                 this.MaxRawValue = this._rawValue;
             }
@@ -60,6 +84,16 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
             {
                 this._maxRawValue = value;
                 this.OnNotifyPropertyChanged(nameof(this.MaxRawValue));
+            }
+        }
+
+        public List<DiagramLevelItem> MeasurementValues
+        {
+            get => this._measurementValues;
+            set
+            {
+                this._measurementValues = value;
+                this.OnNotifyPropertyChanged(nameof(this.MeasurementValues));
             }
         }
     }
