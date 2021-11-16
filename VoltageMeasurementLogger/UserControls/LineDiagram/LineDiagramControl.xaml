@@ -13,7 +13,7 @@
                 Margin="20 0 0 0">
             <Grid x:Name="SimpleDiagram" 
                     FlowDirection="LeftToRight" 
-                    HorizontalAlignment="Left" />
+                    HorizontalAlignment="Stretch" />
         </Border>
 
         <TextBlock x:Name="OneHundredText" Text="100" 

@@ -95,18 +95,11 @@ namespace VoltageMeasurementLogger.UserControls.LineDiagram
                 widthPerResult = (200 - 20) / control.DiagramLevelItemsSource.Count;
             }
 
-            var path = new Path();
-            path.Width = widthPerResult * control.DiagramLevelItemsSource.Count;
-            path.Height = heightScale;
-            path.Margin = new Thickness(0);
-            path.HorizontalAlignment = HorizontalAlignment.Left;
-            path.VerticalAlignment = VerticalAlignment.Bottom;
-            path.Stroke = new SolidColorBrush(Color.FromArgb(255, 160, 200, 219));
-            path.StrokeThickness = 1;
+           
             
 
             var pathFigure = new PathFigure();
-            pathFigure.StartPoint = new Point(0, control.ActualHeight);
+            var setStartPoint = true;
 
             foreach (var item in control.DiagramLevelItemsSource)
             {
@@ -117,8 +110,16 @@ namespace VoltageMeasurementLogger.UserControls.LineDiagram
                     heightValue = 0;
                 }
 
+                var x = widthPerResult * control.DiagramLevelItemsSource.IndexOf(item);
+
+                if(setStartPoint)
+                {
+                    pathFigure.StartPoint = new Point(0, heightValue * -1 - .5);
+                    setStartPoint = false;
+                }
+
                 var barItem = new LineItem(
-                    widthPerResult * control.DiagramLevelItemsSource.IndexOf(item),
+                    x,
                     heightValue,
                     item.ToolTipText,
                     item.Value,
@@ -127,7 +128,7 @@ namespace VoltageMeasurementLogger.UserControls.LineDiagram
 
 
                 var lineSegment = new LineSegment(
-                    new Point(widthPerResult * control.DiagramLevelItemsSource.IndexOf(item), item.Value), true);
+                    new Point(widthPerResult * control.DiagramLevelItemsSource.IndexOf(item) + 1.5d, heightValue * -1 - .5d), true);
 
                 pathFigure.Segments.Add(lineSegment);
 
@@ -135,9 +136,18 @@ namespace VoltageMeasurementLogger.UserControls.LineDiagram
                 control._barItems.Add(barItem);
             }
 
+            
             var pg = new PathGeometry();
             pg.Figures.Add(pathFigure);
 
+            var path = new Path();
+            path.Width = 200;
+            path.Height = 100;
+            path.Margin = new Thickness(0,0,0,-99);
+            path.HorizontalAlignment = HorizontalAlignment.Left;
+            path.VerticalAlignment = VerticalAlignment.Bottom;
+            path.Stroke = new SolidColorBrush(Color.FromArgb(255, 160, 200, 219));
+            path.StrokeThickness = 1;
             path.Data = pg;
             control.SimpleDiagram.Children.Add(path);
         }
