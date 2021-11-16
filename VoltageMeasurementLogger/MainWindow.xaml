@@ -6,7 +6,7 @@
         xmlns:menu="clr-namespace:VoltageMeasurementLogger.Views.Menu"
         xmlns:eventBus="clr-namespace:Codexzier.Wpf.ApplicationFramework.Components.Ui.EventBus;assembly=Codexzier.Wpf.ApplicationFramework"
         mc:Ignorable="d"
-        Title="Template" 
+        Title="Voltage Measurement Logger" 
         Height="450" Width="800"
         WindowStartupLocation="Manual"
         Loaded="Window_Loaded"

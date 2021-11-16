@@ -2,11 +2,15 @@
 using Codexzier.Wpf.ApplicationFramework.Views.Base;
 using System;
 using System.Collections.Generic;
+using System.Timers;
 
 namespace VoltageMeasurementLogger.Views.MonitorLog
 {
     public class MonitorLogViewModel : BaseViewModel
     {
+        private readonly Timer _timer = new();
+        private readonly Random _random = new();
+
         private string _comPortname;
         private int _rawValue;
         private int _minRawValue = 0;
@@ -15,15 +19,13 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
 
         public MonitorLogViewModel()
         {
-            var r = new Random();
-
             var diagramLevelItemsSource = new List<DiagramLevelItem>();
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 200; i++)
             {
                 diagramLevelItemsSource.Add(new DiagramLevelItem
                 {
-                    Value = r.NextDouble() * .5d,
+                    Value = this._random.NextDouble() * 5d,
                     SetColor = 1,
                     SetHighlightMark = false,
                     ToolTipText = $"Value: {i}"
@@ -31,6 +33,31 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
             }
 
             this.MeasurementValues = diagramLevelItemsSource;
+
+            this._timer.Interval = 2;
+            this._timer.Elapsed += this._timer_Elapsed;
+            this._timer.Start();
+        }
+
+        private int _index = 0;
+        private int _measurementValueIndex;
+        private double _startValue = .1;
+        private double _applitude = 50;
+        private double _periodTime = 10;
+
+        private void _timer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            if (this._index < this.MeasurementValues.Count)
+            {
+                this.MeasurementValues[this._index].Value = (Math.Sin(this._startValue + (this._index / _periodTime)) * this._applitude) + 100;
+                this.MeasurementValueIndex = this._index;
+                this._index++;
+            }
+            else
+            {
+                this._startValue = this._random.NextDouble() * 50;
+                this._index = 0;
+            }
         }
 
         public string ComPortname
@@ -94,6 +121,16 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
             {
                 this._measurementValues = value;
                 this.OnNotifyPropertyChanged(nameof(this.MeasurementValues));
+            }
+        }
+
+        public int MeasurementValueIndex
+        {
+            get => this._measurementValueIndex;
+            set
+            {
+                this._measurementValueIndex = value;
+                this.OnNotifyPropertyChanged(nameof(this.MeasurementValueIndex));
             }
         }
     }

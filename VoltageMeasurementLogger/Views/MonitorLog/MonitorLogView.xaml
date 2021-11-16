@@ -47,7 +47,8 @@
                                         HorizontalAlignment="Stretch"
                                         VerticalAlignment="Stretch"
                                         Margin="0 0 0 0"
-                                        DiagramLevelItemsSource="{Binding MeasurementValues}"/>
+                                        DiagramLevelItemsSource="{Binding MeasurementValues}" 
+                                        CheckIndex="{Binding MeasurementValueIndex, NotifyOnSourceUpdated=True}"/>
 
         <!--<ProgressBar Grid.Row="2" Grid.Column="2" Value="512" Maximum="1024" Orientation="Vertical" Style="{x:Null}" />-->
     </Grid>

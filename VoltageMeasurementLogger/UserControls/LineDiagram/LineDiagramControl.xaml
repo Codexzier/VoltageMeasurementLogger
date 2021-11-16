@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:VoltageMeasurementLogger.UserControls.LineDiagram"
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="300"
-             MinHeight="200" MinWidth="300" >
+             MinHeight="200" MinWidth="300" 
+             SizeChanged="UserControl_SizeChanged">
     <Grid>
         <Border BorderThickness="1" 
                 BorderBrush="{StaticResource BrushMonochromaticBlueGrayE}" 
@@ -30,5 +31,11 @@
               HorizontalAlignment="Left" 
               VerticalAlignment="Bottom" 
               Margin="0 0 0 10"/>
+        <TextBlock x:Name="DebugInfo" Text="Debug Information" 
+                   Foreground="{StaticResource BrushMonochromaticBlueGrayE}"
+                   HorizontalAlignment="Left" 
+                   VerticalAlignment="Top" 
+                   FontSize="9"
+                   Margin="30 10 0 0"/>
     </Grid>
 </UserControl>

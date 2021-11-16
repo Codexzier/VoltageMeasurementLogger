@@ -7,6 +7,8 @@ namespace VoltageMeasurementLogger.UserControls.LineDiagram
     internal class LineItem
     {
         public Ellipse Point { get; }
+        public LineSegment LineSegment { get; }
+        public double SizeEllipse { get; }
 
         public LineItem(
             double widthPerResultDistanceToLeft, 
@@ -14,8 +16,13 @@ namespace VoltageMeasurementLogger.UserControls.LineDiagram
             string toolTipText, 
             double value, 
             bool setHighlightMark, 
-            int setColor)
+            int setColor,
+            double sizeEllipse,
+            LineSegment lineSegment)
         {
+            this.LineSegment = lineSegment;
+            this.SizeEllipse = sizeEllipse;
+
             // TODO: Ist nun doppelt vorhanden. Bereits in BarItem implementiert
             var barColorNormal = new SolidColorBrush(this.SetUpValueIfOverHundred(value, setColor));
             var barColorHighlighted = new SolidColorBrush(Color.FromArgb(255, 160, 200, 219));
@@ -27,10 +34,10 @@ namespace VoltageMeasurementLogger.UserControls.LineDiagram
                 Fill = barColorNormal,
                 VerticalAlignment = VerticalAlignment.Bottom,
                 HorizontalAlignment = HorizontalAlignment.Left,
-                Width = 3,//widthPerResult,
-                Height = 3,
+                Width = sizeEllipse,
+                Height = sizeEllipse,
                 ToolTip = toolTipText,
-                Margin = new Thickness(widthPerResultDistanceToLeft, 0,0, heightValue)
+                Margin = new Thickness(widthPerResultDistanceToLeft, 0, 0, heightValue - (sizeEllipse / 6))
             };
 
             // TODO: Ist nun doppelt vorhanden. Bereits in BarItem implementiert
