@@ -19,7 +19,6 @@ namespace VoltageMeasurementLogger.UserControls.LineDiagram
             set => this.SetValue(ScaleProperty, value);
         }
 
-        // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ScaleProperty =
             DependencyProperty.RegisterAttached(
                 "Scale",
@@ -76,13 +75,13 @@ namespace VoltageMeasurementLogger.UserControls.LineDiagram
 
         private bool DebugOn = false;
 
-        private PathFigure _pathFigure = new PathFigure();
+        internal PathFigure LinePathFigure = new PathFigure();
         // TODO: Not sure, but I have an idea.
         private readonly IList<LineItem> _barItems = new List<LineItem>();
 
         private static void SetValueByIndex(LineDiagramControl control)
         {
-            if(control.DebugOn)
+            if (control.DebugOn)
             {
                 var sb = new StringBuilder();
                 foreach (var item in control.DiagramLevelItemsSource)
@@ -91,12 +90,17 @@ namespace VoltageMeasurementLogger.UserControls.LineDiagram
                 }
                 control.DebugInfo.Text = sb.ToString();
             }
-    
+
+            if(control._barItems.Count == 0)
+            {
+                return;
+            }
+
             double widthPerResult = (control.ActualWidth - 20) / control.DiagramLevelItemsSource.Count;
             double heightScale = control.ActualHeight / 200d;
-           
-            var m = control._barItems[control.CheckIndex].Point.Margin;
-            var sizeEllipse = control._barItems[control.CheckIndex].SizeEllipse;
+
+            
+            double sizeEllipse = control._barItems[control.CheckIndex].SizeEllipse;
 
             double heightValue = control.DiagramLevelItemsSource[control.CheckIndex].Value / control.Scale * heightScale;
 
@@ -105,38 +109,37 @@ namespace VoltageMeasurementLogger.UserControls.LineDiagram
                 heightValue = 0;
             }
 
-            control._barItems[control.CheckIndex].Point.Margin = new Thickness(m.Left, 0, 0, heightValue - (sizeEllipse / 2));
+            control._barItems[control.CheckIndex].SetPointMargin(heightValue, sizeEllipse);
             control._barItems[control.CheckIndex]
                 .LineSegment
                 .Point = new Point((widthPerResult * control.CheckIndex) + (sizeEllipse / 2), (heightValue * -1) - (sizeEllipse / 6));
 
-            if(control.CheckIndex == 0)
+            if (control.CheckIndex == 0)
             {
-                control._pathFigure.StartPoint = new Point(0, heightValue * -1);
+                control.LinePathFigure.StartPoint = new Point(0, heightValue * -1);
             }
         }
 
         private static void SetValueToRects(LineDiagramControl control)
         {
-            control.UpdateLineDiagram = true;
-            control.DebugInfo.Text = string.Empty;
+            DebugInfoSetReset(control);
 
             if (control.DiagramLevelItemsSource == null)
             {
-                if (control.DebugOn)
-                {
-                    control.DebugInfo.Text = "No data";
-                }
-                    
+                DebugInfoAppendText(control, "No data");
                 return;
             }
 
+            control.UpdateLineDiagram = true;
+
             if (control.ActualWidth == 0d || control.ActualHeight == 0d)
             {
-                if (control.DebugOn)
+                if (double.IsNaN(control.Width))
                 {
-                    control.DebugInfo.Text += "Set RenderSize, ";
+                    return;
                 }
+
+                DebugInfoAppendText(control, "Set RenderSize, ");
                 control.RenderSize = new Size(control.Width, control.Height);
             }
 
@@ -144,58 +147,31 @@ namespace VoltageMeasurementLogger.UserControls.LineDiagram
             control.SimpleDiagram.Children.Clear();
 
             double heightScale = control.ActualHeight / 200d;
-
-            if (double.IsNaN(heightScale))
-            {
-                if (control.DebugOn)
-                {
-                    control.DebugInfo.Text += "Height is NaN";
-                }
-                return;
-            }
-
-            control.OneHundred.Margin = new Thickness(0, 0, 0, 100 / control.Scale * heightScale);
-            control.OneHundredText.Margin = new Thickness(0, 0, 0, 100 / control.Scale * heightScale);
+            SetLegendMarkPosition(control, heightScale);
 
             double widthPerResult = (control.ActualWidth - 20) / control.DiagramLevelItemsSource.Count;
-            if (double.IsNaN(widthPerResult))
-            {
-                if (control.DebugOn)
-                {
-                    control.DebugInfo.Text += "Width is NaN";
-                }
-                return;
-            }
 
             bool setStartPoint = true;
             double sizeEllipse = 5d;
+            control.LinePathFigure = new PathFigure();
             var sb = new StringBuilder();
             foreach (var item in control.DiagramLevelItemsSource)
             {
-                if (control.DebugOn)
-                {
-                    sb.Append($"{item.Value:N2}, ");
-                }
+                if (control.DebugOn) { sb.Append($"{item.Value:N2}, "); }
 
                 double heightValue = item.Value / control.Scale * heightScale;
 
-                if (heightValue < 0)
-                {
-                    heightValue = 0;
-                }
+                if (heightValue < 0) { heightValue = 0; }
 
                 double x = widthPerResult * control.DiagramLevelItemsSource.IndexOf(item);
 
                 if (setStartPoint)
                 {
-                    control._pathFigure.StartPoint = new Point(0, heightValue * -1);
+                    control.LinePathFigure.StartPoint = new Point(0, heightValue * -1);
                     setStartPoint = false;
                 }
 
-                var lineSegment = new LineSegment(
-                    new Point((widthPerResult * control.DiagramLevelItemsSource.IndexOf(item)) + (sizeEllipse / 2), (heightValue * -1) - .5d), true);
-
-                var barItem = new LineItem(
+                var lineItem = new LineItem(
                     x,
                     heightValue,
                     item.ToolTipText,
@@ -203,36 +179,56 @@ namespace VoltageMeasurementLogger.UserControls.LineDiagram
                     item.SetHighlightMark,
                     item.SetColor,
                     sizeEllipse,
-                    lineSegment);
+                    control);
 
-                control._pathFigure.Segments.Add(lineSegment);
+                control._barItems.Add(lineItem);
+            }
 
-                control.SimpleDiagram.Children.Add(barItem.Point);
-                control._barItems.Add(barItem);
-            }
-            if (control.DebugOn)
-            {
-                control.DebugInfo.Text = sb.ToString();
-            }
+            DebugInfoAppendText(control, sb.ToString());
 
             var pg = new PathGeometry();
-            pg.Figures.Add(control._pathFigure);
-
-            var path = new Path
-            {
-                Width = control.ActualWidth - 20,
-                Height = control.ActualHeight,
-                Margin = new Thickness(0, 0, 0, (control.ActualHeight * -1) - 1),
-                HorizontalAlignment = HorizontalAlignment.Left,
-                VerticalAlignment = VerticalAlignment.Bottom,
-                Stroke = new SolidColorBrush(Color.FromArgb(255, 160, 200, 219)),
-                StrokeThickness = 1,
-                Data = pg
-            };
+            pg.Figures.Add(control.LinePathFigure);
+            var path = CreatePath(control, pg);
 
             control.SimpleDiagram.Children.Add(path);
+
             control.UpdateLineDiagram = false;
         }
+
+        private static void SetLegendMarkPosition(LineDiagramControl control, double heightScale)
+        {
+            var t = new Thickness(0, 0, 0, 100 / control.Scale * heightScale);
+            control.OneHundred.Margin = t;
+            control.OneHundredText.Margin = t;
+        }
+
+        private static void DebugInfoAppendText(LineDiagramControl control, string text)
+        {
+            if (control.DebugOn)
+            {
+                control.DebugInfo.Text += text;
+            }
+        }
+
+        private static void DebugInfoSetReset(LineDiagramControl control)
+        {
+            if (control.DebugOn)
+            {
+                control.DebugInfo.Text = string.Empty;
+            }
+        }
+
+        private static Path CreatePath(LineDiagramControl control, PathGeometry pg) => new Path
+        {
+            Width = control.ActualWidth - 20,
+            Height = control.ActualHeight,
+            Margin = new Thickness(0, 0, 0, (control.ActualHeight * -1) - 1),
+            HorizontalAlignment = HorizontalAlignment.Left,
+            VerticalAlignment = VerticalAlignment.Bottom,
+            Stroke = new SolidColorBrush(Color.FromArgb(255, 160, 200, 219)),
+            StrokeThickness = 1,
+            Data = pg
+        };
 
         public LineDiagramControl() => this.InitializeComponent();
 

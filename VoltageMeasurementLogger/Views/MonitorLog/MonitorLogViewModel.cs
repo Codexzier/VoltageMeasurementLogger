@@ -34,7 +34,7 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
 
             this.MeasurementValues = diagramLevelItemsSource;
 
-            this._timer.Interval = 2;
+            this._timer.Interval = 10;
             this._timer.Elapsed += this._timer_Elapsed;
             this._timer.Start();
         }
@@ -49,7 +49,7 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
         {
             if (this._index < this.MeasurementValues.Count)
             {
-                this.MeasurementValues[this._index].Value = (Math.Sin(this._startValue + (this._index / _periodTime)) * this._applitude) + 100;
+                this.MeasurementValues[this._index].Value = (Math.Sin(this._startValue + (this._index / this._periodTime)) * this._applitude) + 100;
                 this.MeasurementValueIndex = this._index;
                 this._index++;
             }

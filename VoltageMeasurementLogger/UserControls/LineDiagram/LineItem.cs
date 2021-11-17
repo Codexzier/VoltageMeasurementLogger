@@ -18,9 +18,11 @@ namespace VoltageMeasurementLogger.UserControls.LineDiagram
             bool setHighlightMark, 
             int setColor,
             double sizeEllipse,
-            LineSegment lineSegment)
+            LineDiagramControl control)
         {
-            this.LineSegment = lineSegment;
+            this.LineSegment = new LineSegment(new Point(widthPerResultDistanceToLeft + (sizeEllipse / 2), (heightValue * -1) - .5d), true);
+            control.LinePathFigure.Segments.Add(this.LineSegment);
+
             this.SizeEllipse = sizeEllipse;
 
             // TODO: Ist nun doppelt vorhanden. Bereits in BarItem implementiert
@@ -47,27 +49,34 @@ namespace VoltageMeasurementLogger.UserControls.LineDiagram
                 this.Point.Stroke = new SolidColorBrush(Color.FromArgb(255, 200, 250, 219));
             }
 
+            control.SimpleDiagram.Children.Add(this.Point);
             // TODO: Ist nun doppelt vorhanden. Bereits in BarItem implementiert
-            this.Point.MouseEnter += (e, r) =>
-            {
-                if (!(e is Rectangle subRect))
-                {
-                    return;
-                }
+            //this.Point.MouseEnter += (e, r) =>
+            //{
+            //    if (!(e is Rectangle subRect))
+            //    {
+            //        return;
+            //    }
 
-                subRect.Fill = barColorHighlighted;
-            };
+            //    subRect.Fill = barColorHighlighted;
+            //};
 
-            // TODO: Ist nun doppelt vorhanden. Bereits in BarItem implementiert
-            this.Point.MouseLeave += (e, r) =>
-            {
-                if (!(e is Ellipse subRect))
-                {
-                    return;
-                }
+            //// TODO: Ist nun doppelt vorhanden. Bereits in BarItem implementiert
+            //this.Point.MouseLeave += (e, r) =>
+            //{
+            //    if (!(e is Ellipse subRect))
+            //    {
+            //        return;
+            //    }
 
-                subRect.Fill = barColorNormal;
-            };
+            //    subRect.Fill = barColorNormal;
+            //};
+        }
+
+        internal void SetPointMargin(double heightValue, double sizeEllipse)
+        {
+            var m = this.Point.Margin;
+            this.Point.Margin = new Thickness(m.Left, 0, 0, heightValue - (sizeEllipse / 2));
         }
 
         // TODO: Ist nun doppelt vorhanden. Bereits in BarItem implementiert
