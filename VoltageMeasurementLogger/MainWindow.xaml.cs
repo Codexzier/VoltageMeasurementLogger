@@ -23,9 +23,7 @@ namespace VoltageMeasurementLogger
 
             this.Prepare();
 
-            var settingLoader = UserSettingsLoader<CustomSettingsFile>
-                .GetInstance(SerializeHelper.Serialize, SerializeHelper.Deserialize);
-            var setting = settingLoader.Load();
+            var setting = UserSettingsLoaderHelper.Load();
 
             this.LoadApplicationSize(setting);
             this.LoadApplicationWindowState(setting);

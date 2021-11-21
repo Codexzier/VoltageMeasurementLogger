@@ -72,6 +72,6 @@ namespace VoltageMeasurementLogger.Components.ArduinoConnection
 
         public int RawValue { get; private set; }
 
-        public bool IsOpen => _instance == null ? false : _instance.IsOpen;
+        public bool IsOpen => _serialPort == null ? false : _serialPort.IsOpen;
     }
 }

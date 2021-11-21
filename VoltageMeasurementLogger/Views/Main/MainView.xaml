@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:main="clr-namespace:VoltageMeasurementLogger.Views.Main"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="200" MinWidth="200">
+             d:DesignHeight="350" d:DesignWidth="200" MinWidth="200">
     <UserControl.Resources>
         <ResourceDictionary>
             <Style TargetType="TextBlock">
@@ -22,6 +22,8 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" MinHeight="100" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
@@ -51,6 +53,54 @@
                     FlowDirection="RightToLeft" 
                     Content="Connect" 
                     Command="{Binding CommandConnectUart}"  />
+        </Grid>
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Column="0" 
+                       Grid.Row="0" 
+                       Text="OFFSET" />
+            <TextBlock Grid.Column="0" 
+                       Grid.Row="1" 
+                       Text="{Binding OffsetValue}" />
+            <Button Grid.Column="2" 
+                    Grid.Row="0" 
+                    Grid.RowSpan="2"
+                    Content="Set new offset" 
+                    ToolTip="Lege an den Messkontakt eine 5V Spannung. Zum kann das beim Arduino der 5V Pin sein." 
+                    Command="{Binding CommandSetupVoltageOffset}"/>
+        </Grid>
+        <Grid Grid.Row="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Text="Log" /> 
+            <TextBox Grid.Row="1" 
+                     Grid.Column="0" 
+                     Grid.ColumnSpan="2" 
+                     Text="LoggingVoltage_01"/>
+            <Button Grid.Row="2" 
+                    Content="Log ON/OFF" 
+                    ToolTip="Schreibt die Messung in einen Log File." 
+                    Command="{Binding CommandWriteLogOnOff}"
+                    HorizontalAlignment="Left"/>
+
+
         </Grid>
     </Grid>
 </UserControl>

@@ -11,6 +11,9 @@ namespace VoltageMeasurementLogger.Views.Main
         private ICommand _commandConnectUart;
         private ICommand _commandRefreshComPortList;
         private ICommand _commandDisconnectUart;
+        private float _offsetValue;
+        private ICommand _commandSetupVoltageOffset;
+        private ICommand _commandWriteLogOnOff;
 
         public ICommand CommandConnectUart
         {
@@ -60,6 +63,36 @@ namespace VoltageMeasurementLogger.Views.Main
             {
                 this._selectedPortName = value;
                 this.OnNotifyPropertyChanged(nameof(this.SelectedPortName));
+            }
+        }
+
+        public float OffsetValue
+        {
+            get => this._offsetValue;
+            set
+            {
+                this._offsetValue = value;
+                this.OnNotifyPropertyChanged(nameof(this.OffsetValue));
+            }
+        }
+
+        public ICommand CommandSetupVoltageOffset
+        {
+            get => _commandSetupVoltageOffset;
+            set
+            {
+                _commandSetupVoltageOffset = value;
+                this.OnNotifyPropertyChanged(nameof(this.CommandSetupVoltageOffset));
+            }
+        }
+
+        public ICommand CommandWriteLogOnOff
+        {
+            get => _commandWriteLogOnOff;
+            set
+            {
+                _commandWriteLogOnOff = value;
+                this.OnNotifyPropertyChanged(nameof(this.CommandWriteLogOnOff));
             }
         }
     }
