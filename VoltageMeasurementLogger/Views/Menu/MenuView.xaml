@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:menu="clr-namespace:VoltageMeasurementLogger.Views.Menu"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="100" d:DesignWidth="300">
     <UserControl.DataContext>
         <menu:MenuViewModel />
     </UserControl.DataContext>
@@ -17,6 +17,7 @@
 
         <StackPanel Grid.Column="0" Orientation="Horizontal">
             <Button Content="Main" Command="{Binding CommandOpenMain}" />
+            <Button Content="Log Data" />
         </StackPanel>
     </Grid>
 </UserControl>

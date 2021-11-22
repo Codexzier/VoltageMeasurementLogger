@@ -17,7 +17,7 @@
                     HorizontalAlignment="Stretch" />
         </Border>
 
-        <TextBlock x:Name="OneHundredText" Text="100" 
+        <TextBlock x:Name="TextBlockLevelLineText"
                    Foreground="{StaticResource BrushMonochromaticBlueGrayE}"
                    HorizontalAlignment="Left" 
                    VerticalAlignment="Bottom" 
@@ -37,5 +37,31 @@
                    VerticalAlignment="Top" 
                    FontSize="9"
                    Margin="30 10 0 0"/>
+
+        <Grid Margin="30 20 0 0" x:Name="GridActualPathValue"
+              HorizontalAlignment="Left"
+              VerticalAlignment="Stretch"
+              MinWidth="10">
+            <Border HorizontalAlignment="Stretch" 
+                    VerticalAlignment="Stretch" 
+                    MinWidth="2" 
+                    BorderThickness="1 0 0 0"
+                    BorderBrush="{StaticResource BrushMonochromaticBlueGrayE}"/>
+            <!--<Path x:Name="PathActualSetValue" 
+                Width="2"
+                Data="M 0,0 0,100 z"
+                Stroke="{StaticResource BrushMonochromaticBlueGrayE}" 
+                StrokeThickness="2" 
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Stretch" 
+                Margin="0"/>-->
+            <TextBlock x:Name="TextBlockActualSetValue" Text="0V" 
+                   Foreground="{StaticResource BrushMonochromaticBlueGrayE}"
+                   HorizontalAlignment="Left" 
+                   VerticalAlignment="Top" 
+                   FontSize="12"
+                   Margin="5 10 0 0"/>
+        </Grid>
+        
     </Grid>
 </UserControl>

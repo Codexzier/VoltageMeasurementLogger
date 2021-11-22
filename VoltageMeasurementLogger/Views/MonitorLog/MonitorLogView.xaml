@@ -35,6 +35,16 @@
             <TextBlock Text="{Binding MinRawValue}" />
             <TextBlock Text="{Binding MaxRawValue}" />
             <TextBlock Text="{Binding RawValue}" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="50" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="Voltage:" />
+                <TextBlock Grid.Column="1" Text="{Binding VoltageValue,StringFormat=N1}" FlowDirection="RightToLeft" />
+                <TextBlock Grid.Column="2" Text="V" />
+            </Grid>
         </StackPanel>
         <ProgressBar Grid.Row="2" Grid.Column="0" 
                      Orientation="Vertical" 
@@ -48,6 +58,9 @@
                                         VerticalAlignment="Stretch"
                                         Margin="0 0 0 0"
                                         DiagramLevelItemsSource="{Binding MeasurementValues}" 
+                                        LevelLineText="5.0V"
+                                        Scale="1"
+                                        MultiplyValue="20"
                                         CheckIndex="{Binding MeasurementValueIndex, NotifyOnSourceUpdated=True}"/>
 
         <!--<ProgressBar Grid.Row="2" Grid.Column="2" Value="512" Maximum="1024" Orientation="Vertical" Style="{x:Null}" />-->

@@ -1,5 +1,6 @@
 ﻿using Codexzier.Wpf.ApplicationFramework.Commands;
 using Codexzier.Wpf.ApplicationFramework.Components.Ui.EventBus;
+using System;
 using System.Timers;
 using System.Windows.Controls;
 using VoltageMeasurementLogger.Components.ArduinoConnection;
@@ -12,7 +13,8 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
     public partial class MonitorLogView : UserControl
     {
         private readonly MonitorLogViewModel _viewModel;
-        private Timer _timer = new Timer();
+        private readonly Timer _timer = new();
+        private float _offsetValue = 1024;
 
         public MonitorLogView()
         {
@@ -21,15 +23,26 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
             this._viewModel = (MonitorLogViewModel)this.DataContext;
 
             EventBusManager.Register<MonitorLogView, BaseMessage>(this.BaseMessageEvent);
-            //UartConnection.GetInstance()
-            this._timer.Elapsed += this._timer_Elapsed;
+            EventBusManager.Register<MonitorLogView, UpdateOffsetMessage>(this.UpdateOffsetEvent);
+
+            this._timer.Elapsed += this.Timer_Elapsed;
             this._timer.Interval = 100;
             this._timer.Start();
         }
 
-        private void _timer_Elapsed(object sender, ElapsedEventArgs e)
+        private void UpdateOffsetEvent(IMessageContainer obj)
+        {
+            if(obj is UpdateOffsetMessage update)
+            {
+                this._offsetValue = update.OffsetValue;
+            }
+        }
+
+        private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             this._viewModel.RawValue = UartConnection.GetInstance().RawValue;
+
+            this._viewModel.VoltageValue = this._viewModel.RawValue / this._offsetValue * 10.0f;
         }
 
         private void BaseMessageEvent(IMessageContainer obj)

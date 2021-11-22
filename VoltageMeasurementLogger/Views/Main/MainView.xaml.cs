@@ -1,8 +1,7 @@
 using Codexzier.Wpf.ApplicationFramework.Commands;
 using Codexzier.Wpf.ApplicationFramework.Components.Ui.EventBus;
 using Codexzier.Wpf.ApplicationFramework.Views.Base;
-using System.Threading.Tasks;
-using VoltageMeasurementLogger.Views.MonitorLog;
+using VoltageMeasurementLogger.Components;
 
 namespace VoltageMeasurementLogger.Views.Main
 {
@@ -17,24 +16,36 @@ namespace VoltageMeasurementLogger.Views.Main
             this._viewModel.CommandRefreshComPortList = new ButtonCommandRefreshComPortList(this._viewModel);
             this._viewModel.CommandConnectUart = new ButtonCommandConnectUart(this._viewModel);
             this._viewModel.CommandDisconnectUart = new ButtonCommandDisconnectUart();
+            this._viewModel.CommandSetupVoltageOffset = new ButtonCommandSetupVoltageOffset(this._viewModel);
+            this._viewModel.CommandWriteLogOnOff = new ButtonCommandWriteLogOnOff(this._viewModel);
 
             EventBusManager.Register<MainView, BaseMessage>(this.BaseMessageEvent);
         }
 
-        private async void BaseMessageEvent(IMessageContainer obj)
+        private void BaseMessageEvent(IMessageContainer obj)
         {
             SimpleStatusOverlays.ActivityOn();
 
-            //if (EventBusManager.IsViewOpen<MonitorLogView>(1))
-            //{
-            //    return;
-            //}
+            var setting = UserSettingsLoaderHelper.Load();
 
-            //EventBusManager.OpenView<MonitorLogView>(1);
-
-            await Task.Delay(200);
+            this._viewModel.OffsetValue = setting.OffsetValue;
 
             SimpleStatusOverlays.ActivityOff();
+        }
+    }
+
+    internal class ButtonCommandWriteLogOnOff : BaseCommand
+    {
+        private MainViewModel _viewModel;
+
+        public ButtonCommandWriteLogOnOff(MainViewModel viewModel) => this._viewModel = viewModel;
+
+        public override void Execute(object parameter)
+        {
+            base.Execute(parameter);
+
+            // TODO: Write start Stop Logging.
+            SimpleStatusOverlays.Show("INFO", "Not implement!");
         }
     }
 }

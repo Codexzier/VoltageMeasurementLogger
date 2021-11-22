@@ -44,12 +44,14 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
         private double _startValue = .1;
         private double _applitude = 50;
         private double _periodTime = 10;
+        private float _voltageValue;
+        private string _levelLineText = "5.0V";
 
         private void _timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             if (this._index < this.MeasurementValues.Count)
             {
-                this.MeasurementValues[this._index].Value = (Math.Sin(this._startValue + (this._index / this._periodTime)) * this._applitude) + 100;
+                this.MeasurementValues[this._index].Value = this._voltageValue; // * 20.0; // (Math.Sin(this._startValue + (this._index / _periodTime)) * this._applitude) + 100;
                 this.MeasurementValueIndex = this._index;
                 this._index++;
             }
@@ -131,6 +133,26 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
             {
                 this._measurementValueIndex = value;
                 this.OnNotifyPropertyChanged(nameof(this.MeasurementValueIndex));
+            }
+        }
+
+        public float VoltageValue
+        {
+            get => this._voltageValue;
+            set
+            {
+                this._voltageValue = value;
+                this.OnNotifyPropertyChanged(nameof(this.VoltageValue));
+            }
+        }
+
+        public string LevelLineText
+        {
+            get => _levelLineText;
+            set
+            {
+                _levelLineText = value;
+                this.OnNotifyPropertyChanged(nameof(this.LevelLineText));
             }
         }
     }

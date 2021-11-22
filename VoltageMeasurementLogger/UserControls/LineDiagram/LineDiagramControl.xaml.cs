@@ -26,6 +26,19 @@ namespace VoltageMeasurementLogger.UserControls.LineDiagram
                 typeof(LineDiagramControl),
                 new PropertyMetadata(1.0d, UpdateDiagram));
 
+        public double MultiplyValue
+        {
+            get => (double)this.GetValue(MultiplyValueProperty);
+            set => this.SetValue(MultiplyValueProperty, value);
+        }
+
+        public static readonly DependencyProperty MultiplyValueProperty =
+            DependencyProperty.RegisterAttached(
+                "MultiplyValue", 
+                typeof(double), 
+                typeof(LineDiagramControl), 
+                new PropertyMetadata(1d));
+
         public List<DiagramLevelItem> DiagramLevelItemsSource
         {
             get => (List<DiagramLevelItem>)this.GetValue(DiagramLevelItemsSourceProperty);
@@ -49,6 +62,27 @@ namespace VoltageMeasurementLogger.UserControls.LineDiagram
                 typeof(int),
                 typeof(LineDiagramControl),
                 new PropertyMetadata(0, UpdateDiagramOnlyValueByIndex));
+
+        public string LevelLineText
+        {
+            get => (string)this.GetValue(LevelLineTextProperty);
+            set => this.SetValue(LevelLineTextProperty, value);
+        }
+
+        public static readonly DependencyProperty LevelLineTextProperty =
+            DependencyProperty.RegisterAttached(
+                "LevelLineText", 
+                typeof(string), 
+                typeof(LineDiagramControl), 
+                new PropertyMetadata("5.0", UpdateLevelLineText));
+
+        private static void UpdateLevelLineText(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is LineDiagramControl control)
+            {
+                control.TextBlockLevelLineText.Text = control.LevelLineText;
+            }
+        }
 
         private static void UpdateDiagram(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -75,8 +109,7 @@ namespace VoltageMeasurementLogger.UserControls.LineDiagram
 
         private bool DebugOn = false;
 
-        internal PathFigure LinePathFigure = new PathFigure();
-        // TODO: Not sure, but I have an idea.
+        private PathFigure _pathFigure = new PathFigure();
         private readonly IList<LineItem> _barItems = new List<LineItem>();
 
         private static void SetValueByIndex(LineDiagramControl control)
@@ -98,11 +131,11 @@ namespace VoltageMeasurementLogger.UserControls.LineDiagram
 
             double widthPerResult = (control.ActualWidth - 20) / control.DiagramLevelItemsSource.Count;
             double heightScale = control.ActualHeight / 200d;
+           
+            var m = control._barItems[control.CheckIndex].Point.Margin;
+            var sizeEllipse = control._barItems[control.CheckIndex].SizeEllipse;
 
-            
-            double sizeEllipse = control._barItems[control.CheckIndex].SizeEllipse;
-
-            double heightValue = control.DiagramLevelItemsSource[control.CheckIndex].Value / control.Scale * heightScale;
+            double heightValue = control.DiagramLevelItemsSource[control.CheckIndex].Value / control.Scale * heightScale * control.MultiplyValue;
 
             if (heightValue < 0)
             {
@@ -118,6 +151,10 @@ namespace VoltageMeasurementLogger.UserControls.LineDiagram
             {
                 control.LinePathFigure.StartPoint = new Point(0, heightValue * -1);
             }
+
+            // set actual Level value and move from left to right
+            control.GridActualPathValue.Margin = new Thickness(m.Left + 30, 10, 0, 0);
+            control.TextBlockActualSetValue.Text = $"{control.DiagramLevelItemsSource[control.CheckIndex].Value:N1}V";
         }
 
         private static void SetValueToRects(LineDiagramControl control)
@@ -149,6 +186,18 @@ namespace VoltageMeasurementLogger.UserControls.LineDiagram
             double heightScale = control.ActualHeight / 200d;
             SetLegendMarkPosition(control, heightScale);
 
+            if (double.IsNaN(heightScale))
+            {
+                if (control.DebugOn)
+                {
+                    control.DebugInfo.Text += "Height is NaN";
+                }
+                return;
+            }
+
+            control.OneHundred.Margin = new Thickness(0, 0, 0, 100 / control.Scale * heightScale);
+            control.TextBlockLevelLineText.Margin = new Thickness(0, 0, 0, 100 / control.Scale * heightScale);
+
             double widthPerResult = (control.ActualWidth - 20) / control.DiagramLevelItemsSource.Count;
 
             bool setStartPoint = true;
@@ -159,7 +208,7 @@ namespace VoltageMeasurementLogger.UserControls.LineDiagram
             {
                 if (control.DebugOn) { sb.Append($"{item.Value:N2}, "); }
 
-                double heightValue = item.Value / control.Scale * heightScale;
+                double heightValue = item.Value / control.Scale * heightScale * control.MultiplyValue;
 
                 if (heightValue < 0) { heightValue = 0; }
 
