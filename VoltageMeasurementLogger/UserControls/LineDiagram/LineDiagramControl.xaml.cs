@@ -109,7 +109,7 @@ namespace VoltageMeasurementLogger.UserControls.LineDiagram
 
         private bool DebugOn = false;
 
-        private PathFigure _pathFigure = new PathFigure();
+        internal PathFigure _pathFigure = new PathFigure();
         private readonly IList<LineItem> _barItems = new List<LineItem>();
 
         private static void SetValueByIndex(LineDiagramControl control)
@@ -149,7 +149,7 @@ namespace VoltageMeasurementLogger.UserControls.LineDiagram
 
             if (control.CheckIndex == 0)
             {
-                control.LinePathFigure.StartPoint = new Point(0, heightValue * -1);
+                control._pathFigure.StartPoint = new Point(0, heightValue * -1);
             }
 
             // set actual Level value and move from left to right
@@ -202,7 +202,7 @@ namespace VoltageMeasurementLogger.UserControls.LineDiagram
 
             bool setStartPoint = true;
             double sizeEllipse = 5d;
-            control.LinePathFigure = new PathFigure();
+            control._pathFigure = new PathFigure();
             var sb = new StringBuilder();
             foreach (var item in control.DiagramLevelItemsSource)
             {
@@ -216,7 +216,7 @@ namespace VoltageMeasurementLogger.UserControls.LineDiagram
 
                 if (setStartPoint)
                 {
-                    control.LinePathFigure.StartPoint = new Point(0, heightValue * -1);
+                    control._pathFigure.StartPoint = new Point(0, heightValue * -1);
                     setStartPoint = false;
                 }
 
@@ -236,7 +236,7 @@ namespace VoltageMeasurementLogger.UserControls.LineDiagram
             DebugInfoAppendText(control, sb.ToString());
 
             var pg = new PathGeometry();
-            pg.Figures.Add(control.LinePathFigure);
+            pg.Figures.Add(control._pathFigure);
             var path = CreatePath(control, pg);
 
             control.SimpleDiagram.Children.Add(path);
@@ -248,7 +248,7 @@ namespace VoltageMeasurementLogger.UserControls.LineDiagram
         {
             var t = new Thickness(0, 0, 0, 100 / control.Scale * heightScale);
             control.OneHundred.Margin = t;
-            control.OneHundredText.Margin = t;
+            control.TextBlockLevelLineText.Margin = t;
         }
 
         private static void DebugInfoAppendText(LineDiagramControl control, string text)

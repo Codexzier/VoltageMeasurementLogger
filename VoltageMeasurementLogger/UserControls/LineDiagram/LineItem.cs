@@ -21,7 +21,7 @@ namespace VoltageMeasurementLogger.UserControls.LineDiagram
             LineDiagramControl control)
         {
             this.LineSegment = new LineSegment(new Point(widthPerResultDistanceToLeft + (sizeEllipse / 2), (heightValue * -1) - .5d), true);
-            control.LinePathFigure.Segments.Add(this.LineSegment);
+            control._pathFigure.Segments.Add(this.LineSegment);
 
             this.SizeEllipse = sizeEllipse;
 
