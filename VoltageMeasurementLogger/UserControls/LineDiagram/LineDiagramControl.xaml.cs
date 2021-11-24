@@ -39,17 +39,17 @@ namespace VoltageMeasurementLogger.UserControls.LineDiagram
                 typeof(LineDiagramControl), 
                 new PropertyMetadata(1d));
 
-        public List<DiagramLevelItem> DiagramLevelItemsSource
+        public List<LineDiagramLevelItem> DiagramLevelItemsSource
         {
-            get => (List<DiagramLevelItem>)this.GetValue(DiagramLevelItemsSourceProperty);
+            get => (List<LineDiagramLevelItem>)this.GetValue(DiagramLevelItemsSourceProperty);
             set => this.SetValue(DiagramLevelItemsSourceProperty, value);
         }
 
         public static readonly DependencyProperty DiagramLevelItemsSourceProperty =
             DependencyProperty.RegisterAttached("DiagramLevelItemsSource",
-                typeof(List<DiagramLevelItem>),
+                typeof(List<LineDiagramLevelItem>),
                 typeof(LineDiagramControl),
-                new PropertyMetadata(new List<DiagramLevelItem>(), UpdateDiagram));
+                new PropertyMetadata(new List<LineDiagramLevelItem>(), UpdateDiagram));
 
         public int CheckIndex
         {

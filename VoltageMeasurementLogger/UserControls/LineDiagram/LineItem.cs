@@ -10,6 +10,12 @@ namespace VoltageMeasurementLogger.UserControls.LineDiagram
         public LineSegment LineSegment { get; }
         public double SizeEllipse { get; }
 
+        // TODO: Min Max Werten ausgaben. Umstellung von Ellipse auf Border erforderlich
+        // Durch die Vergabe von min Max können zusammengefasst mehrere Messungen zusammengeführt werden
+        // und dessen minimalen und maximalen Wert zu einem Strich dargestellt werden.
+        public double MaxValue { get; set; }
+        public double MinValue { get; set; }
+
         public LineItem(
             double widthPerResultDistanceToLeft, 
             double heightValue, 
@@ -28,6 +34,7 @@ namespace VoltageMeasurementLogger.UserControls.LineDiagram
             // TODO: Ist nun doppelt vorhanden. Bereits in BarItem implementiert
             var barColorNormal = new SolidColorBrush(this.SetUpValueIfOverHundred(value, setColor));
             var barColorHighlighted = new SolidColorBrush(Color.FromArgb(255, 160, 200, 219));
+
 
             // TODO: Ist fast doppelt vorhanden.
             // Wegen Ellipse. Soll aber nur in der Höhe des Werts angezeigt werden.

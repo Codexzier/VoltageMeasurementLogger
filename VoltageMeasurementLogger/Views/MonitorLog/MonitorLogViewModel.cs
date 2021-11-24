@@ -3,6 +3,7 @@ using Codexzier.Wpf.ApplicationFramework.Views.Base;
 using System;
 using System.Collections.Generic;
 using System.Timers;
+using VoltageMeasurementLogger.UserControls.LineDiagram;
 
 namespace VoltageMeasurementLogger.Views.MonitorLog
 {
@@ -15,15 +16,15 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
         private int _rawValue;
         private int _minRawValue = 0;
         private int _maxRawValue = 1024;
-        private List<DiagramLevelItem> _measurementValues;
+        private List<LineDiagramLevelItem> _measurementValues;
 
         public MonitorLogViewModel()
         {
-            var diagramLevelItemsSource = new List<DiagramLevelItem>();
+            var diagramLevelItemsSource = new List<LineDiagramLevelItem>();
 
             for (int i = 0; i < 200; i++)
             {
-                diagramLevelItemsSource.Add(new DiagramLevelItem
+                diagramLevelItemsSource.Add(new LineDiagramLevelItem
                 {
                     Value = this._random.NextDouble() * 5d,
                     SetColor = 1,
@@ -116,7 +117,7 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
             }
         }
 
-        public List<DiagramLevelItem> MeasurementValues
+        public List<LineDiagramLevelItem> MeasurementValues
         {
             get => this._measurementValues;
             set
