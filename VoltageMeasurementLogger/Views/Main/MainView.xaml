@@ -93,13 +93,16 @@
             <TextBox Grid.Row="1" 
                      Grid.Column="0" 
                      Grid.ColumnSpan="2" 
-                     Text="LoggingVoltage_01"/>
+                     Text="{Binding Filename, UpdateSourceTrigger=PropertyChanged}"/>
             <Button Grid.Row="2" 
                     Content="Log ON/OFF" 
                     ToolTip="Schreibt die Messung in einen Log File." 
                     Command="{Binding CommandWriteLogOnOff}"
                     HorizontalAlignment="Left"/>
-
+            <Grid Grid.Column="1" 
+                  Grid.Row="2">
+                <Border Width="10" Height="10" Background="{Binding WriteState}" />
+            </Grid>
 
         </Grid>
     </Grid>

@@ -6,6 +6,7 @@ namespace VoltageMeasurementLogger.Views.Menu
     internal class MenuViewModel : BaseViewModel
     {
         private ICommand _commandOpenMain;
+        private ICommand _commandLogData;
 
         public ICommand CommandOpenMain
         {
@@ -14,6 +15,16 @@ namespace VoltageMeasurementLogger.Views.Menu
             {
                 this._commandOpenMain = value;
                 this.OnNotifyPropertyChanged(nameof(this.CommandOpenMain));
+            }
+        }
+
+        public ICommand CommandLogData
+        {
+            get => _commandLogData;
+            set
+            {
+                this._commandLogData = value;
+                this.OnNotifyPropertyChanged(nameof(this.CommandLogData));
             }
         }
     }

@@ -1,0 +1,76 @@
+﻿<UserControl x:Class="VoltageMeasurementLogger.Views.LogDataResult.LogDataResultView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:VoltageMeasurementLogger.Views.LogDataResult"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="600">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <Style TargetType="TextBlock">
+                <Setter Property="Foreground" Value="{StaticResource BrushMonochromaticBlueGrayE}" />
+                <Setter Property="Margin" Value="10 5" />
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <local:LogDataResultViewModel />
+    </UserControl.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0"
+              Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Column="0" Grid.Row="0" Text="Count Measures" />
+            <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Filename}" />
+
+            <TextBlock Grid.Column="0" Grid.Row="1" Text="Count Measures" />
+            <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding CountMeasures}" />
+
+            <TextBlock Grid.Column="0" Grid.Row="2" Text="Average value" />
+            <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding AverageValue, StringFormat=N2}" />
+
+            <TextBlock Grid.Column="0" Grid.Row="3" Text="Min. value" />
+            <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding MinValue, StringFormat=N2}" />
+
+            <TextBlock Grid.Column="0" Grid.Row="4" Text="Min. value" />
+            <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding MaxValue, StringFormat=N2}" />
+
+        </Grid>
+
+        <DataGrid Grid.Column="1" 
+                  Grid.Row="0"
+                  ItemsSource="{Binding Values}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Nr" 
+                                    Binding="{Binding Nr}"/>
+                <DataGridTextColumn Header="Value"
+                                    Binding="{Binding Value}"/>
+                <DataGridTextColumn Header="Min.Value"
+                                    Binding="{Binding MinValue}"/>
+                <DataGridTextColumn Header="Max.Value"
+                                    Binding="{Binding MaxValue}"/>
+                <DataGridTextColumn Header="Date" 
+                                    Binding="{Binding Date}" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+
+    
+</UserControl>

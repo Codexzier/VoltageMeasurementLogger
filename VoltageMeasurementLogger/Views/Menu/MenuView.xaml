@@ -17,7 +17,7 @@
 
         <StackPanel Grid.Column="0" Orientation="Horizontal">
             <Button Content="Main" Command="{Binding CommandOpenMain}" />
-            <Button Content="Log Data" />
+            <Button Content="Log Data" Command="{Binding CommandLogData}" />
         </StackPanel>
     </Grid>
 </UserControl>

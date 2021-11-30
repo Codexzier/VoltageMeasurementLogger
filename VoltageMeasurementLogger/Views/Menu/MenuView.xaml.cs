@@ -11,6 +11,7 @@ namespace VoltageMeasurementLogger.Views.Menu
             this._viewModel = (MenuViewModel)this.DataContext;
 
             this._viewModel.CommandOpenMain = new ButtonCommandOpenMain();
+            this._viewModel.CommandLogData = new ButtonCommandLogData();
         }
     }
 }

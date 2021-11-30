@@ -13,8 +13,9 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
     public partial class MonitorLogView : UserControl
     {
         private readonly MonitorLogViewModel _viewModel;
-        private readonly Timer _timer = new();
+        //private readonly Timer _timer = new();
         private float _offsetValue = 1024;
+        private UartConnection _uartConnection;
 
         public MonitorLogView()
         {
@@ -22,12 +23,14 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
 
             this._viewModel = (MonitorLogViewModel)this.DataContext;
 
+            this._uartConnection = UartConnection.GetInstance();
+
             EventBusManager.Register<MonitorLogView, BaseMessage>(this.BaseMessageEvent);
             EventBusManager.Register<MonitorLogView, UpdateOffsetMessage>(this.UpdateOffsetEvent);
 
-            this._timer.Elapsed += this.Timer_Elapsed;
-            this._timer.Interval = 100;
-            this._timer.Start();
+            //this._timer.Elapsed += this.Timer_Elapsed;
+            //this._timer.Interval = 100;
+            //this._timer.Start();
         }
 
         private void UpdateOffsetEvent(IMessageContainer obj)
@@ -40,8 +43,7 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            this._viewModel.RawValue = UartConnection.GetInstance().RawValue;
-
+            this._viewModel.RawValue = this._uartConnection.RawValue;
             this._viewModel.VoltageValue = this._viewModel.RawValue / this._offsetValue * 10.0f;
         }
 

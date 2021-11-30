@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.IO.Ports;
 using System.Linq;
+using VoltageMeasurementLogger.Components.Log;
 
 namespace VoltageMeasurementLogger.Components.ArduinoConnection
 {
@@ -53,8 +54,6 @@ namespace VoltageMeasurementLogger.Components.ArduinoConnection
             byte[] buffer = new byte[3];
             if (this._serialPort.Read(buffer, 0, 3) != 0)
             {
-                
-
                 var result = (buffer[0] << 8) | buffer[1];
 
                 var b = new BitArray(new int[] { result });
@@ -67,6 +66,12 @@ namespace VoltageMeasurementLogger.Components.ArduinoConnection
                 }
 
                 this.RawValue = result;
+
+                // TODO Moved to eventhandler
+                if(LogManager.GetInstance().IsOn)
+                {
+                    LogManager.GetInstance().WriteLine($"{this.RawValue}");
+                }
             }
         }
 

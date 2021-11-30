@@ -1,67 +1,27 @@
-﻿using Codexzier.Wpf.ApplicationFramework.Controls.Diagram;
-using Codexzier.Wpf.ApplicationFramework.Views.Base;
-using System;
+﻿using Codexzier.Wpf.ApplicationFramework.Views.Base;
 using System.Collections.Generic;
-using System.Timers;
 using VoltageMeasurementLogger.UserControls.LineDiagram;
 
 namespace VoltageMeasurementLogger.Views.MonitorLog
 {
     public class MonitorLogViewModel : BaseViewModel
     {
-        private readonly Timer _timer = new();
-        private readonly Random _random = new();
 
         private string _comPortname;
         private int _rawValue;
         private int _minRawValue = 0;
         private int _maxRawValue = 1024;
         private List<LineDiagramLevelItem> _measurementValues;
-
-        public MonitorLogViewModel()
-        {
-            var diagramLevelItemsSource = new List<LineDiagramLevelItem>();
-
-            for (int i = 0; i < 200; i++)
-            {
-                diagramLevelItemsSource.Add(new LineDiagramLevelItem
-                {
-                    Value = this._random.NextDouble() * 5d,
-                    SetColor = 1,
-                    SetHighlightMark = false,
-                    ToolTipText = $"Value: {i}"
-                });
-            }
-
-            this.MeasurementValues = diagramLevelItemsSource;
-
-            this._timer.Interval = 10;
-            this._timer.Elapsed += this._timer_Elapsed;
-            this._timer.Start();
-        }
-
-        private int _index = 0;
         private int _measurementValueIndex;
-        private double _startValue = .1;
-        private double _applitude = 50;
-        private double _periodTime = 10;
         private float _voltageValue;
         private string _levelLineText = "5.0V";
 
-        private void _timer_Elapsed(object sender, ElapsedEventArgs e)
+        public MonitorLogViewModel()
         {
-            if (this._index < this.MeasurementValues.Count)
-            {
-                this.MeasurementValues[this._index].Value = this._voltageValue; // * 20.0; // (Math.Sin(this._startValue + (this._index / _periodTime)) * this._applitude) + 100;
-                this.MeasurementValueIndex = this._index;
-                this._index++;
-            }
-            else
-            {
-                this._startValue = this._random.NextDouble() * 50;
-                this._index = 0;
-            }
+            this.LineDiagramHelper = new LineDiagramHelper(this);
         }
+
+        public LineDiagramHelper LineDiagramHelper { get; }
 
         public string ComPortname
         {

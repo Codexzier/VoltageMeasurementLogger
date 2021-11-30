@@ -1,6 +1,7 @@
 ﻿using Codexzier.Wpf.ApplicationFramework.Views.Base;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace VoltageMeasurementLogger.Views.Main
 {
@@ -14,6 +15,8 @@ namespace VoltageMeasurementLogger.Views.Main
         private float _offsetValue;
         private ICommand _commandSetupVoltageOffset;
         private ICommand _commandWriteLogOnOff;
+        private string _filename;
+        private Brush _writeState = Brushes.Black;
 
         public ICommand CommandConnectUart
         {
@@ -93,6 +96,25 @@ namespace VoltageMeasurementLogger.Views.Main
             {
                 _commandWriteLogOnOff = value;
                 this.OnNotifyPropertyChanged(nameof(this.CommandWriteLogOnOff));
+            }
+        }
+
+        public string Filename
+        {
+            get => _filename; set
+            {
+                _filename = value;
+                this.OnNotifyPropertyChanged(nameof(this.Filename));
+            }
+        }
+
+        public Brush WriteState
+        {
+            get => _writeState;
+            set
+            {
+                _writeState = value;
+                this.OnNotifyPropertyChanged(nameof(this.WriteState));
             }
         }
     }

@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace VoltageMeasurementLogger.Components.Log
 {
     public class LogManager
     {
         private static LogManager _instance;
+        private string _fullFilename;
 
         private LogManager()
         {
@@ -17,7 +15,7 @@ namespace VoltageMeasurementLogger.Components.Log
 
         public static LogManager GetInstance()
         {
-            if(_instance == null)
+            if (_instance == null)
             {
                 _instance = new LogManager();
             }
@@ -27,16 +25,65 @@ namespace VoltageMeasurementLogger.Components.Log
 
         public void WriteToFile(string filename)
         {
-            string fullname = $"{PathOfLogFiles}{filename}";
-            if (File.Exists(fullname))
+            this._fullFilename = $"{PathOfLogFiles}{filename}";
+            this.IsOn = true;
+
+            if (File.Exists(_fullFilename))
             {
-                File.WriteAllText(fullname, string.Empty);
+                File.WriteAllText(_fullFilename, string.Empty);
                 return;
             }
 
-            File.Create(fullname);
+            Directory.CreateDirectory(PathOfLogFiles);
+
+            File.Create(_fullFilename).Close();
         }
 
+        public void Stop() => this.IsOn = false;
+
         public static string PathOfLogFiles => $"{Directory.GetCurrentDirectory()}/Logs/";
+
+        public bool IsOn { get; private set; }
+
+        public void WriteLine(string lineText)
+        {
+            if(!this.IsOn)
+            {
+                return;
+            }
+
+            var sw = File.AppendText(this._fullFilename);
+            sw.WriteLine($"{lineText};{DateTime.Now}");
+            sw.Close();
+        }
+
+        public IEnumerable<LogItem> GetLogs(string filename)
+        {
+            var logItems = new List<LogItem>();
+
+            using(var streamReader = new StreamReader($"{PathOfLogFiles}{filename}"))
+            {
+                string str;
+                while ((str = streamReader.ReadLine()) != null)
+                {
+                    if(string.IsNullOrEmpty(str))
+                    {
+                        continue;
+                    }
+
+                    var sa = str.Split(';');
+
+                    if(!DateTime.TryParse(sa[1], out var date))
+                    {
+                        date = DateTime.MinValue;
+                    }
+
+                    var li = new LogItem(sa[0], date);
+                    logItems.Add(li);
+                }
+            }
+
+            return logItems;
+        }
     }
 }

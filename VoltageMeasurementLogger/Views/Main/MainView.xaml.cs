@@ -1,7 +1,9 @@
 using Codexzier.Wpf.ApplicationFramework.Commands;
 using Codexzier.Wpf.ApplicationFramework.Components.Ui.EventBus;
 using Codexzier.Wpf.ApplicationFramework.Views.Base;
+using System.IO;
 using VoltageMeasurementLogger.Components;
+using VoltageMeasurementLogger.Components.Log;
 
 namespace VoltageMeasurementLogger.Views.Main
 {
@@ -30,22 +32,20 @@ namespace VoltageMeasurementLogger.Views.Main
 
             this._viewModel.OffsetValue = setting.OffsetValue;
 
+            int filenumber = 0;
+
+            while (true)
+            {
+                var newFilename = $"LoggingVoltage_{filenumber:D4}";
+                if (!File.Exists($"{LogManager.PathOfLogFiles}{newFilename}"))
+                {
+                    this._viewModel.Filename = $"LoggingVoltage_{ filenumber: D4}";
+                    break;
+                }
+                filenumber++;
+            }
+
             SimpleStatusOverlays.ActivityOff();
-        }
-    }
-
-    internal class ButtonCommandWriteLogOnOff : BaseCommand
-    {
-        private MainViewModel _viewModel;
-
-        public ButtonCommandWriteLogOnOff(MainViewModel viewModel) => this._viewModel = viewModel;
-
-        public override void Execute(object parameter)
-        {
-            base.Execute(parameter);
-
-            // TODO: Write start Stop Logging.
-            SimpleStatusOverlays.Show("INFO", "Not implement!");
         }
     }
 }
