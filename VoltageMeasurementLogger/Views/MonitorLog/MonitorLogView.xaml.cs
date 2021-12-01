@@ -1,9 +1,6 @@
 ﻿using Codexzier.Wpf.ApplicationFramework.Commands;
 using Codexzier.Wpf.ApplicationFramework.Components.Ui.EventBus;
-using System;
-using System.Timers;
 using System.Windows.Controls;
-using VoltageMeasurementLogger.Components.ArduinoConnection;
 
 namespace VoltageMeasurementLogger.Views.MonitorLog
 {
@@ -13,9 +10,7 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
     public partial class MonitorLogView : UserControl
     {
         private readonly MonitorLogViewModel _viewModel;
-        //private readonly Timer _timer = new();
-        private float _offsetValue = 1024;
-        private UartConnection _uartConnection;
+        private readonly LineDiagramHelper _lineDiagramHelper;
 
         public MonitorLogView()
         {
@@ -23,28 +18,18 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
 
             this._viewModel = (MonitorLogViewModel)this.DataContext;
 
-            this._uartConnection = UartConnection.GetInstance();
+            this._lineDiagramHelper = new LineDiagramHelper(this._viewModel);
 
             EventBusManager.Register<MonitorLogView, BaseMessage>(this.BaseMessageEvent);
             EventBusManager.Register<MonitorLogView, UpdateOffsetMessage>(this.UpdateOffsetEvent);
-
-            //this._timer.Elapsed += this.Timer_Elapsed;
-            //this._timer.Interval = 100;
-            //this._timer.Start();
         }
 
         private void UpdateOffsetEvent(IMessageContainer obj)
         {
             if(obj is UpdateOffsetMessage update)
             {
-                this._offsetValue = update.OffsetValue;
+                this._lineDiagramHelper.SetOffset(update.OffsetValue);
             }
-        }
-
-        private void Timer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            this._viewModel.RawValue = this._uartConnection.RawValue;
-            this._viewModel.VoltageValue = this._viewModel.RawValue / this._offsetValue * 10.0f;
         }
 
         private void BaseMessageEvent(IMessageContainer obj)
@@ -57,7 +42,18 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
                 }
 
                 this._viewModel.ComPortname = str;
+
+                this._lineDiagramHelper.Start();
+                
                 return;
+            }
+
+            if(obj.Content is bool set)
+            {
+                if (!set)
+                {
+                    this._lineDiagramHelper.Stop();
+                }
             }
 
             this._viewModel.ComPortname = "---";

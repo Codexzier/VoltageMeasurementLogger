@@ -15,13 +15,7 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
         private int _measurementValueIndex;
         private float _voltageValue;
         private string _levelLineText = "5.0V";
-
-        public MonitorLogViewModel()
-        {
-            this.LineDiagramHelper = new LineDiagramHelper(this);
-        }
-
-        public LineDiagramHelper LineDiagramHelper { get; }
+               
 
         public string ComPortname
         {

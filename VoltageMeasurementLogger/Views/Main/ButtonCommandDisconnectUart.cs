@@ -18,7 +18,7 @@ namespace VoltageMeasurementLogger.Views.Main
                 SimpleStatusOverlays.Show("INFO", result.Message);
             }
 
-            EventBusManager.Send<MonitorLogView, BaseMessage>(new BaseMessage(null), 1);
+            EventBusManager.Send<MonitorLogView, BaseMessage>(new BaseMessage(false), 1);
         }
     }
 }
