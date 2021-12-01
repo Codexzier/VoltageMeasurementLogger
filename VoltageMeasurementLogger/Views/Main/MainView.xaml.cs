@@ -1,9 +1,7 @@
 using Codexzier.Wpf.ApplicationFramework.Commands;
 using Codexzier.Wpf.ApplicationFramework.Components.Ui.EventBus;
 using Codexzier.Wpf.ApplicationFramework.Views.Base;
-using System.IO;
 using VoltageMeasurementLogger.Components;
-using VoltageMeasurementLogger.Components.Log;
 
 namespace VoltageMeasurementLogger.Views.Main
 {
@@ -17,7 +15,7 @@ namespace VoltageMeasurementLogger.Views.Main
             this._viewModel = (MainViewModel)this.DataContext;
             this._viewModel.CommandRefreshComPortList = new ButtonCommandRefreshComPortList(this._viewModel);
             this._viewModel.CommandConnectUart = new ButtonCommandConnectUart(this._viewModel);
-            this._viewModel.CommandDisconnectUart = new ButtonCommandDisconnectUart();
+            this._viewModel.CommandDisconnectUart = new ButtonCommandDisconnectUart(this._viewModel);
             this._viewModel.CommandSetupVoltageOffset = new ButtonCommandSetupVoltageOffset(this._viewModel);
             this._viewModel.CommandWriteLogOnOff = new ButtonCommandWriteLogOnOff(this._viewModel);
 
@@ -31,19 +29,9 @@ namespace VoltageMeasurementLogger.Views.Main
             var setting = UserSettingsLoaderHelper.Load();
 
             this._viewModel.OffsetValue = setting.OffsetValue;
+            this._viewModel.Filename = FileNameCreator.Create();
 
-            int filenumber = 0;
-
-            while (true)
-            {
-                var newFilename = $"LoggingVoltage_{filenumber:D4}";
-                if (!File.Exists($"{LogManager.PathOfLogFiles}{newFilename}"))
-                {
-                    this._viewModel.Filename = $"LoggingVoltage_{ filenumber: D4}";
-                    break;
-                }
-                filenumber++;
-            }
+            this._viewModel.CommandRefreshComPortList.Execute(null);
 
             SimpleStatusOverlays.ActivityOff();
         }

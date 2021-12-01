@@ -51,34 +51,43 @@ namespace VoltageMeasurementLogger.Views.LogDataResult
 
                 var list = new List<LineDiagramLevelItem>();
                 var lineNr = 1;
-                this._viewModel.MinValue = double.MaxValue;
-                this._viewModel.MaxValue = double.MinValue;
-                foreach (var item in data)
+
+                if (data.Any())
                 {
-                    if(item.NumericContent > this._viewModel.MaxValue)
+                    this._viewModel.MinValue = double.MaxValue;
+                    this._viewModel.MaxValue = double.MinValue;
+                    foreach (var item in data)
                     {
-                        this._viewModel.MaxValue = item.NumericContent;
-                    }
+                        if (item.NumericContent > this._viewModel.MaxValue)
+                        {
+                            this._viewModel.MaxValue = item.NumericContent;
+                        }
 
-                    if(item.NumericContent < this._viewModel.MinValue)
-                    {
-                        this._viewModel.MinValue = item.NumericContent;
-                    }
+                        if (item.NumericContent < this._viewModel.MinValue)
+                        {
+                            this._viewModel.MinValue = item.NumericContent;
+                        }
 
-                    list.Add(new LineDiagramLevelItem
-                    {
-                        Value = item.NumericContent,
-                        MinValue = item.NumericContent,
-                        MaxValue = item.NumericContent,
-                        Date = item.Written,
-                        Nr = lineNr
-                    });
-                    lineNr++;
+                        list.Add(new LineDiagramLevelItem
+                        {
+                            Value = item.NumericContent,
+                            MinValue = item.NumericContent,
+                            MaxValue = item.NumericContent,
+                            Date = item.Written,
+                            Nr = lineNr
+                        });
+                        lineNr++;
+                    }
+                }
+                else
+                {
+                    this._viewModel.MinValue = 0d;
+                    this._viewModel.MaxValue = 0d;
                 }
 
-                this._viewModel.AverageValue = list.Average(a => a.Value);
+                this._viewModel.AverageValue = list.Count == 0 ? 0 : list.Average(a => a.Value);
 
-                this._viewModel.CountMeasures = list.Count();
+                this._viewModel.CountMeasures = list.Count;
                 this._viewModel.Values = list;
             }
         }

@@ -1,5 +1,6 @@
 ﻿using Codexzier.Wpf.ApplicationFramework.Views.Base;
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -17,6 +18,8 @@ namespace VoltageMeasurementLogger.Views.Main
         private ICommand _commandWriteLogOnOff;
         private string _filename;
         private Brush _writeState = Brushes.Black;
+        private Visibility _visibilityDisconnect = Visibility.Collapsed;
+        private Visibility _visibilityConnect;
 
         public ICommand CommandConnectUart
         {
@@ -115,6 +118,24 @@ namespace VoltageMeasurementLogger.Views.Main
             {
                 _writeState = value;
                 this.OnNotifyPropertyChanged(nameof(this.WriteState));
+            }
+        }
+
+        public Visibility VisibilityDisconnect
+        {
+            get => _visibilityDisconnect; set
+            {
+                _visibilityDisconnect = value;
+                this.OnNotifyPropertyChanged(nameof(this.VisibilityDisconnect));
+            }
+        }
+
+        public Visibility VisibilityConnect
+        {
+            get => this._visibilityConnect; set
+            {
+                this._visibilityConnect = value;
+                this.OnNotifyPropertyChanged(nameof(this.VisibilityConnect));
             }
         }
     }

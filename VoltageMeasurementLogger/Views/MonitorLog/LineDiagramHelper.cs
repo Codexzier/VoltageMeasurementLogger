@@ -9,7 +9,7 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
     {
         private readonly MonitorLogViewModel _viewModel;
         private readonly Timer _timer = new();
-        private int _index = 0;
+        private int _index;
         private float _offsetValue = 1024;
         private UartConnection _uartConnection;
 

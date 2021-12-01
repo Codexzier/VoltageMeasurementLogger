@@ -34,6 +34,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
@@ -61,11 +62,11 @@
                 <DataGridTextColumn Header="Nr" 
                                     Binding="{Binding Nr}"/>
                 <DataGridTextColumn Header="Value"
-                                    Binding="{Binding Value}"/>
+                                    Binding="{Binding Value, StringFormat=N2}"/>
                 <DataGridTextColumn Header="Min.Value"
-                                    Binding="{Binding MinValue}"/>
+                                    Binding="{Binding MinValue, StringFormat=N2}"/>
                 <DataGridTextColumn Header="Max.Value"
-                                    Binding="{Binding MaxValue}"/>
+                                    Binding="{Binding MaxValue, StringFormat=N2}"/>
                 <DataGridTextColumn Header="Date" 
                                     Binding="{Binding Date}" />
             </DataGrid.Columns>

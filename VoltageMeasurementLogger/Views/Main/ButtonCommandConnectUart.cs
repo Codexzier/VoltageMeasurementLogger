@@ -1,6 +1,7 @@
 ﻿using Codexzier.Wpf.ApplicationFramework.Commands;
 using Codexzier.Wpf.ApplicationFramework.Components.Ui.EventBus;
 using Codexzier.Wpf.ApplicationFramework.Views.Base;
+using System.Windows;
 using VoltageMeasurementLogger.Components.ArduinoConnection;
 using VoltageMeasurementLogger.Views.MonitorLog;
 
@@ -30,6 +31,9 @@ namespace VoltageMeasurementLogger.Views.Main
                 SimpleStatusOverlays.Show("INFO", result.Message);
                 return;
             }
+
+            this._viewModel.VisibilityDisconnect = Visibility.Visible;
+            this._viewModel.VisibilityConnect = Visibility.Collapsed;
 
             EventBusManager.Send<MonitorLogView, BaseMessage>(new BaseMessage(this._viewModel.SelectedPortName), 1);
         }

@@ -10,11 +10,6 @@ namespace VoltageMeasurementLogger.Views.Main
 
         public ButtonCommandRefreshComPortList(MainViewModel viewModel) => this._viewModel = viewModel;
 
-        public override void Execute(object parameter)
-        {
-            base.Execute(parameter);
-
-            this._viewModel.ComPorts = new ObservableCollection<string>(SerialPort.GetPortNames());
-        }
+        public override void Execute(object parameter) => this._viewModel.ComPorts = new ObservableCollection<string>(SerialPort.GetPortNames());
     }
 }

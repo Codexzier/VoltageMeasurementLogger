@@ -48,11 +48,13 @@
 
             <Button Grid.Column="0" 
                     Content="Disconnect" 
-                    Command="{Binding CommandDisconnectUart}" />
+                    Command="{Binding CommandDisconnectUart}"
+                    Visibility="{Binding VisibilityDisconnect}" />
             <Button Grid.Column="2" 
                     FlowDirection="RightToLeft" 
                     Content="Connect" 
-                    Command="{Binding CommandConnectUart}"  />
+                    Command="{Binding CommandConnectUart}" 
+                    Visibility="{Binding VisibilityConnect}"/>
         </Grid>
         <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>

@@ -19,6 +19,8 @@ namespace VoltageMeasurementLogger.Views.Main
                 LogManager.GetInstance().Stop();
                 this._viewModel.WriteState = Brushes.Black;
                 LogOnOff = false;
+
+                this._viewModel.Filename = FileNameCreator.Create();
                 return;
             }
 
@@ -29,6 +31,8 @@ namespace VoltageMeasurementLogger.Views.Main
             }
 
             LogManager.GetInstance().WriteToFile(this._viewModel.Filename);
+            this._viewModel.WriteState = Brushes.Green;
+            LogOnOff = true;
         }
 
         private void PressedOk(bool obj)
