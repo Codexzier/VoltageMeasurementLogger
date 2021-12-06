@@ -157,5 +157,26 @@ namespace VoltageMeasurementLogger.Test.Components
             Assert.IsTrue(logItems.Any(w => w.Content.Contains(lineText1)));
             Assert.IsTrue(logItems.Any(w => w.Content.Contains(lineText2)));
         }
+
+        [TestMethod]
+        public void ReadFileItemHasNumericValueWithOffset()
+        {
+            // arrange
+            string filename = "Test";
+            LogManager.GetInstance().WriteToFile(filename);
+            var lineValue1 = 123;
+            var lineValue2 = 456;
+            var divisor = 789;
+            LogManager.GetInstance().WriteLine(lineValue1, divisor);
+            LogManager.GetInstance().WriteLine(lineValue2, divisor);
+
+            // act
+            var logItems = LogManager.GetInstance().GetLogs(filename);
+
+            // assert
+            Assert.AreEqual(2, logItems.Count());
+            Assert.IsTrue(logItems.Any(w => w.NumericContent.Equals(lineValue1)));
+            Assert.IsTrue(logItems.Any(w => w.NumericContent.Equals(lineValue2)));
+        }
     }
 }

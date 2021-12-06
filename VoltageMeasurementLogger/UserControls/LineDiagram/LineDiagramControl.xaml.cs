@@ -1,5 +1,4 @@
-﻿using Codexzier.Wpf.ApplicationFramework.Controls.Diagram;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;

@@ -1,7 +1,6 @@
 ﻿using Codexzier.Wpf.ApplicationFramework.Commands;
 using Codexzier.Wpf.ApplicationFramework.Components.Ui.EventBus;
 using Codexzier.Wpf.ApplicationFramework.Views.Base;
-using System.Windows.Input;
 using VoltageMeasurementLogger.Views.LogData;
 using VoltageMeasurementLogger.Views.LogDataResult;
 

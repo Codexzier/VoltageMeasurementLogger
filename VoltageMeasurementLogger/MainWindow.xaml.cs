@@ -1,6 +1,4 @@
-﻿using Codexzier.Wpf.ApplicationFramework.Commands;
-using Codexzier.Wpf.ApplicationFramework.Components.Ui.EventBus;
-using Codexzier.Wpf.ApplicationFramework.Components.UserSettings;
+﻿using Codexzier.Wpf.ApplicationFramework.Components.UserSettings;
 using Codexzier.Wpf.ApplicationFramework.Views.Base;
 using System;
 using System.ComponentModel;
@@ -12,7 +10,6 @@ using System.Windows.Input;
 using System.Windows.Markup;
 using VoltageMeasurementLogger.Components;
 using VoltageMeasurementLogger.Components.UserSettings;
-using VoltageMeasurementLogger.Views.Main;
 using VoltageMeasurementLogger.Views.Menu;
 
 namespace VoltageMeasurementLogger

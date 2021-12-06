@@ -9,17 +9,32 @@ namespace VoltageMeasurementLogger.Components.Log
             this.Content = content;
             this.Written = date;
 
-            if(double.TryParse(this.Content, out var d))
+            if(int.TryParse(this.Content, out var d))
             {
                 this.NumericContent = d;
+            }
+
+            if(this.Content.Contains(":"))
+            {
+                var sa = this.Content.Split(':');
+
+                if(int.TryParse(sa[0], out var s1))
+                {
+                    this.NumericContent = s1;
+                }
+
+                if (int.TryParse(sa[0], out var s2))
+                {
+                    this.Divisor = s2;
+                }
             }
         }
 
         public string Content { get; }
-        public double NumericContent { get; }
+        public int NumericContent { get; }
+
+        public int Divisor { get; }
 
         public DateTime Written { get; }
-
-
     }
 }
