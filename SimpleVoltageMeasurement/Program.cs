@@ -17,22 +17,26 @@ namespace SimpleVoltageMeasurement
             Console.WriteLine("Connect Serial with");
             string[] ports = SerialPort.GetPortNames();
 
-            if(!ports.Any()) {
+            if (!ports.Any())
+            {
                 Console.WriteLine("No Arduino connected!");
                 return;
             }
 
-            for (int index = 0; index < ports.Length; index++) {
+            for (int index = 0; index < ports.Length; index++)
+            {
                 Console.WriteLine($"Index:{index}, Port: {ports[index]}");
             }
 
             string selectindex = Console.ReadLine();
-            if (!int.TryParse(selectindex, out int indexResult)) {
+            if (!int.TryParse(selectindex, out int indexResult))
+            {
                 Console.WriteLine("You can only typ the index number!");
                 return;
             }
 
-            if(indexResult >= ports.Length) {
+            if (indexResult >= ports.Length)
+            {
                 Console.WriteLine("You can only typ the index number!");
                 return;
             }
@@ -41,7 +45,8 @@ namespace SimpleVoltageMeasurement
             sp.DataReceived += Sp_DataReceived;
             sp.Open();
 
-            while (true) {
+            while (true)
+            {
                 Console.Clear();
                 Console.WriteLine($"{_rawValue} / {_divisorValue} * 5.0 = {_voltage:N2} V");
                 Thread.Sleep(1000);
@@ -53,7 +58,8 @@ namespace SimpleVoltageMeasurement
             var sp = (SerialPort)sender;
 
             byte[] buffer = new byte[3];
-            if (sp.Read(buffer, 0, 3) != 0) {
+            if (sp.Read(buffer, 0, 3) != 0)
+            {
                 int result = (buffer[0] << 8) | buffer[1];
 
                 var b = new BitArray(new int[] { result });
