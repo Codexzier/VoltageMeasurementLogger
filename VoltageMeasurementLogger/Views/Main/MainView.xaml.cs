@@ -16,7 +16,7 @@ namespace VoltageMeasurementLogger.Views.Main
             this._viewModel.CommandRefreshComPortList = new ButtonCommandRefreshComPortList(this._viewModel);
             this._viewModel.CommandConnectUart = new ButtonCommandConnectUart(this._viewModel);
             this._viewModel.CommandDisconnectUart = new ButtonCommandDisconnectUart(this._viewModel);
-            this._viewModel.CommandSetupVoltageOffset = new ButtonCommandSetupVoltageOffset(this._viewModel);
+            this._viewModel.CommandSetupVoltageDivisor = new ButtonCommandSetupVoltageDivisor(this._viewModel);
             this._viewModel.CommandWriteLogOnOff = new ButtonCommandWriteLogOnOff(this._viewModel);
 
             EventBusManager.Register<MainView, BaseMessage>(this.BaseMessageEvent);
@@ -28,7 +28,7 @@ namespace VoltageMeasurementLogger.Views.Main
 
             var setting = UserSettingsLoaderHelper.Load();
 
-            this._viewModel.OffsetValue = setting.OffsetValue;
+            this._viewModel.DivisorValue = setting.DivisorValue;
             this._viewModel.Filename = FileNameCreator.Create();
 
             this._viewModel.CommandRefreshComPortList.Execute(null);

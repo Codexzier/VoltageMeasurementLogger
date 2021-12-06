@@ -8,7 +8,7 @@ namespace VoltageMeasurementLogger.Components.UserSettings
         private string _lastImportFilename;
         private bool _loadFromService;
         private bool _loadRkiDataByApplicationStart;
-        private int _offsetValue;
+        private int _divisorValue;
 
         public CustomSettingsFile() : base(false)
         {
@@ -57,12 +57,12 @@ namespace VoltageMeasurementLogger.Components.UserSettings
             }
         }
 
-        public int OffsetValue
+        public int DivisorValue
         {
-            get => this._offsetValue;
+            get => this._divisorValue;
             set
             {
-                this._offsetValue = value;
+                this._divisorValue = value;
                 this.SetChanged();
             }
         }

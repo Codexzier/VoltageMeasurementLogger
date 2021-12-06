@@ -4,11 +4,11 @@ using VoltageMeasurementLogger.Components.ArduinoConnection;
 
 namespace VoltageMeasurementLogger.Views.Main
 {
-    internal class ButtonCommandSetupVoltageOffset : BaseCommand
+    internal class ButtonCommandSetupVoltageDivisor : BaseCommand
     {
         private MainViewModel _viewModel;
 
-        public ButtonCommandSetupVoltageOffset(MainViewModel viewModel) => this._viewModel = viewModel;
+        public ButtonCommandSetupVoltageDivisor(MainViewModel viewModel) => this._viewModel = viewModel;
 
         public override void Execute(object parameter)
         {
@@ -25,8 +25,8 @@ namespace VoltageMeasurementLogger.Views.Main
             var setting = UserSettingsLoaderHelper.Load();
 
             var val = serialConnection.RawValue;
-            setting.OffsetValue = val;
-            this._viewModel.OffsetValue = val; 
+            setting.DivisorValue = val;
+            this._viewModel.DivisorValue = val; 
 
             UserSettingsLoaderHelper.Save(setting);
         }

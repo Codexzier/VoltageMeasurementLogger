@@ -9,7 +9,7 @@ namespace VoltageMeasurementLogger.Components.ArduinoConnection
     {
         private static UartConnection _instance;
         private SerialPort _serialPort;
-        private int _offset;
+        private int _divisor;
 
         private UartConnection() { }
 
@@ -23,9 +23,9 @@ namespace VoltageMeasurementLogger.Components.ArduinoConnection
             return _instance;
         }
 
-        public UartConnectionResult ConnectTo(string portname, int baud = 9600, int offset = 0)
+        public UartConnectionResult ConnectTo(string portname, int baud = 9600, int divisor = 0)
         {
-            this._offset = offset;
+            this._divisor = divisor;
 
             if(this._serialPort != null)
             {
@@ -73,7 +73,7 @@ namespace VoltageMeasurementLogger.Components.ArduinoConnection
                 // TODO Moved to eventhandler
                 if(LogManager.GetInstance().IsOn)
                 {
-                    LogManager.GetInstance().WriteLine(this.RawValue, this._offset);
+                    LogManager.GetInstance().WriteLine(this.RawValue, this._divisor);
                 }
             }
         }

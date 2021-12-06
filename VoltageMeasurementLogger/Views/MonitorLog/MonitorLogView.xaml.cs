@@ -21,14 +21,14 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
             this._lineDiagramHelper = new LineDiagramHelper(this._viewModel);
 
             EventBusManager.Register<MonitorLogView, BaseMessage>(this.BaseMessageEvent);
-            EventBusManager.Register<MonitorLogView, UpdateOffsetMessage>(this.UpdateOffsetEvent);
+            EventBusManager.Register<MonitorLogView, UpdateDivisorMessage>(this.UpdateDivisorEvent);
         }
 
-        private void UpdateOffsetEvent(IMessageContainer obj)
+        private void UpdateDivisorEvent(IMessageContainer obj)
         {
-            if(obj is UpdateOffsetMessage update)
+            if(obj is UpdateDivisorMessage update)
             {
-                this._lineDiagramHelper.SetOffset(update.OffsetValue);
+                this._lineDiagramHelper.SetDivisor(update.DivisorValue);
             }
         }
 

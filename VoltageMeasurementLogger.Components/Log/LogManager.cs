@@ -57,7 +57,7 @@ namespace VoltageMeasurementLogger.Components.Log
             sw.Close();
         }
 
-        public void WriteLine(int rawValue, int offset) => this.WriteLine($"{rawValue}:{offset}");
+        public void WriteLine(int rawValue, int divisor) => this.WriteLine($"{rawValue}:{divisor}");
 
         public IEnumerable<LogItem> GetLogs(string filename)
         {

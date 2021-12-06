@@ -10,7 +10,7 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
         private readonly MonitorLogViewModel _viewModel;
         private readonly Timer _timer = new();
         private int _index;
-        private float _offsetValue = 1024;
+        private float _divisorValue = 1024;
         private UartConnection _uartConnection;
 
         public LineDiagramHelper(MonitorLogViewModel viewModel)
@@ -46,7 +46,7 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
         private void _timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             this._viewModel.RawValue = this._uartConnection.RawValue;
-            this._viewModel.VoltageValue = this._viewModel.RawValue / this._offsetValue * 10.0f;
+            this._viewModel.VoltageValue = this._viewModel.RawValue / this._divisorValue * 10.0f;
 
             if (this._index < this._viewModel.MeasurementValues.Count)
             {
@@ -60,7 +60,7 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
             }
         }
 
-        internal void SetOffset(float offsetValue) => this._offsetValue = offsetValue;
+        internal void SetDivisor(float divisorValue) => this._divisorValue = divisorValue;
 
         internal void Stop() => this._timer.Stop();
     }

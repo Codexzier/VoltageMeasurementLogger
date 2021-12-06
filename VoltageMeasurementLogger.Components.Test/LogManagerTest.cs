@@ -85,15 +85,15 @@ namespace VoltageMeasurementLogger.Test.Components
             string filename = "Test";
             LogManager.GetInstance().WriteToFile(filename);
             int lineValue = 123;
-            int offset = 0;
+            int divisor = 0;
 
             // act
-            LogManager.GetInstance().WriteLine(lineValue, offset);
+            LogManager.GetInstance().WriteLine(lineValue, divisor);
 
             // assert
             string[] files = Directory.GetFiles(LogManager.PathOfLogFiles);
             string fileContent = File.ReadAllText(files.First());
-            Assert.IsTrue(fileContent.Contains($"{lineValue}:{offset}"));
+            Assert.IsTrue(fileContent.Contains($"{lineValue}:{divisor}"));
         }
 
         [TestMethod]

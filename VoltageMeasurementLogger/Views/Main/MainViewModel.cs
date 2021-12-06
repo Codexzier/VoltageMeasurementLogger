@@ -13,8 +13,8 @@ namespace VoltageMeasurementLogger.Views.Main
         private ICommand _commandConnectUart;
         private ICommand _commandRefreshComPortList;
         private ICommand _commandDisconnectUart;
-        private int _offsetValue;
-        private ICommand _commandSetupVoltageOffset;
+        private int _divisorValue;
+        private ICommand _commandSetupVoltageDivisor;
         private ICommand _commandWriteLogOnOff;
         private string _filename;
         private Brush _writeState = Brushes.Black;
@@ -72,23 +72,23 @@ namespace VoltageMeasurementLogger.Views.Main
             }
         }
 
-        public int OffsetValue
+        public int DivisorValue
         {
-            get => this._offsetValue;
+            get => this._divisorValue;
             set
             {
-                this._offsetValue = value;
-                this.OnNotifyPropertyChanged(nameof(this.OffsetValue));
+                this._divisorValue = value;
+                this.OnNotifyPropertyChanged(nameof(this.DivisorValue));
             }
         }
 
-        public ICommand CommandSetupVoltageOffset
+        public ICommand CommandSetupVoltageDivisor
         {
-            get => _commandSetupVoltageOffset;
+            get => _commandSetupVoltageDivisor;
             set
             {
-                _commandSetupVoltageOffset = value;
-                this.OnNotifyPropertyChanged(nameof(this.CommandSetupVoltageOffset));
+                _commandSetupVoltageDivisor = value;
+                this.OnNotifyPropertyChanged(nameof(this.CommandSetupVoltageDivisor));
             }
         }
 
