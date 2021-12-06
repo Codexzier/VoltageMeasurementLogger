@@ -1,11 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.IO.Ports;
 using System.Linq;
 using VoltageMeasurementLogger.Components.Log;
 
 namespace VoltageMeasurementLogger.Components.ArduinoConnection
 {
-    public class UartConnection
+    public class UartConnection : IDisposable
     {
         private static UartConnection _instance;
         private SerialPort _serialPort;
@@ -63,7 +64,7 @@ namespace VoltageMeasurementLogger.Components.ArduinoConnection
                 var bits = new bool[b.Count];
                 b.CopyTo(bits, 0);
 
-                if(bits.Sum(s => s ? 1:0) != buffer[2])
+                if (bits.Sum(s => s ? 1 : 0) != buffer[2])
                 {
                     return;
                 }
@@ -81,5 +82,10 @@ namespace VoltageMeasurementLogger.Components.ArduinoConnection
         public int RawValue { get; private set; }
 
         public bool IsOpen => _serialPort == null ? false : _serialPort.IsOpen;
+
+        public void Dispose()
+        {
+            this.Close();
+        }
     }
 }
