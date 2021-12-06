@@ -25,7 +25,7 @@ namespace VoltageMeasurementLogger.Views.Main
 
             var connector = UartConnection.GetInstance();
 
-            var result = connector.ConnectTo(this._viewModel.SelectedPortName, 115200);
+            var result = connector.ConnectTo(this._viewModel.SelectedPortName, 115200, this._viewModel.OffsetValue);
             if(!result.Success)
             {
                 SimpleStatusOverlays.Show("INFO", result.Message);

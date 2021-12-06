@@ -9,6 +9,7 @@ namespace VoltageMeasurementLogger.Components.ArduinoConnection
     {
         private static UartConnection _instance;
         private SerialPort _serialPort;
+        private int _offset;
 
         private UartConnection() { }
 
@@ -22,8 +23,10 @@ namespace VoltageMeasurementLogger.Components.ArduinoConnection
             return _instance;
         }
 
-        public UartConnectionResult ConnectTo(string portname, int baud = 9600)
+        public UartConnectionResult ConnectTo(string portname, int baud = 9600, int offset = 0)
         {
+            this._offset = offset;
+
             if(this._serialPort != null)
             {
                 return new UartConnectionResult("Serial Port is in used! Closed the connection before start new one!");
@@ -70,7 +73,7 @@ namespace VoltageMeasurementLogger.Components.ArduinoConnection
                 // TODO Moved to eventhandler
                 if(LogManager.GetInstance().IsOn)
                 {
-                    LogManager.GetInstance().WriteLine($"{this.RawValue}");
+                    LogManager.GetInstance().WriteLine(this.RawValue, this._offset);
                 }
             }
         }

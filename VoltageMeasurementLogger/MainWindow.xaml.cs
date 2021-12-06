@@ -1,8 +1,10 @@
 ﻿using Codexzier.Wpf.ApplicationFramework.Commands;
 using Codexzier.Wpf.ApplicationFramework.Components.Ui.EventBus;
 using Codexzier.Wpf.ApplicationFramework.Components.UserSettings;
+using Codexzier.Wpf.ApplicationFramework.Views.Base;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
 using System.Windows;
@@ -17,17 +19,52 @@ namespace VoltageMeasurementLogger
 {
     public partial class MainWindow
     {
+        private bool _runExceptionAgain = false;
+
         public MainWindow()
         {
             this.InitializeComponent();
 
             this.Prepare();
 
-            var setting = UserSettingsLoaderHelper.Load();
+            this.LoadSettings();
+        }
 
-            this.LoadApplicationSize(setting);
-            this.LoadApplicationWindowState(setting);
-            this.LoadApplicationStartLocation(setting);
+
+        private void LoadSettings()
+        {
+            try
+            {
+                var setting = UserSettingsLoaderHelper.Load();
+
+                this.LoadApplicationSize(setting);
+                this.LoadApplicationWindowState(setting);
+                this.LoadApplicationStartLocation(setting);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+
+                if (this._runExceptionAgain)
+                {
+                    SimpleStatusOverlays.Show(
+                        "ERROR",
+                        "Error with the settings file. The settings could not be reloaded. Delete Ggg. manually. Programme is terminated!");
+
+                    this.Close();
+                    return;
+                }
+
+                this._runExceptionAgain = true;
+                SimpleStatusOverlays.ShowAsk("Warning", "Setting file is currupted. Should the settings be reset?", b =>
+                {
+                    if (!b) { return; }
+
+                    UserSettingsLoaderHelper.Save(new CustomSettingsFile());
+                });
+
+                LoadSettings();
+            }
         }
 
         private void Prepare()
@@ -95,6 +132,11 @@ namespace VoltageMeasurementLogger
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
+            if (this._runExceptionAgain)
+            {
+                return;
+            }
+
             var usl = UserSettingsLoader<CustomSettingsFile>.GetInstance(SerializeHelper.Serialize,
                 SerializeHelper.Deserialize);
             var file = usl.Load();

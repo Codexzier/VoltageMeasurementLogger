@@ -8,7 +8,7 @@ namespace VoltageMeasurementLogger.Components.UserSettings
         private string _lastImportFilename;
         private bool _loadFromService;
         private bool _loadRkiDataByApplicationStart;
-        private float _offsetValue;
+        private int _offsetValue;
 
         public CustomSettingsFile() : base(false)
         {
@@ -57,7 +57,7 @@ namespace VoltageMeasurementLogger.Components.UserSettings
             }
         }
 
-        public float OffsetValue
+        public int OffsetValue
         {
             get => this._offsetValue;
             set

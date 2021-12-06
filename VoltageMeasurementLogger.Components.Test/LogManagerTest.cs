@@ -62,7 +62,7 @@ namespace VoltageMeasurementLogger.Test.Components
         }
 
         [TestMethod]
-        public void WriteAddLine()
+        public void WriteAddLineStringValue()
         {
             // arrange
             string filename = "Test";
@@ -76,6 +76,24 @@ namespace VoltageMeasurementLogger.Test.Components
             string[] files = Directory.GetFiles(LogManager.PathOfLogFiles);
             string fileContent = File.ReadAllText(files.First());
             Assert.IsTrue(fileContent.Contains(lineText));
+        }
+
+        [TestMethod]
+        public void WriteAddLineNumericValue()
+        {
+            // arrange
+            string filename = "Test";
+            LogManager.GetInstance().WriteToFile(filename);
+            int lineValue = 123;
+            int offset = 0;
+
+            // act
+            LogManager.GetInstance().WriteLine(lineValue, offset);
+
+            // assert
+            string[] files = Directory.GetFiles(LogManager.PathOfLogFiles);
+            string fileContent = File.ReadAllText(files.First());
+            Assert.IsTrue(fileContent.Contains($"{lineValue}:{offset}"));
         }
 
         [TestMethod]

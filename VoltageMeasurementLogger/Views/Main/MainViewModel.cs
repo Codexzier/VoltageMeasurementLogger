@@ -13,7 +13,7 @@ namespace VoltageMeasurementLogger.Views.Main
         private ICommand _commandConnectUart;
         private ICommand _commandRefreshComPortList;
         private ICommand _commandDisconnectUart;
-        private float _offsetValue;
+        private int _offsetValue;
         private ICommand _commandSetupVoltageOffset;
         private ICommand _commandWriteLogOnOff;
         private string _filename;
@@ -72,7 +72,7 @@ namespace VoltageMeasurementLogger.Views.Main
             }
         }
 
-        public float OffsetValue
+        public int OffsetValue
         {
             get => this._offsetValue;
             set
