@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Codexzier.Wpf.ApplicationFramework.Views.Base;
+using System.Collections.Generic;
 using System.Timers;
 using VoltageMeasurementLogger.Components.ArduinoConnection;
 using VoltageMeasurementLogger.UserControls.LineDiagram;
@@ -17,7 +18,23 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
         {
             this._viewModel = viewModel;
             this._uartConnection = UartConnection.GetInstance();
+            this._uartConnection.NoIncomingDataEvent += this.UartConnection_NoIncomingDataEvent;
             this.Init();
+        }
+
+        private bool _isMessageBoxOpenWarningNoIncomingData;
+
+        private void UartConnection_NoIncomingDataEvent()
+        {
+            if(this._isMessageBoxOpenWarningNoIncomingData)
+            {
+                return;
+            }
+
+            this._isMessageBoxOpenWarningNoIncomingData = true;
+            // TODO: Callback funktion in die Methode show nach pflegen.
+            // Damit hier das öffnen zustand zurück gesetzt werden kann.
+            SimpleStatusOverlays.Show("Warning", "No incoming data");
         }
 
         private void Init()
@@ -38,12 +55,12 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
             this._viewModel.MeasurementValues = diagramLevelItemsSource;
 
             this._timer.Interval = 10;
-            this._timer.Elapsed += this._timer_Elapsed;
+            this._timer.Elapsed += this.Timer_Elapsed;
         }
 
         public void Start() => this._timer.Start();
 
-        private void _timer_Elapsed(object sender, ElapsedEventArgs e)
+        private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             this._viewModel.RawValue = this._uartConnection.RawValue;
             this._viewModel.VoltageValue = this._viewModel.RawValue / this._divisorValue * 10.0f;
