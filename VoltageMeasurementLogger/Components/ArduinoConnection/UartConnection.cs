@@ -16,10 +16,9 @@ namespace VoltageMeasurementLogger.Components.ArduinoConnection
         private DateTime _lastUpdate;
 
         private UartConnection() {
-            _activity = new();
-            _activity.Interval = 1000;
-            _activity.Elapsed += this.Activity_Elapsed;
-            _activity.Start();
+            this._activity = new();
+            this._activity.Interval = 1000;
+            this._activity.Elapsed += this.Activity_Elapsed;
         }
 
         public static UartConnection GetInstance()
@@ -45,6 +44,8 @@ namespace VoltageMeasurementLogger.Components.ArduinoConnection
             this._serialPort.DataReceived += this.Sp_DataReceived;
             this._serialPort.Open();
             this._serialPort.DiscardInBuffer();
+
+            this._activity.Start();
 
             return new UartConnectionResult();
         }

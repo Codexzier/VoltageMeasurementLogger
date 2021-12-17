@@ -1,5 +1,7 @@
 ﻿using Codexzier.Wpf.ApplicationFramework.Views.Base;
 using System.Collections.Generic;
+using System.Windows.Controls;
+using System.Windows.Input;
 using VoltageMeasurementLogger.UserControls.LineDiagram;
 
 namespace VoltageMeasurementLogger.Views.LogDataResult
@@ -12,6 +14,10 @@ namespace VoltageMeasurementLogger.Views.LogDataResult
         private double _averageValue;
         private double _minValue;
         private double _maxValue;
+        private ICommand _commandLastDeviations;
+        private ICommand _commandNextDeviations;
+        private int _levelItemIndex;
+        private double _deviationTolerance = .2;
 
         public string Filename
         {
@@ -22,6 +28,8 @@ namespace VoltageMeasurementLogger.Views.LogDataResult
                 this.OnNotifyPropertyChanged(nameof(this.Filename));
             }
         }
+
+        public DataGrid DataGridLogResult { get; internal set; }
 
         public int CountMeasures
         {
@@ -67,6 +75,46 @@ namespace VoltageMeasurementLogger.Views.LogDataResult
             {
                 _maxValue = value;
                 this.OnNotifyPropertyChanged(nameof(this.MaxValue));
+            }
+        }
+
+        public ICommand CommandLastDeviations
+        {
+            get => _commandLastDeviations;
+            set
+            {
+                _commandLastDeviations = value;
+                this.OnNotifyPropertyChanged(nameof(this.CommandLastDeviations));
+            }
+        }
+
+        public ICommand CommandNextDeviations
+        {
+            get => _commandNextDeviations;
+            set
+            {
+                _commandNextDeviations = value;
+                this.OnNotifyPropertyChanged(nameof(this.CommandNextDeviations));
+            }
+        }
+
+        public int LevelItemIndex
+        {
+            get => _levelItemIndex;
+            set
+            {
+                _levelItemIndex = value;
+                this.OnNotifyPropertyChanged(nameof(this.LevelItemIndex));
+            }
+        }
+
+        public double DeviationTolerance
+        {
+            get => _deviationTolerance;
+            set
+            {
+                _deviationTolerance = value;
+                this.OnNotifyPropertyChanged(nameof(this.DeviationTolerance));
             }
         }
     }

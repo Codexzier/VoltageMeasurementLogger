@@ -2,8 +2,10 @@
 using Codexzier.Wpf.ApplicationFramework.Components.Ui.EventBus;
 using Codexzier.Wpf.ApplicationFramework.Views.Base;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Controls;
+using System.Windows.Input;
 using VoltageMeasurementLogger.Components.Log;
 using VoltageMeasurementLogger.UserControls.LineDiagram;
 using VoltageMeasurementLogger.Views.LogData;
@@ -22,6 +24,12 @@ namespace VoltageMeasurementLogger.Views.LogDataResult
             this.InitializeComponent();
 
             this._viewModel = (LogDataResultViewModel)this.DataContext;
+
+            this._viewModel.DataGridLogResult = this.DataGridLogResult;
+
+            this._viewModel.CommandLastDeviations = new ButtonCommandLastDeviations(this._viewModel);
+            this._viewModel.CommandNextDeviations = new ButtonCommandNextDeviations(this._viewModel);
+
 
             EventBusManager.Register<LogDataResultView, BaseMessage>(this.BaseMessageEvent);
         }
@@ -78,6 +86,71 @@ namespace VoltageMeasurementLogger.Views.LogDataResult
 
                 this._viewModel.CountMeasures = list.Count;
                 this._viewModel.Values = list;
+            }
+        }
+    }
+
+    internal class ButtonCommandNextDeviations : BaseCommand
+    {
+        private LogDataResultViewModel _viewModel;
+
+        public ButtonCommandNextDeviations(LogDataResultViewModel viewModel) => this._viewModel = viewModel;
+
+        public override void Execute(object parameter)
+        {
+            double lastValue = this._viewModel.Values[this._viewModel.LevelItemIndex].Value;
+            for (int index = this._viewModel.LevelItemIndex; index < this._viewModel.Values.Count; index++)
+            {
+                //if (this._viewModel.Values[index].Value < lastValue - this._viewModel.DeviationTolerance ||
+                //    this._viewModel.Values[index].Value > lastValue + this._viewModel.DeviationTolerance)
+                //{
+                //    this._viewModel.LevelItemIndex = index;
+                //    this._viewModel.DataGridLogResult.UpdateLayout();
+                //    this._viewModel.DataGridLogResult.ScrollIntoView(this._viewModel.DataGridLogResult.SelectedItem);
+                //    return;
+                //}
+
+                if(IsDeviationViolated(lastValue, this._viewModel.Values[index], this._viewModel.DeviationTolerance))
+                {
+                    this._viewModel.LevelItemIndex = index;
+                    this._viewModel.DataGridLogResult.UpdateLayout();
+                    this._viewModel.DataGridLogResult.ScrollIntoView(this._viewModel.DataGridLogResult.SelectedItem);
+                    return;
+                }
+
+                lastValue = this._viewModel.Values[index].Value;
+            }
+        }
+
+        internal static bool IsDeviationViolated(double lastValue, LineDiagramLevelItem item, double tolerance)
+        {
+            return item.Value < lastValue - tolerance ||
+                   item.Value > lastValue + tolerance;
+        }
+    }
+
+    internal class ButtonCommandLastDeviations : BaseCommand
+    {
+        private LogDataResultViewModel _viewModel;
+
+        public ButtonCommandLastDeviations(LogDataResultViewModel viewModel) => this._viewModel = viewModel;
+
+        public override void Execute(object parameter)
+        {
+            double lastValue = this._viewModel.Values[this._viewModel.LevelItemIndex].Value;
+            for (int index = this._viewModel.LevelItemIndex; index > 0; index--)
+            {
+                //if (this._viewModel.Values[index].Value < lastValue - this._viewModel.DeviationTolerance ||
+                //    this._viewModel.Values[index].Value > lastValue + this._viewModel.DeviationTolerance)
+                if(ButtonCommandNextDeviations.IsDeviationViolated(lastValue, this._viewModel.Values[index], this._viewModel.DeviationTolerance))
+                {
+                    this._viewModel.LevelItemIndex = index;
+                    this._viewModel.DataGridLogResult.UpdateLayout();
+                    this._viewModel.DataGridLogResult.ScrollIntoView(this._viewModel.DataGridLogResult.SelectedItem);
+                    return;
+                }
+
+                lastValue = this._viewModel.Values[index].Value;
             }
         }
     }
