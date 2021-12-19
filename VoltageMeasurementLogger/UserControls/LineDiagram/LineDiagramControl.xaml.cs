@@ -275,10 +275,15 @@ namespace VoltageMeasurementLogger.UserControls.LineDiagram
             VerticalAlignment = VerticalAlignment.Bottom,
             Stroke = new SolidColorBrush(Color.FromArgb(255, 160, 200, 219)),
             StrokeThickness = 1,
-            Data = pg
+            Data = pg,
+            IsHitTestVisible = false
         };
 
-        public LineDiagramControl() => this.InitializeComponent();
+        public LineDiagramControl()
+        {
+            this.InitializeComponent();
+
+        }
 
         private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e) => SetValueToRects(this);
 

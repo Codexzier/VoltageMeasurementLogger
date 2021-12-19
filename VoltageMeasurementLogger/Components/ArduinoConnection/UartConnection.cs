@@ -2,6 +2,7 @@
 using System.Collections;
 using System.IO.Ports;
 using System.Linq;
+using System.Timers;
 using VoltageMeasurementLogger.Components.Log;
 
 namespace VoltageMeasurementLogger.Components.ArduinoConnection
@@ -11,8 +12,14 @@ namespace VoltageMeasurementLogger.Components.ArduinoConnection
         private static UartConnection _instance;
         private SerialPort _serialPort;
         private int _divisor;
+        private readonly Timer _activity;
+        private DateTime _lastUpdate;
 
-        private UartConnection() { }
+        private UartConnection() {
+            this._activity = new();
+            this._activity.Interval = 1000;
+            this._activity.Elapsed += this.Activity_Elapsed;
+        }
 
         public static UartConnection GetInstance()
         {
@@ -36,6 +43,9 @@ namespace VoltageMeasurementLogger.Components.ArduinoConnection
             this._serialPort = new SerialPort(portname, baud);
             this._serialPort.DataReceived += this.Sp_DataReceived;
             this._serialPort.Open();
+            this._serialPort.DiscardInBuffer();
+
+            this._activity.Start();
 
             return new UartConnectionResult();
         }
@@ -49,6 +59,8 @@ namespace VoltageMeasurementLogger.Components.ArduinoConnection
 
             this._serialPort.Close();
             this._serialPort = null;
+
+            this._activity.Stop();
 
             return new UartConnectionResult();
         }
@@ -76,6 +88,8 @@ namespace VoltageMeasurementLogger.Components.ArduinoConnection
                 {
                     LogManager.GetInstance().WriteLine(this.RawValue, this._divisor);
                 }
+
+                this._lastUpdate = DateTime.Now;
             }
         }
 
@@ -83,9 +97,23 @@ namespace VoltageMeasurementLogger.Components.ArduinoConnection
 
         public bool IsOpen => _serialPort == null ? false : _serialPort.IsOpen;
 
-        public void Dispose()
+        public void Dispose() => this.Close();
+
+        public bool IsIncomingDataActive { get; private set; }
+
+        private void Activity_Elapsed(object sender, ElapsedEventArgs e)
         {
-            this.Close();
+            if(this._lastUpdate < DateTime.Now.AddSeconds(-2))
+            {
+                this.NoIncomingDataEvent?.Invoke();
+                this.IsIncomingDataActive = false;
+                return;
+            }
+
+            this.IsIncomingDataActive = true;
         }
+
+        public delegate void NoIncomingDataEventHandler();
+        public event NoIncomingDataEventHandler NoIncomingDataEvent;
     }
 }

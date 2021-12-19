@@ -35,6 +35,10 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="20" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
@@ -50,23 +54,38 @@
             <TextBlock Grid.Column="0" Grid.Row="3" Text="Min. value" />
             <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding MinValue, StringFormat=N2}" />
 
-            <TextBlock Grid.Column="0" Grid.Row="4" Text="Min. value" />
+            <TextBlock Grid.Column="0" Grid.Row="4" Text="Max. value" />
             <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding MaxValue, StringFormat=N2}" />
 
+            <Button Grid.Column="0" Grid.Row="6"
+                    Content="Last deviations"
+                    Command="{Binding CommandLastDeviations}"/>
+            <Button Grid.Column="0" Grid.Row="7"
+                    Content="Next deviations"
+                    Command="{Binding CommandNextDeviations}"/>
+
+            <TextBlock Grid.Column="0" Grid.Row="8" 
+                       Text="Tolerance (Raw)"  />
+            <TextBox Grid.Column="1" Grid.Row="8" 
+                     Text="{Binding DeviationTolerance}" />
         </Grid>
 
         <DataGrid Grid.Column="1" 
                   Grid.Row="0"
-                  ItemsSource="{Binding Values}">
+                  x:Name="DataGridLogResult"
+                  ItemsSource="{Binding Values}"
+                  SelectedIndex="{Binding LevelItemIndex}" >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Nr" 
                                     Binding="{Binding Nr}"/>
-                <DataGridTextColumn Header="Value"
+                <DataGridTextColumn Header="Raw Value"
                                     Binding="{Binding Value, StringFormat=N2}"/>
-                <DataGridTextColumn Header="Min.Value"
+                
+                <!-- TODO: Feature muss noch implementiert werden -->
+                <!--<DataGridTextColumn Header="Min.Value"
                                     Binding="{Binding MinValue, StringFormat=N2}"/>
                 <DataGridTextColumn Header="Max.Value"
-                                    Binding="{Binding MaxValue, StringFormat=N2}"/>
+                                    Binding="{Binding MaxValue, StringFormat=N2}"/>-->
                 <DataGridTextColumn Header="Date" 
                                     Binding="{Binding Date}" />
             </DataGrid.Columns>
