@@ -20,7 +20,7 @@ namespace VoltageMeasurementLogger.Views.Main
         private Brush _writeState = Brushes.Black;
         private Visibility _visibilityDisconnect = Visibility.Collapsed;
         private Visibility _visibilityConnect;
-        private int _divisorMultiplikator;
+        private float _divisorMultiplikator;
 
         public ICommand CommandConnectUart
         {
@@ -83,7 +83,7 @@ namespace VoltageMeasurementLogger.Views.Main
             }
         }
 
-        public int DivisorMultiplikator
+        public float DivisorMultiplikator
         {
             get => _divisorMultiplikator;
             set

@@ -12,7 +12,7 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
         private readonly MonitorLogViewModel _viewModel;
         private readonly Timer _timer = new();
         private int _index;
-        private float _divisorValue = 1024;
+        private int _divisorValue = 1024;
         private float _divisorMultiplikator = 10;
         private UartConnection _uartConnection;
 
@@ -86,7 +86,6 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
             this._divisorValue = divisorValues.DivisorValue;
             this._divisorMultiplikator = divisorValues.DivisorMultiplikator;
         }
-        internal void SetDivisor(float divisorValue) => this._divisorValue = divisorValue;
 
         internal void Stop() => this._timer.Stop();
     }

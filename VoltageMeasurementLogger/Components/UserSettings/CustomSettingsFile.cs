@@ -9,7 +9,8 @@ namespace VoltageMeasurementLogger.Components.UserSettings
         private bool _loadFromService;
         private bool _loadRkiDataByApplicationStart;
         private int _divisorValue;
-        private int _divisorMultiplikator;
+        private float _divisorMultiplikator;
+        private string _divisorValueResolution;
 
         public CustomSettingsFile() : base(false)
         {
@@ -68,12 +69,21 @@ namespace VoltageMeasurementLogger.Components.UserSettings
             }
         }
 
-        public int DivisorMultiplikator
+        public float DivisorMultiplikator
         {
             get => _divisorMultiplikator;
             set
             {
                 this._divisorMultiplikator = value;
+                this.SetChanged();
+            }
+        }
+
+        public string DivisorValueResolution
+        {
+            get => _divisorValueResolution; set
+            {
+                this._divisorValueResolution = value;
                 this.SetChanged();
             }
         }

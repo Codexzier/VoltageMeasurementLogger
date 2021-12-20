@@ -68,7 +68,8 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Column="0" 
+            <!-- Need new show the setup data -->
+            <!--<TextBlock Grid.Column="0" 
                        Grid.Row="0"
                        Text="Multiplikator" />
             <TextBox Grid.Column="2" 
@@ -80,7 +81,8 @@
                        Text="DIVISOR" />
             <TextBlock Grid.Column="0" 
                        Grid.Row="2" 
-                       Text="{Binding DivisorValue}" />
+                       Text="{Binding DivisorValue}" />-->
+            
             <Button Grid.Column="2" 
                     Grid.Row="1" 
                     Grid.RowSpan="2"

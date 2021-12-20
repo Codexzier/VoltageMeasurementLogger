@@ -1,7 +1,9 @@
-﻿using Codexzier.Wpf.ApplicationFramework.Components.Ui.EventBus;
+﻿using Codexzier.Wpf.ApplicationFramework.Commands;
+using Codexzier.Wpf.ApplicationFramework.Components.Ui.EventBus;
 using Codexzier.Wpf.ApplicationFramework.Views.Base;
 using VoltageMeasurementLogger.Components;
 using VoltageMeasurementLogger.Components.ArduinoConnection;
+using VoltageMeasurementLogger.Views.DivisorSetup;
 using VoltageMeasurementLogger.Views.MonitorLog;
 
 namespace VoltageMeasurementLogger.Views.Main
@@ -24,18 +26,23 @@ namespace VoltageMeasurementLogger.Views.Main
                 return;
             }
 
-            var setting = UserSettingsLoaderHelper.Load();
+            if(!EventBusManager.IsViewOpen<DivisorSetupView>(99))
+            {
+                EventBusManager.Send<DivisorSetupView, BaseMessage>(new BaseMessage(null), 99, true);
+            }
 
-            var rawVal = serialConnection.RawValue;
-            setting.DivisorValue = rawVal;
-            this._viewModel.DivisorValue = rawVal;
+            //var setting = UserSettingsLoaderHelper.Load();
 
-            var multiVal = this._viewModel.DivisorMultiplikator;
-            setting.DivisorMultiplikator = multiVal;
+            //var rawVal = serialConnection.RawValue;
+            //setting.DivisorValue = rawVal;
+            //this._viewModel.DivisorValue = rawVal;
 
-            UserSettingsLoaderHelper.Save(setting);
+            //var multiVal = this._viewModel.DivisorMultiplikator;
+            //setting.DivisorMultiplikator = multiVal;
 
-            EventBusManager.Send<MonitorLogView, UpdateDivisorMessage>(new UpdateDivisorMessage(rawVal, multiVal), 1);
+            //UserSettingsLoaderHelper.Save(setting);
+
+            //EventBusManager.Send<MonitorLogView, UpdateDivisorMessage>(new UpdateDivisorMessage(rawVal, multiVal), 1);
         }
     }
 }

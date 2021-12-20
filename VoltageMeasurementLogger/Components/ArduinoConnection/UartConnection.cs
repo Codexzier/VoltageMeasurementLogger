@@ -21,6 +21,24 @@ namespace VoltageMeasurementLogger.Components.ArduinoConnection
             this._activity.Elapsed += this.Activity_Elapsed;
         }
 
+        public static DivisiorResolutionItem[] GetDivisorValueResolutions() => new[] {
+            new DivisiorResolutionItem(10, 1024, "Arduino"),
+            new DivisiorResolutionItem(16, 65535, "ADS1115")
+        };
+
+        internal static DivisiorResolutionItem GetDivisorValueResolution(string divisorValueResolution)
+        {
+            foreach (var item in GetDivisorValueResolutions())
+            {
+                if(item.ToString().Equals(divisorValueResolution))
+                {
+                    return item;
+                }
+            }
+
+            return GetDivisorValueResolutions()[0];
+        }
+
         public static UartConnection GetInstance()
         {
             if(_instance == null)
