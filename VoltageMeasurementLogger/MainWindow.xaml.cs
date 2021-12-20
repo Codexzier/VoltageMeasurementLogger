@@ -25,6 +25,8 @@ namespace VoltageMeasurementLogger
             this.Prepare();
 
             this.LoadSettings();
+
+            this.HeadTitleVersion.Text = $"v{Application.ResourceAssembly.GetName().Version}";
         }
 
 
