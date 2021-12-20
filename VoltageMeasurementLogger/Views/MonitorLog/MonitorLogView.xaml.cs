@@ -28,7 +28,7 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
         {
             if(obj is UpdateDivisorMessage update)
             {
-                this._lineDiagramHelper.SetDivisor(update.DivisorValue);
+                this._lineDiagramHelper.SetDivisor(update);
             }
         }
 

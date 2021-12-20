@@ -65,20 +65,29 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Column="0" 
-                       Grid.Row="0" 
-                       Text="DIVISOR" />
+                       Grid.Row="0"
+                       Text="Multiplikator" />
+            <TextBox Grid.Column="2" 
+                     Grid.Row="0"
+                     Text="{Binding DivisorMultiplikator}" />
+            
             <TextBlock Grid.Column="0" 
                        Grid.Row="1" 
+                       Text="DIVISOR" />
+            <TextBlock Grid.Column="0" 
+                       Grid.Row="2" 
                        Text="{Binding DivisorValue}" />
             <Button Grid.Column="2" 
-                    Grid.Row="0" 
+                    Grid.Row="1" 
                     Grid.RowSpan="2"
                     Content="Set divisor" 
                     ToolTip="Lege an den Messkontakt eine 5V Spannung. Zum kann das beim Arduino der 5V Pin sein." 
                     Command="{Binding CommandSetupVoltageDivisor}"/>
+            
         </Grid>
         <Grid Grid.Row="4">
             <Grid.ColumnDefinitions>

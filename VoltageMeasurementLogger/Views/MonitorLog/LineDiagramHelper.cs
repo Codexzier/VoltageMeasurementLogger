@@ -1,4 +1,5 @@
 ﻿using Codexzier.Wpf.ApplicationFramework.Views.Base;
+using System;
 using System.Collections.Generic;
 using System.Timers;
 using VoltageMeasurementLogger.Components.ArduinoConnection;
@@ -12,6 +13,7 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
         private readonly Timer _timer = new();
         private int _index;
         private float _divisorValue = 1024;
+        private float _divisorMultiplikator = 10;
         private UartConnection _uartConnection;
 
         public LineDiagramHelper(MonitorLogViewModel viewModel)
@@ -36,6 +38,7 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
             // Damit hier das öffnen zustand zurück gesetzt werden kann.
             SimpleStatusOverlays.Show("Warning", "No incoming data");
         }
+
 
         private void Init()
         {
@@ -63,7 +66,7 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             this._viewModel.RawValue = this._uartConnection.RawValue;
-            this._viewModel.VoltageValue = this._viewModel.RawValue / this._divisorValue * 10.0f;
+            this._viewModel.VoltageValue = this._viewModel.RawValue / this._divisorValue * this._divisorMultiplikator;
 
             if (this._index < this._viewModel.MeasurementValues.Count)
             {
@@ -77,6 +80,12 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
             }
         }
 
+
+        internal void SetDivisor(UpdateDivisorMessage divisorValues)
+        {
+            this._divisorValue = divisorValues.DivisorValue;
+            this._divisorMultiplikator = divisorValues.DivisorMultiplikator;
+        }
         internal void SetDivisor(float divisorValue) => this._divisorValue = divisorValue;
 
         internal void Stop() => this._timer.Stop();

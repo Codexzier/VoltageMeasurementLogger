@@ -4,14 +4,14 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
 {
     internal class UpdateDivisorMessage : BaseMessage
     {
-        public UpdateDivisorMessage(object content) : base(content)
+        public UpdateDivisorMessage(int rawValue, float divisorMultiplikator) : base($"{rawValue}:{divisorMultiplikator}")
         {
-            if(content is float f)
-            {
-                this.DivisorValue = f;
-            }
+            this.DivisorValue = rawValue;
+            this.DivisorMultiplikator = divisorMultiplikator;
         }
 
-        public float DivisorValue { get; } = 1024;
+        public int DivisorValue { get; } = 1024;
+
+        public float DivisorMultiplikator { get; set; }
     }
 }

@@ -1,6 +1,8 @@
-﻿using Codexzier.Wpf.ApplicationFramework.Views.Base;
+﻿using Codexzier.Wpf.ApplicationFramework.Components.Ui.EventBus;
+using Codexzier.Wpf.ApplicationFramework.Views.Base;
 using VoltageMeasurementLogger.Components;
 using VoltageMeasurementLogger.Components.ArduinoConnection;
+using VoltageMeasurementLogger.Views.MonitorLog;
 
 namespace VoltageMeasurementLogger.Views.Main
 {
@@ -24,11 +26,16 @@ namespace VoltageMeasurementLogger.Views.Main
 
             var setting = UserSettingsLoaderHelper.Load();
 
-            var val = serialConnection.RawValue;
-            setting.DivisorValue = val;
-            this._viewModel.DivisorValue = val; 
+            var rawVal = serialConnection.RawValue;
+            setting.DivisorValue = rawVal;
+            this._viewModel.DivisorValue = rawVal;
+
+            var multiVal = this._viewModel.DivisorMultiplikator;
+            setting.DivisorMultiplikator = multiVal;
 
             UserSettingsLoaderHelper.Save(setting);
+
+            EventBusManager.Send<MonitorLogView, UpdateDivisorMessage>(new UpdateDivisorMessage(rawVal, multiVal), 1);
         }
     }
 }
