@@ -1,4 +1,5 @@
 ﻿using Codexzier.Wpf.ApplicationFramework.Views.Base;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Windows.Media;
 using VoltageMeasurementLogger.Components.ArduinoConnection;
@@ -14,8 +15,17 @@ namespace VoltageMeasurementLogger.Views.DivisorSetup
         private DivisiorResolutionItem _divisorValueResolution = UartConnection.GetDivisorValueResolutions()[0];
         private ICommand _commandDivisorSetupCancel;
         private ICommand _commandDivisorSetupAccept;
-        private DivisiorResolutionItem[] _divisorValueResolutions = UartConnection.GetDivisorValueResolutions();
+        private ObservableCollection<DivisiorResolutionItem> _divisorValueResolutions = new ObservableCollection<DivisiorResolutionItem>();
         private int _selectedDivisorResolutionIndex;
+        //private string _selectedDivisorResolutionValuePath;
+
+        public DivisorSetupViewModel()
+        {
+            foreach (var item in UartConnection.GetDivisorValueResolutions())
+            {
+                this._divisorValueResolutions.Add(item);
+            }
+        }
 
         public int DivisorValue
         {
@@ -27,7 +37,7 @@ namespace VoltageMeasurementLogger.Views.DivisorSetup
             }
         }
 
-        public DivisiorResolutionItem[] DivisorValueResolutions
+        public ObservableCollection<DivisiorResolutionItem> DivisorValueResolutions
         {
             get => _divisorValueResolutions;
             set
@@ -102,5 +112,15 @@ namespace VoltageMeasurementLogger.Views.DivisorSetup
                 this.OnNotifyPropertyChanged(nameof(this.CommandDivisorSetupAccept));
             }
         }
+
+        //public string SelectedDivisorResolutionValuePath
+        //{
+        //    get => _selectedDivisorResolutionValuePath;
+        //    set
+        //    {
+        //        _selectedDivisorResolutionValuePath = value;
+        //        this.OnNotifyPropertyChanged(nameof(this.SelectedDivisorResolutionValuePath));
+        //    }
+        //}
     }
 }

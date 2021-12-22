@@ -57,7 +57,20 @@ namespace VoltageMeasurementLogger.Views.DivisorSetup
             var setting = UserSettingsLoaderHelper.Load();
 
             this._viewModel.DivisorMultiplikator = setting.DivisorMultiplikator;
-            this._viewModel.SelectedDivisorResolution = UartConnection.GetDivisorValueResolution(setting.DivisorValueResolution);
+
+            DivisiorResolutionItem refItem = null;
+            if(!string.IsNullOrEmpty(setting.DivisorValueResolution))
+            {
+                var divItem = UartConnection.GetDivisorValueResolution(setting.DivisorValueResolution);
+                refItem = this._viewModel.DivisorValueResolutions.FirstOrDefault(f => f.ToString() == divItem.ToString());
+            }
+
+            if (refItem == null)
+            {
+                refItem = this._viewModel.DivisorValueResolutions.First();
+            }
+
+            this._viewModel.SelectedDivisorResolution = refItem;
         }
     }
 }

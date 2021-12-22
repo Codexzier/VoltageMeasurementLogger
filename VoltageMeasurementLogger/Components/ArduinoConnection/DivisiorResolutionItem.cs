@@ -17,5 +17,8 @@ namespace VoltageMeasurementLogger.Components.ArduinoConnection
         public string Description { get; }
 
         public override string ToString() => $"{this.CountOfBits} Bit | {this.Resolution} ({this.Description})";
+
+
+        public override int GetHashCode() => ToString().GetHashCode();
     }
 }
