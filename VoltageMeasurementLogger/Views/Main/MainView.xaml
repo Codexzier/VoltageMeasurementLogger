@@ -37,7 +37,7 @@
             <Button Grid.Column="1" Content="R" Style="{x:Null}" Command="{Binding CommandRefreshComPortList}" />
         </Grid>
 
-        <ListBox Grid.Row="1" ItemsSource="{Binding ComPorts}" SelectedItem="{Binding SelectedPortName}" />
+        <ListBox Grid.Row="1" ItemsSource="{Binding ComPorts, NotifyOnSourceUpdated=True}" SelectedItem="{Binding SelectedPortName}" />
 
         <Grid Grid.Row="2" Height="50" >
             <Grid.ColumnDefinitions>

@@ -32,8 +32,8 @@ namespace VoltageMeasurementLogger.Views.DivisorSetup
                     rawValue, 
                     multi,
                     reso), 
-                1);
-            EventBusManager.CloseView<DivisorSetupView>(99);
+                SideHostChannel.MainRight);
+            EventBusManager.CloseView<DivisorSetupView>(SideHostChannel.DialogWindow);
         }
     }
 }

@@ -5,6 +5,6 @@ namespace VoltageMeasurementLogger.Views.DivisorSetup
 {
     internal class ButtonCommandDivisorSetupCancel : BaseCommand
     {
-        public override void Execute(object parameter) => EventBusManager.CloseView<DivisorSetupView>(99);
+        public override void Execute(object parameter) => EventBusManager.CloseView<DivisorSetupView>(SideHostChannel.DialogWindow);
     }
 }

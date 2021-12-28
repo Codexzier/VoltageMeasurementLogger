@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace VoltageMeasurementLogger
+﻿namespace VoltageMeasurementLogger
 {
     public static class SideHostChannel
     {
+        public static int Main = 0;
+        public static int MainRight = 1;
+        public static int DialogWindow = 99;
+        public static int StatusBar = 100;
+        public static int MessageBox = 101;
     }
 }
