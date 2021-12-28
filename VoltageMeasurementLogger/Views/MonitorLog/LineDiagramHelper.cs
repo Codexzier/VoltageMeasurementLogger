@@ -1,7 +1,7 @@
 ﻿using Codexzier.Wpf.ApplicationFramework.Views.Base;
-using System;
 using System.Collections.Generic;
 using System.Timers;
+using VoltageMeasurementLogger.Components;
 using VoltageMeasurementLogger.Components.ArduinoConnection;
 using VoltageMeasurementLogger.UserControls.LineDiagram;
 
@@ -14,7 +14,7 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
         private int _index;
         private int _divisorValue = 1024;
         private float _divisorMultiplikator = 10;
-        private UartConnection _uartConnection;
+        private readonly UartConnection _uartConnection;
 
         public LineDiagramHelper(MonitorLogViewModel viewModel)
         {
@@ -25,6 +25,7 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
         }
 
         private bool _isMessageBoxOpenWarningNoIncomingData;
+        private int _divisorResolution;
 
         private void UartConnection_NoIncomingDataEvent()
         {
@@ -59,6 +60,13 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
 
             this._timer.Interval = 10;
             this._timer.Elapsed += this.Timer_Elapsed;
+
+            var setting = UserSettingsLoaderHelper.Load();
+            this._divisorValue = setting.DivisorValue;
+            this._divisorMultiplikator = setting.DivisorMultiplikator;
+
+            var divItem = UartConnection.GetDivisorValueResolution(setting.DivisorValueResolution);
+            this._divisorResolution = divItem.Resolution;
         }
 
         public void Start() => this._timer.Start();
@@ -66,7 +74,7 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             this._viewModel.RawValue = this._uartConnection.RawValue;
-            this._viewModel.VoltageValue = this._viewModel.RawValue / this._divisorValue * this._divisorMultiplikator;
+            this._viewModel.VoltageValue = (float)this._divisorResolution / (float)this._divisorValue * this._divisorMultiplikator;
 
             if (this._index < this._viewModel.MeasurementValues.Count)
             {
@@ -79,7 +87,6 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
                 this._index = 0;
             }
         }
-
 
         internal void SetDivisor(UpdateDivisorMessage divisorValues)
         {

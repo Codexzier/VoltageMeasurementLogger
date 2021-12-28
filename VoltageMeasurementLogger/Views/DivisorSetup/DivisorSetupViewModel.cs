@@ -17,6 +17,8 @@ namespace VoltageMeasurementLogger.Views.DivisorSetup
         private ICommand _commandDivisorSetupAccept;
         private ObservableCollection<DivisiorResolutionItem> _divisorValueResolutions = new ObservableCollection<DivisiorResolutionItem>();
         private int _selectedDivisorResolutionIndex;
+        private bool _multiplikatorAutoSet = true;
+
         //private string _selectedDivisorResolutionValuePath;
 
         public DivisorSetupViewModel()
@@ -122,5 +124,14 @@ namespace VoltageMeasurementLogger.Views.DivisorSetup
         //        this.OnNotifyPropertyChanged(nameof(this.SelectedDivisorResolutionValuePath));
         //    }
         //}
+
+        public bool MultiplikatorAutoSet
+        {
+            get => _multiplikatorAutoSet; set
+            {
+                _multiplikatorAutoSet = value;
+                this.OnNotifyPropertyChanged(nameof(this.MultiplikatorAutoSet));
+            }
+        }
     }
 }

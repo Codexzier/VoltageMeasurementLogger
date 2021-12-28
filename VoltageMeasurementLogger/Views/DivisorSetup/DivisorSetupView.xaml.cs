@@ -35,12 +35,19 @@ namespace VoltageMeasurementLogger.Views.DivisorSetup
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
+            
+
             this._viewModel.DivisorValue = this._uartConnection.RawValue;
-            var resolutionValue = this._viewModel.SelectedDivisorResolution.Resolution;
+            int resolutionValue = this._viewModel.SelectedDivisorResolution.Resolution;
 
-            var result = resolutionValue / this._viewModel.DivisorValue * this._viewModel.DivisorMultiplikator;
+            if (this._viewModel.MultiplikatorAutoSet)
+            {
+                this._viewModel.DivisorMultiplikator = 5f / ((float)resolutionValue / (float)this._viewModel.DivisorValue);
+            }
 
-            this._viewModel.CalculateResult = $"{resolutionValue} / {this._viewModel.DivisorValue} * {this._viewModel.DivisorMultiplikator} = {result}";
+            double result = (float)resolutionValue / (float)this._viewModel.DivisorValue * this._viewModel.DivisorMultiplikator;
+
+            this._viewModel.CalculateResult = $"{result:N5} = {resolutionValue} / {this._viewModel.DivisorValue} * {this._viewModel.DivisorMultiplikator}";
         }
 
         private void BaseMessageEvent(IMessageContainer obj)
@@ -71,6 +78,8 @@ namespace VoltageMeasurementLogger.Views.DivisorSetup
             }
 
             this._viewModel.SelectedDivisorResolution = refItem;
+
+            this._timer.Start();
         }
     }
 }
