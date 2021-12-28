@@ -1,18 +1,50 @@
-﻿#define PIN_Input A0
+﻿#define PIN_Input_1 A0
+#define PIN_Input_2 A1
+#define PIN_Input_3 A2
+#define PIN_Input_4 A3
 
 void setup() {
   Serial.begin(115200);
-  pinMode(PIN_Input, INPUT);
+  Serial.println("Volatage Measuerment Logger Started");
+  pinMode(PIN_Input_1, INPUT);
+  pinMode(PIN_Input_2, INPUT);
+  pinMode(PIN_Input_3, INPUT);
+  pinMode(PIN_Input_4, INPUT);
 }
 
 void loop() {
-  int16_t rawMeasurement = analogRead(PIN_Input);
+  int16_t rawMeasurement1 = analogRead(PIN_Input_1);
+  int16_t rawMeasurement2 = analogRead(PIN_Input_2);
+  int16_t rawMeasurement3 = analogRead(PIN_Input_3);
+  int16_t rawMeasurement4 = analogRead(PIN_Input_4);
 
-  byte ba[3];
-  ba[0] = (byte)((rawMeasurement >> 8) & 0xff);
-  ba[1] = (byte)(rawMeasurement & 0xff);
-  ba[2] = (byte)CountBits(rawMeasurement);
-  Serial.write(ba, 3);
+  byte ba[9];
+
+  // raw measurement 1
+  ba[0] = (byte)((rawMeasurement1 >> 8) & 0xff);
+  ba[1] = (byte)(rawMeasurement1 & 0xff);
+
+  // raw measurement 2
+  ba[2] = (byte)((rawMeasurement2 >> 8) & 0xff);
+  ba[3] = (byte)(rawMeasurement2 & 0xff);
+
+  // raw measurement 3
+  ba[4] = (byte)((rawMeasurement3 >> 8) & 0xff);
+  ba[5] = (byte)(rawMeasurement3 & 0xff);
+
+  // raw measurement 4
+  ba[6] = (byte)((rawMeasurement4 >> 8) & 0xff);
+  ba[7] = (byte)(rawMeasurement4 & 0xff);
+
+  
+  // count bits
+  int8_t countedBits = CountBits(rawMeasurement1);
+  countedBits += CountBits(rawMeasurement2);
+  countedBits += CountBits(rawMeasurement3);
+  countedBits += CountBits(rawMeasurement4);
+
+  ba[8] = (byte)countedBits;
+  Serial.write(ba, 9);
   delay(20);
 }
 

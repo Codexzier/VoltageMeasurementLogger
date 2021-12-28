@@ -9,9 +9,6 @@ using System.Linq;
 
 namespace VoltageMeasurementLogger.Views.DivisorSetup
 {
-    /// <summary>
-    /// Interaction logic for DivisorSetupView.xaml
-    /// </summary>
     public partial class DivisorSetupView : UserControl
     {
         private readonly DivisorSetupViewModel _viewModel;
@@ -37,7 +34,7 @@ namespace VoltageMeasurementLogger.Views.DivisorSetup
         {
             
 
-            this._viewModel.DivisorValue = this._uartConnection.RawValue;
+            this._viewModel.DivisorValue = this._uartConnection.RawValue1;
             int resolutionValue = this._viewModel.SelectedDivisorResolution.Resolution;
 
             if (this._viewModel.MultiplikatorAutoSet)
@@ -65,7 +62,7 @@ namespace VoltageMeasurementLogger.Views.DivisorSetup
 
             this._viewModel.DivisorMultiplikator = setting.DivisorMultiplikator;
 
-            DivisiorResolutionItem refItem = null;
+            DivisorResolutionItem refItem = null;
             if(!string.IsNullOrEmpty(setting.DivisorValueResolution))
             {
                 var divItem = UartConnection.GetDivisorValueResolution(setting.DivisorValueResolution);

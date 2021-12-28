@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Diagnostics;
 using System.IO.Ports;
 using System.Linq;
 using System.Timers;
@@ -21,12 +22,12 @@ namespace VoltageMeasurementLogger.Components.ArduinoConnection
             this._activity.Elapsed += this.Activity_Elapsed;
         }
 
-        public static DivisiorResolutionItem[] GetDivisorValueResolutions() => new[] {
-            new DivisiorResolutionItem(10, 1024, "Arduino"),
-            new DivisiorResolutionItem(16, 65535, "ADS1115")
+        public static DivisorResolutionItem[] GetDivisorValueResolutions() => new[] {
+            new DivisorResolutionItem(10, 1024, "Arduino"),
+            new DivisorResolutionItem(16, 65535, "ADS1115")
         };
 
-        internal static DivisiorResolutionItem GetDivisorValueResolution(string divisorValueResolution)
+        internal static DivisorResolutionItem GetDivisorValueResolution(string divisorValueResolution)
         {
             foreach (var item in GetDivisorValueResolutions())
             {
@@ -49,7 +50,7 @@ namespace VoltageMeasurementLogger.Components.ArduinoConnection
             return _instance;
         }
 
-        public UartConnectionResult ConnectTo(string portname, int baud = 9600, int divisor = 0)
+        public UartConnectionResult ConnectTo(string portName, int baud = 9600, int divisor = 0)
         {
             this._divisor = divisor;
 
@@ -58,7 +59,7 @@ namespace VoltageMeasurementLogger.Components.ArduinoConnection
                 return new UartConnectionResult("Serial Port is in used! Closed the connection before start new one!");
             }
 
-            this._serialPort = new SerialPort(portname, baud);
+            this._serialPort = new SerialPort(portName, baud);
             this._serialPort.DataReceived += this.Sp_DataReceived;
             this._serialPort.Open();
             this._serialPort.DiscardInBuffer();
@@ -85,33 +86,51 @@ namespace VoltageMeasurementLogger.Components.ArduinoConnection
 
         private void Sp_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            byte[] buffer = new byte[3];
-            if (this._serialPort.Read(buffer, 0, 3) != 0)
+            byte[] buffer = new byte[9];
+            if (this._serialPort.Read(buffer, 0, 9) == 0)
             {
-                var result = (buffer[0] << 8) | buffer[1];
-
-                var b = new BitArray(new int[] { result });
-                var bits = new bool[b.Count];
-                b.CopyTo(bits, 0);
-
-                if (bits.Sum(s => s ? 1 : 0) != buffer[2])
-                {
-                    return;
-                }
-
-                this.RawValue = result;
-
-                // TODO Moved to eventhandler
-                if(LogManager.GetInstance().IsOn)
-                {
-                    LogManager.GetInstance().WriteLine(this.RawValue, this._divisor);
-                }
-
-                this._lastUpdate = DateTime.Now;
+                return;
             }
+
+            var result1 = (buffer[0] << 8) | buffer[1];
+            var bits = GetBits(result1);
+            // var b = new BitArray(new [] { result1 });
+            // var bits = new bool[b.Count];
+            // b.CopyTo(bits, 0);
+            
+            var result2 = (buffer[2] << 8) | buffer[3];
+            bits += GetBits(result2);
+            var result3 = (buffer[4] << 8) | buffer[5];
+            bits += GetBits(result3);
+            var result4 = (buffer[6] << 8) | buffer[7];
+            bits += GetBits(result4);
+
+            //Debug.WriteLine($"{bits.Sum(s => s ? 1 : 0)} != {buffer[8]}");
+            if (bits != buffer[8])
+            {
+                return;
+            }
+
+            this.RawValue1 = result1;
+
+            // TODO Moved to eventhandler
+            if(LogManager.GetInstance().IsOn)
+            {
+                LogManager.GetInstance().WriteLine(this.RawValue1, this._divisor);
+            }
+
+            this._lastUpdate = DateTime.Now;
         }
 
-        public int RawValue { get; private set; }
+        private static byte GetBits(int result)
+        {
+            var b = new BitArray(new [] { result });
+            var bits = new bool[b.Count];
+            b.CopyTo(bits, 0);
+            return (byte)bits.Sum(s => s ? 1 : 0);
+        }
+
+        public int RawValue1 { get; private set; }
 
         public bool IsOpen => _serialPort == null ? false : _serialPort.IsOpen;
 

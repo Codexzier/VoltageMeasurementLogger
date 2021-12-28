@@ -12,10 +12,10 @@ namespace VoltageMeasurementLogger.Views.DivisorSetup
         private float _divisorMultiplikator = 10.0f;
         private string _calculateResult = "1024 /  1024 * 10.0";
         private Brush _calculateResultOk = Brushes.Red;
-        private DivisiorResolutionItem _divisorValueResolution = UartConnection.GetDivisorValueResolutions()[0];
+        private DivisorResolutionItem _divisorValueResolution = UartConnection.GetDivisorValueResolutions()[0];
         private ICommand _commandDivisorSetupCancel;
         private ICommand _commandDivisorSetupAccept;
-        private ObservableCollection<DivisiorResolutionItem> _divisorValueResolutions = new ObservableCollection<DivisiorResolutionItem>();
+        private ObservableCollection<DivisorResolutionItem> _divisorValueResolutions = new ObservableCollection<DivisorResolutionItem>();
         private int _selectedDivisorResolutionIndex;
         private bool _multiplikatorAutoSet = true;
 
@@ -39,7 +39,7 @@ namespace VoltageMeasurementLogger.Views.DivisorSetup
             }
         }
 
-        public ObservableCollection<DivisiorResolutionItem> DivisorValueResolutions
+        public ObservableCollection<DivisorResolutionItem> DivisorValueResolutions
         {
             get => _divisorValueResolutions;
             set
@@ -49,7 +49,7 @@ namespace VoltageMeasurementLogger.Views.DivisorSetup
             }
         }
 
-        public DivisiorResolutionItem SelectedDivisorResolution
+        public DivisorResolutionItem SelectedDivisorResolution
         {
             get => _divisorValueResolution; set
             {
