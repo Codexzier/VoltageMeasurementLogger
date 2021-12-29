@@ -73,8 +73,8 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            this._viewModel.RawValue = this._uartConnection.RawValue1;
-            this._viewModel.VoltageValue = (float)this._divisorResolution / (float)this._divisorValue * this._divisorMultiplikator;
+            this._viewModel.RawValue1 = this._uartConnection.RawValue1;
+            this._viewModel.VoltageValue = (float)this._divisorResolution / (float)this._viewModel.RawValue1 * this._divisorMultiplikator;
 
             if (this._index < this._viewModel.MeasurementValues.Count)
             {

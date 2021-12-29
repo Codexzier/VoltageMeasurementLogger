@@ -27,14 +27,14 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
             }
         }
 
-        public int RawValue
+        public int RawValue1
         {
             get => this._rawValue;
             set
             {
                 this._rawValue = value;
                 //this.RenewMinMax();
-                this.OnNotifyPropertyChanged(nameof(this.RawValue));
+                this.OnNotifyPropertyChanged(nameof(this.RawValue1));
             }
         }
 
