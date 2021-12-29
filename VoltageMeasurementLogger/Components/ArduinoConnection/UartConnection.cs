@@ -112,10 +112,14 @@ namespace VoltageMeasurementLogger.Components.ArduinoConnection
             }
 
             this.RawValue1 = result1;
+            this.RawValue2 = result2;
+            this.RawValue3 = result3;
+            this.RawValue4 = result4;
 
             // TODO Moved to eventhandler
-            if(LogManager.GetInstance().IsOn)
+            if (LogManager.GetInstance().IsOn)
             {
+                // TODO: Log all four values and add multiplikator
                 LogManager.GetInstance().WriteLine(this.RawValue1, this._divisor);
             }
 
@@ -131,6 +135,9 @@ namespace VoltageMeasurementLogger.Components.ArduinoConnection
         }
 
         public int RawValue1 { get; private set; }
+        public int RawValue2 { get; private set; }
+        public int RawValue3 { get; private set; }
+        public int RawValue4 { get; private set; }
 
         public bool IsOpen => _serialPort == null ? false : _serialPort.IsOpen;
 

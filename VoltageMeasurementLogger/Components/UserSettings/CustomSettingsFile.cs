@@ -59,15 +59,15 @@ namespace VoltageMeasurementLogger.Components.UserSettings
             }
         }
 
-        public int DivisorValue
-        {
-            get => this._divisorValue;
-            set
-            {
-                this._divisorValue = value;
-                this.SetChanged();
-            }
-        }
+        //public int DivisorValue
+        //{
+        //    get => this._divisorValue;
+        //    set
+        //    {
+        //        this._divisorValue = value;
+        //        this.SetChanged();
+        //    }
+        //}
 
         public float DivisorMultiplikator
         {

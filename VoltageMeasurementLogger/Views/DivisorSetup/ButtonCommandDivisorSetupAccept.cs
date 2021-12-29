@@ -17,7 +17,7 @@ namespace VoltageMeasurementLogger.Views.DivisorSetup
             var setting = UserSettingsLoaderHelper.Load();
 
             var rawValue = this._viewModel.DivisorValue;
-            setting.DivisorValue = this._viewModel.DivisorValue;
+            //setting.DivisorValue = this._viewModel.DivisorValue;
 
             var multi = this._viewModel.DivisorMultiplikator;
             setting.DivisorMultiplikator = multi;

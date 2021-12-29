@@ -44,7 +44,7 @@ namespace VoltageMeasurementLogger.Views.Main
 
             var setting = UserSettingsLoaderHelper.Load();
 
-            this._viewModel.DivisorValue = setting.DivisorValue;
+            //this._viewModel.DivisorValue = setting.DivisorValue;
             this._viewModel.Filename = FileNameCreator.Create();
             this._viewModel.CommandRefreshComPortList.Execute(null);
 

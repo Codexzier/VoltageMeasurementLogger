@@ -8,14 +8,21 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
     {
 
         private string _comPortname;
-        private int _rawValue;
-        private int _minRawValue = 0;
-        private int _maxRawValue = 1024;
+      
+        //private int _minRawValue = 0;
+        //private int _maxRawValue = 1024;
         private List<LineDiagramLevelItem> _measurementValues;
         private int _measurementValueIndex;
-        private float _voltageValue;
+        //private float _voltageValue;
         private string _levelLineText = "5.0V";
-               
+        private int _rawValue1;
+        private int _rawValue2;
+        private int _rawValue3;
+        private int _rawValue4;
+        private float _resultValue1;
+        private float _resultValue2;
+        private float _resultValue3;
+        private float _resultValue4;
 
         public string ComPortname
         {
@@ -29,47 +36,110 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
 
         public int RawValue1
         {
-            get => this._rawValue;
+            get => this._rawValue1;
             set
             {
-                this._rawValue = value;
+                this._rawValue1 = value;
                 //this.RenewMinMax();
                 this.OnNotifyPropertyChanged(nameof(this.RawValue1));
             }
         }
 
-        private void RenewMinMax()
+        public int RawValue2
         {
-            if (this._rawValue < this._minRawValue)
+            get => _rawValue2; set
             {
-                this.MinRawValue = this._rawValue;
-            }
-
-            if (this._rawValue > this._maxRawValue)
-            {
-                this.MaxRawValue = this._rawValue;
+                _rawValue2 = value;
+                OnNotifyPropertyChanged(nameof(this.RawValue2));
             }
         }
 
-        public int MinRawValue
+        public int RawValue3
         {
-            get => this._minRawValue;
-            set
+            get => _rawValue3; set
             {
-                this._minRawValue = value;
-                this.OnNotifyPropertyChanged(nameof(this.MinRawValue));
+                _rawValue3 = value;
+                OnNotifyPropertyChanged(nameof(this.RawValue3));
             }
         }
 
-        public int MaxRawValue
+        public int RawValue4
         {
-            get => this._maxRawValue;
-            set
+            get => _rawValue4; set
             {
-                this._maxRawValue = value;
-                this.OnNotifyPropertyChanged(nameof(this.MaxRawValue));
+                _rawValue4 = value;
+                OnNotifyPropertyChanged(nameof(this.RawValue4));
             }
         }
+
+        public float ResultValue1
+        {
+            get => _resultValue1; set
+            {
+                _resultValue1 = value;
+                this.OnNotifyPropertyChanged(nameof(this.ResultValue1));
+            }
+        }
+
+        public float ResultValue2
+        {
+            get => _resultValue2; set
+            {
+                _resultValue2 = value;
+                OnNotifyPropertyChanged(nameof(this.ResultValue2));
+            }
+        }
+
+        public float ResultValue3
+        {
+            get => _resultValue3; set
+            {
+                _resultValue3 = value;
+                OnNotifyPropertyChanged(nameof(this.ResultValue3));
+            }
+        }
+
+        public float ResultValue4
+        {
+            get => _resultValue4; set
+            {
+                _resultValue4 = value;
+                OnNotifyPropertyChanged(nameof(this.ResultValue4));
+            }
+        }
+
+        //private void RenewMinMax()
+        //{
+        //    if (this._rawValue < this._minRawValue)
+        //    {
+        //        this.MinRawValue = this._rawValue;
+        //    }
+
+        //    if (this._rawValue > this._maxRawValue)
+        //    {
+        //        this.MaxRawValue = this._rawValue;
+        //    }
+        //}
+
+        //public int MinRawValue
+        //{
+        //    get => this._minRawValue;
+        //    set
+        //    {
+        //        this._minRawValue = value;
+        //        this.OnNotifyPropertyChanged(nameof(this.MinRawValue));
+        //    }
+        //}
+
+        //public int MaxRawValue
+        //{
+        //    get => this._maxRawValue;
+        //    set
+        //    {
+        //        this._maxRawValue = value;
+        //        this.OnNotifyPropertyChanged(nameof(this.MaxRawValue));
+        //    }
+        //}
 
         public List<LineDiagramLevelItem> MeasurementValues
         {
@@ -91,15 +161,15 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
             }
         }
 
-        public float VoltageValue
-        {
-            get => this._voltageValue;
-            set
-            {
-                this._voltageValue = value;
-                this.OnNotifyPropertyChanged(nameof(this.VoltageValue));
-            }
-        }
+        //public float VoltageValue
+        //{
+        //    get => this._voltageValue;
+        //    set
+        //    {
+        //        this._voltageValue = value;
+        //        this.OnNotifyPropertyChanged(nameof(this.VoltageValue));
+        //    }
+        //}
 
         public string LevelLineText
         {

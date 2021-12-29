@@ -12,7 +12,6 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
         private readonly MonitorLogViewModel _viewModel;
         private readonly Timer _timer = new();
         private int _index;
-        private int _divisorValue = 1024;
         private float _divisorMultiplikator = 10;
         private readonly UartConnection _uartConnection;
 
@@ -62,7 +61,7 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
             this._timer.Elapsed += this.Timer_Elapsed;
 
             var setting = UserSettingsLoaderHelper.Load();
-            this._divisorValue = setting.DivisorValue;
+   
             this._divisorMultiplikator = setting.DivisorMultiplikator;
 
             var divItem = UartConnection.GetDivisorValueResolution(setting.DivisorValueResolution);
@@ -73,12 +72,21 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            this._viewModel.RawValue1 = this._uartConnection.RawValue1;
-            this._viewModel.VoltageValue = (float)this._divisorResolution / (float)this._viewModel.RawValue1 * this._divisorMultiplikator;
+            //var rawValue1 = this._uartConnection.RawValue1;
+            //var voltage1 = (float)this._divisorResolution / (float)rawValue1 * this._divisorMultiplikator;
+
+            //this._viewModel.ResultValue1 = voltage1;
+
+            var voltage1 = this.GetVoltage(this._uartConnection.RawValue1);
+            this._viewModel.ResultValue1 = voltage1;
+
+            this._viewModel.ResultValue2 = this.GetVoltage(this._uartConnection.RawValue2);
+            this._viewModel.ResultValue3 = this.GetVoltage(this._uartConnection.RawValue3);
+            this._viewModel.ResultValue4 = this.GetVoltage(this._uartConnection.RawValue4);
 
             if (this._index < this._viewModel.MeasurementValues.Count)
             {
-                this._viewModel.MeasurementValues[this._index].Value = this._viewModel.VoltageValue;
+                this._viewModel.MeasurementValues[this._index].Value = voltage1;
                 this._viewModel.MeasurementValueIndex = this._index;
                 this._index++;
             }
@@ -87,10 +95,16 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
                 this._index = 0;
             }
         }
+        private float GetVoltage(int rawValue)
+        {
+            return (float)this._divisorResolution / (float)rawValue * this._divisorMultiplikator;
+        }
 
         internal void SetDivisor(UpdateDivisorMessage divisorValues)
         {
-            this._divisorValue = divisorValues.DivisorValue;
+            //this._divisorValue = divisorValues.DivisorValue;
+            var divItem = UartConnection.GetDivisorValueResolution(divisorValues.DivisorResolution);
+            this._divisorResolution = divItem.Resolution;
             this._divisorMultiplikator = divisorValues.DivisorMultiplikator;
         }
 
