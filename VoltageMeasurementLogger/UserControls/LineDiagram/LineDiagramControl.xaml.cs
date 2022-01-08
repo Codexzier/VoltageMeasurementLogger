@@ -130,7 +130,7 @@ namespace VoltageMeasurementLogger.UserControls.LineDiagram
 
             double widthPerResult = (control.ActualWidth - 20) / control.DiagramLevelItemsSource.Count;
             double heightScale = control.ActualHeight / 200d;
-           
+
             var m = control._barItems[control.CheckIndex].Point.Margin;
             var sizeEllipse = control._barItems[control.CheckIndex].SizeEllipse;
 

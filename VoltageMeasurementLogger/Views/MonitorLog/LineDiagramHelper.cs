@@ -42,20 +42,50 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
 
         private void Init()
         {
-            var diagramLevelItemsSource = new List<LineDiagramLevelItem>();
+            var diagramLevelItemsSource1 = new List<LineDiagramLevelItem>();
+            var diagramLevelItemsSource2 = new List<LineDiagramLevelItem>();
+            var diagramLevelItemsSource3 = new List<LineDiagramLevelItem>();
+            var diagramLevelItemsSource4 = new List<LineDiagramLevelItem>();
 
             for (int i = 0; i < 200; i++)
             {
-                diagramLevelItemsSource.Add(new LineDiagramLevelItem
+                diagramLevelItemsSource1.Add(new LineDiagramLevelItem
                 {
                     Value = 0,
                     SetColor = 1,
                     SetHighlightMark = false,
-                    ToolTipText = $"Value: {i}"
+                    ToolTipText = $"A0 Value: {i}"
+                });
+
+                diagramLevelItemsSource2.Add(new LineDiagramLevelItem
+                {
+                    Value = 0,
+                    SetColor = 2,
+                    SetHighlightMark = false,
+                    ToolTipText = $"A1 Value: {i}"
+                });
+
+                diagramLevelItemsSource3.Add(new LineDiagramLevelItem
+                {
+                    Value = 0,
+                    SetColor = 3,
+                    SetHighlightMark = false,
+                    ToolTipText = $"A2 Value: {i}"
+                });
+
+                diagramLevelItemsSource4.Add(new LineDiagramLevelItem
+                {
+                    Value = 0,
+                    SetColor = 4,
+                    SetHighlightMark = false,
+                    ToolTipText = $"A3 Value: {i}"
                 });
             }
 
-            this._viewModel.MeasurementValues = diagramLevelItemsSource;
+            this._viewModel.MeasurementValues1 = diagramLevelItemsSource1;
+            this._viewModel.MeasurementValues2 = diagramLevelItemsSource2;
+            this._viewModel.MeasurementValues3 = diagramLevelItemsSource3;
+            this._viewModel.MeasurementValues4 = diagramLevelItemsSource4;
 
             this._timer.Interval = 10;
             this._timer.Elapsed += this.Timer_Elapsed;
@@ -77,16 +107,22 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
 
             //this._viewModel.ResultValue1 = voltage1;
 
-            var voltage1 = this.GetVoltage(this._uartConnection.RawValue1);
-            this._viewModel.ResultValue1 = voltage1;
+            this._viewModel.RawValue1 = this._uartConnection.RawValue1;
+            this._viewModel.RawValue2 = this._uartConnection.RawValue2;
+            this._viewModel.RawValue3 = this._uartConnection.RawValue3;
+            this._viewModel.RawValue4 = this._uartConnection.RawValue4;
 
-            this._viewModel.ResultValue2 = this.GetVoltage(this._uartConnection.RawValue2);
-            this._viewModel.ResultValue3 = this.GetVoltage(this._uartConnection.RawValue3);
-            this._viewModel.ResultValue4 = this.GetVoltage(this._uartConnection.RawValue4);
+            this._viewModel.ResultValue1 = this.SetCalculatedVoltage(this._uartConnection.RawValue1);
+            this._viewModel.ResultValue2 = this.SetCalculatedVoltage(this._uartConnection.RawValue2);
+            this._viewModel.ResultValue3 = this.SetCalculatedVoltage(this._uartConnection.RawValue3);
+            this._viewModel.ResultValue4 = this.SetCalculatedVoltage(this._uartConnection.RawValue4);
 
-            if (this._index < this._viewModel.MeasurementValues.Count)
+            if (this._index < this._viewModel.MeasurementValues1.Count)
             {
-                this._viewModel.MeasurementValues[this._index].Value = voltage1;
+                this._viewModel.MeasurementValues1[this._index].Value = this._viewModel.ResultValue1;
+                this._viewModel.MeasurementValues2[this._index].Value = this._viewModel.ResultValue2;
+                this._viewModel.MeasurementValues3[this._index].Value = this._viewModel.ResultValue3;
+                this._viewModel.MeasurementValues4[this._index].Value = this._viewModel.ResultValue4;
                 this._viewModel.MeasurementValueIndex = this._index;
                 this._index++;
             }
@@ -95,7 +131,7 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
                 this._index = 0;
             }
         }
-        private float GetVoltage(int rawValue)
+        private float SetCalculatedVoltage(int rawValue)
         {
             return (float)this._divisorResolution / (float)rawValue * this._divisorMultiplikator;
         }

@@ -5,8 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:VoltageMeasurementLogger.UserControls.LineDiagram"
              mc:Ignorable="d" 
-             d:DesignHeight="200" d:DesignWidth="300"
-             MinHeight="200" MinWidth="300" 
+             d:DesignHeight="100" d:DesignWidth="300"
+             MinHeight="100" MinWidth="300" 
+             MaxHeight="300" MaxWidth="2000"
              SizeChanged="UserControl_SizeChanged" 
              IsHitTestVisible="False">
     <Grid>

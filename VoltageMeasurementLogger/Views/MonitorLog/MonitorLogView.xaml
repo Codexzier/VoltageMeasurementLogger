@@ -13,6 +13,10 @@
                 <Setter Property="Foreground" Value="{StaticResource BrushMonochromaticBlueGrayE}" />
                 <Setter Property="Margin" Value="10 5" />
             </Style>
+            <Style TargetType="{x:Type ProgressBar}">
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="Background" Value="{StaticResource BrushMonochromaticBlueGrayE}" />
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
     <UserControl.DataContext>
@@ -75,22 +79,81 @@
                 <TextBlock Grid.Column="2" Text="V" />
             </Grid>-->
         </StackPanel>
-        <ProgressBar Grid.Row="2" Grid.Column="0" 
-                     Orientation="Vertical" 
-                     Style="{x:Null}"
-                     Value="{Binding RawValue}" 
-                     Minimum="{Binding MinRawValue}" 
-                     Maximum="{Binding MaxRawValue}" />
+        <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal">
+            <ProgressBar Orientation="Vertical" 
+                         Style="{x:Null}"
+                         Value="{Binding RawValue1}" 
+                         Minimum="{Binding MinRawValue}" 
+                         Maximum="{Binding MaxRawValue}" 
+                         Width="5" />
+            <ProgressBar Orientation="Vertical" 
+                         Style="{x:Null}"
+                         Value="{Binding RawValue2}" 
+                         Minimum="{Binding MinRawValue}" 
+                         Maximum="{Binding MaxRawValue}"
+                         Width="5"/>
+            <ProgressBar Orientation="Vertical" 
+                         Style="{x:Null}"
+                         Value="{Binding RawValue3}" 
+                         Minimum="{Binding MinRawValue}" 
+                         Maximum="{Binding MaxRawValue}"
+                         Width="5"/>
+            <ProgressBar Orientation="Vertical" 
+                         Style="{x:Null}"
+                         Value="{Binding RawValue4}" 
+                         Minimum="{Binding MinRawValue}" 
+                         Maximum="{Binding MaxRawValue}"
+                         Width="5"/>
+        </StackPanel>
 
-        <LineDiagram:LineDiagramControl Grid.Column="2" Grid.Row="2"  
+        <StackPanel Grid.Column="2" Grid.Row="2"  
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch">
+
+            <LineDiagram:LineDiagramControl Grid.Column="2" Grid.Row="2"  
                                         HorizontalAlignment="Stretch"
                                         VerticalAlignment="Stretch"
                                         Margin="0 0 0 0"
-                                        DiagramLevelItemsSource="{Binding MeasurementValues}" 
+                                        DiagramLevelItemsSource="{Binding MeasurementValues1}" 
                                         LevelLineText="5.0V"
                                         Scale="1"
                                         MultiplyValue="20"
-                                        CheckIndex="{Binding MeasurementValueIndex, NotifyOnSourceUpdated=True}"/>
+                                        CheckIndex="{Binding MeasurementValueIndex, NotifyOnSourceUpdated=True}" 
+                                       />
+
+            <LineDiagram:LineDiagramControl Grid.Column="2" Grid.Row="2"  
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch"
+                                        Margin="0 0 0 0"
+                                        DiagramLevelItemsSource="{Binding MeasurementValues2}" 
+                                        LevelLineText="5.0V"
+                                        Scale="1"
+                                        MultiplyValue="20"
+                                        CheckIndex="{Binding MeasurementValueIndex, NotifyOnSourceUpdated=True}"
+                                        />
+            <LineDiagram:LineDiagramControl Grid.Column="2" Grid.Row="2"  
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch"
+                                        Margin="0 0 0 0"
+                                        DiagramLevelItemsSource="{Binding MeasurementValues3}" 
+                                        LevelLineText="5.0V"
+                                        Scale="1"
+                                        MultiplyValue="20"
+                                        CheckIndex="{Binding MeasurementValueIndex, NotifyOnSourceUpdated=True}"
+                                        />
+            <LineDiagram:LineDiagramControl Grid.Column="2" Grid.Row="2"  
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch"
+                                        Margin="0 0 0 0"
+                                        DiagramLevelItemsSource="{Binding MeasurementValues4}" 
+                                        LevelLineText="5.0V"
+                                        Scale="1"
+                                        MultiplyValue="20"
+                                        CheckIndex="{Binding MeasurementValueIndex, NotifyOnSourceUpdated=True}"
+                                        />
+        </StackPanel>
+        
+        
 
         <!--<ProgressBar Grid.Row="2" Grid.Column="2" Value="512" Maximum="1024" Orientation="Vertical" Style="{x:Null}" />-->
     </Grid>

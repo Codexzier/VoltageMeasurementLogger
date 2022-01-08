@@ -8,11 +8,14 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
     {
 
         private string _comPortname;
-      
-        //private int _minRawValue = 0;
-        //private int _maxRawValue = 1024;
-        private List<LineDiagramLevelItem> _measurementValues;
+
+        private int _minRawValue = 0;
+        private int _maxRawValue = 1024;
+        private List<LineDiagramLevelItem> _measurementValues1;
         private int _measurementValueIndex;
+        private List<LineDiagramLevelItem> _measurementValues2;
+        private List<LineDiagramLevelItem> _measurementValues3;
+        private List<LineDiagramLevelItem> _measurementValues4;
         //private float _voltageValue;
         private string _levelLineText = "5.0V";
         private int _rawValue1;
@@ -110,44 +113,34 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
 
         //private void RenewMinMax()
         //{
-        //    if (this._rawValue < this._minRawValue)
+        //    if (this._rawValue1 < this._minRawValue)
         //    {
-        //        this.MinRawValue = this._rawValue;
+        //        this.MinRawValue = this._rawValue1;
         //    }
 
-        //    if (this._rawValue > this._maxRawValue)
+        //    if (this._rawValue1 > this._maxRawValue)
         //    {
-        //        this.MaxRawValue = this._rawValue;
-        //    }
-        //}
-
-        //public int MinRawValue
-        //{
-        //    get => this._minRawValue;
-        //    set
-        //    {
-        //        this._minRawValue = value;
-        //        this.OnNotifyPropertyChanged(nameof(this.MinRawValue));
+        //        this.MaxRawValue = this._rawValue1;
         //    }
         //}
 
-        //public int MaxRawValue
-        //{
-        //    get => this._maxRawValue;
-        //    set
-        //    {
-        //        this._maxRawValue = value;
-        //        this.OnNotifyPropertyChanged(nameof(this.MaxRawValue));
-        //    }
-        //}
-
-        public List<LineDiagramLevelItem> MeasurementValues
+        public int MinRawValue
         {
-            get => this._measurementValues;
+            get => this._minRawValue;
             set
             {
-                this._measurementValues = value;
-                this.OnNotifyPropertyChanged(nameof(this.MeasurementValues));
+                this._minRawValue = value;
+                this.OnNotifyPropertyChanged(nameof(this.MinRawValue));
+            }
+        }
+
+        public int MaxRawValue
+        {
+            get => this._maxRawValue;
+            set
+            {
+                this._maxRawValue = value;
+                this.OnNotifyPropertyChanged(nameof(this.MaxRawValue));
             }
         }
 
@@ -158,6 +151,46 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
             {
                 this._measurementValueIndex = value;
                 this.OnNotifyPropertyChanged(nameof(this.MeasurementValueIndex));
+            }
+        }
+
+        public List<LineDiagramLevelItem> MeasurementValues1
+        {
+            get => this._measurementValues1;
+            set
+            {
+                this._measurementValues1 = value;
+                this.OnNotifyPropertyChanged(nameof(this.MeasurementValues1));
+            }
+        }
+
+        public List<LineDiagramLevelItem> MeasurementValues2
+        {
+            get => this._measurementValues2;
+            set
+            {
+                this._measurementValues2 = value;
+                this.OnNotifyPropertyChanged(nameof(this.MeasurementValues2));
+            }
+        }
+
+        public List<LineDiagramLevelItem> MeasurementValues3
+        {
+            get => this._measurementValues3;
+            set
+            {
+                this._measurementValues3 = value;
+                this.OnNotifyPropertyChanged(nameof(this.MeasurementValues3));
+            }
+        }
+
+        public List<LineDiagramLevelItem> MeasurementValues4
+        {
+            get => this._measurementValues4;
+            set
+            {
+                this._measurementValues4 = value;
+                this.OnNotifyPropertyChanged(nameof(this.MeasurementValues4));
             }
         }
 

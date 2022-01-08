@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
@@ -45,9 +46,19 @@ namespace VoltageMeasurementLogger.UserControls.LineDiagram
                 HorizontalAlignment = HorizontalAlignment.Left,
                 Width = sizeEllipse,
                 Height = sizeEllipse,
+                MaxWidth = sizeEllipse,
+                MaxHeight = sizeEllipse,
                 ToolTip = toolTipText,
-                Margin = new Thickness(widthPerResultDistanceToLeft, 0, 0, heightValue - (sizeEllipse / 6))
-            };
+                Margin = new Thickness(widthPerResultDistanceToLeft, 0, 0, heightValue - (sizeEllipse / 6)), 
+                RenderSize = new Size(sizeEllipse, sizeEllipse)
+        };
+
+            //this.Point.RenderSize = new Size(sizeEllipse, sizeEllipse);
+            this.Point.Measure(new Size(sizeEllipse, sizeEllipse));
+
+            var ttt = (UIElement)this.Point;
+            Debug.WriteLine($"DesiredSize={ttt.DesiredSize}, RenderSize={ttt.RenderSize}");
+            
 
             // TODO: Ist nun doppelt vorhanden. Bereits in BarItem implementiert
             if (setHighlightMark)
@@ -57,6 +68,9 @@ namespace VoltageMeasurementLogger.UserControls.LineDiagram
             }
 
             control.SimpleDiagram.Children.Add(this.Point);
+
+
+
             // TODO: Ist nun doppelt vorhanden. Bereits in BarItem implementiert
             //this.Point.MouseEnter += (e, r) =>
             //{
@@ -106,8 +120,10 @@ namespace VoltageMeasurementLogger.UserControls.LineDiagram
             {
                 return colorNr switch
                 {
-                    1 => Color.FromArgb(255, 31, 240, 127),
-                    2 => Color.FromArgb(255, 255, 242, 0),
+                    1 => Color.FromArgb(255, 0, 255, 120),
+                    2 => Color.FromArgb(255, 128, 255, 255),
+                    3 => Color.FromArgb(255, 255, 128, 192),
+                    4 => Color.FromArgb(255, 255, 128, 255),
                     _ => Color.FromArgb(255, red, 187, 219)
                 };
             }
