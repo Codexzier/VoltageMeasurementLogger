@@ -133,7 +133,14 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
         }
         private float SetCalculatedVoltage(int rawValue)
         {
-            return (float)this._divisorResolution / (float)rawValue * this._divisorMultiplikator;
+            var result = (float)this._divisorResolution / (float)rawValue * this._divisorMultiplikator;
+
+            if(float.IsInfinity(result))
+            {
+                return 0.0f;
+            }
+
+            return result;
         }
 
         internal void SetDivisor(UpdateDivisorMessage divisorValues)

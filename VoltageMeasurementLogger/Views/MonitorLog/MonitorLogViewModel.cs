@@ -22,10 +22,10 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
         private int _rawValue2;
         private int _rawValue3;
         private int _rawValue4;
-        private float _resultValue1;
-        private float _resultValue2;
-        private float _resultValue3;
-        private float _resultValue4;
+        private float _resultValue1 = 0.0f;
+        private float _resultValue2 = 0.0f;
+        private float _resultValue3 = 0.0f;
+        private float _resultValue4 = 0.0f;
 
         public string ComPortname
         {

@@ -86,44 +86,51 @@ namespace VoltageMeasurementLogger.Components.ArduinoConnection
 
         private void Sp_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            byte[] buffer = new byte[9];
-            if (this._serialPort.Read(buffer, 0, 9) == 0)
+            try
             {
-                return;
+                byte[] buffer = new byte[9];
+                if (this._serialPort.Read(buffer, 0, 9) == 0)
+                {
+                    return;
+                }
+
+                var result1 = (buffer[0] << 8) | buffer[1];
+                var bits = GetBits(result1);
+                // var b = new BitArray(new [] { result1 });
+                // var bits = new bool[b.Count];
+                // b.CopyTo(bits, 0);
+
+                var result2 = (buffer[2] << 8) | buffer[3];
+                bits += GetBits(result2);
+                var result3 = (buffer[4] << 8) | buffer[5];
+                bits += GetBits(result3);
+                var result4 = (buffer[6] << 8) | buffer[7];
+                bits += GetBits(result4);
+
+                //Debug.WriteLine($"{bits.Sum(s => s ? 1 : 0)} != {buffer[8]}");
+                if (bits != buffer[8])
+                {
+                    return;
+                }
+
+                this.RawValue1 = result1;
+                this.RawValue2 = result2;
+                this.RawValue3 = result3;
+                this.RawValue4 = result4;
+
+                // TODO Moved to eventhandler
+                if (LogManager.GetInstance().IsOn)
+                {
+                    // TODO: Log all four values and add multiplikator
+                    LogManager.GetInstance().WriteLine(this.RawValue1, this._divisor);
+                }
+
+                this._lastUpdate = DateTime.Now;
             }
-
-            var result1 = (buffer[0] << 8) | buffer[1];
-            var bits = GetBits(result1);
-            // var b = new BitArray(new [] { result1 });
-            // var bits = new bool[b.Count];
-            // b.CopyTo(bits, 0);
-            
-            var result2 = (buffer[2] << 8) | buffer[3];
-            bits += GetBits(result2);
-            var result3 = (buffer[4] << 8) | buffer[5];
-            bits += GetBits(result3);
-            var result4 = (buffer[6] << 8) | buffer[7];
-            bits += GetBits(result4);
-
-            //Debug.WriteLine($"{bits.Sum(s => s ? 1 : 0)} != {buffer[8]}");
-            if (bits != buffer[8])
+            catch(Exception ex)
             {
-                return;
+                this.UartConnectionErrorEvent?.Invoke(ex.Message);
             }
-
-            this.RawValue1 = result1;
-            this.RawValue2 = result2;
-            this.RawValue3 = result3;
-            this.RawValue4 = result4;
-
-            // TODO Moved to eventhandler
-            if (LogManager.GetInstance().IsOn)
-            {
-                // TODO: Log all four values and add multiplikator
-                LogManager.GetInstance().WriteLine(this.RawValue1, this._divisor);
-            }
-
-            this._lastUpdate = DateTime.Now;
         }
 
         private static byte GetBits(int result)
@@ -134,10 +141,10 @@ namespace VoltageMeasurementLogger.Components.ArduinoConnection
             return (byte)bits.Sum(s => s ? 1 : 0);
         }
 
-        public int RawValue1 { get; private set; }
-        public int RawValue2 { get; private set; }
-        public int RawValue3 { get; private set; }
-        public int RawValue4 { get; private set; }
+        public int RawValue1 { get; private set; } = 0;
+        public int RawValue2 { get; private set; } = 0;
+        public int RawValue3 { get; private set; } = 0;
+        public int RawValue4 { get; private set; } = 0;
 
         public bool IsOpen => _serialPort == null ? false : _serialPort.IsOpen;
 
@@ -159,5 +166,8 @@ namespace VoltageMeasurementLogger.Components.ArduinoConnection
 
         public delegate void NoIncomingDataEventHandler();
         public event NoIncomingDataEventHandler NoIncomingDataEvent;
+
+        public delegate void UartConnectionErrorEventHandler(string message);
+        public event UartConnectionErrorEventHandler UartConnectionErrorEvent;
     }
 }
