@@ -147,7 +147,13 @@ namespace VoltageMeasurementLogger.Components.Test
                                                w.Contains($"{value4}") &&
                                                w.Contains($"{divisor}") &&
                                                w.Contains($"{multiplicator}")));
-            Assert.IsTrue(fileContent.Any(w => w.Split(';').Length == 6));
+            Assert.IsTrue(fileContent.Any(w => w.Split(';').Length == 4));
+            Assert.AreEqual(1, fileContent.First().Split(';').Count(c => c.Contains($"{value1}")));
+            Assert.AreEqual(1, fileContent.First().Split(';').Count(c => c.Contains($"{value2}")));
+            Assert.AreEqual(1, fileContent.First().Split(';').Count(c => c.Contains($"{value3}")));
+            Assert.AreEqual(1, fileContent.First().Split(';').Count(c => c.Contains($"{value4}")));
+            Assert.AreEqual(4, fileContent.First().Split(';').Count(c => c.Contains($"{divisor}")));
+            Assert.AreEqual(4, fileContent.First().Split(';').Count(c => c.Contains($"{multiplicator}")));
         }
 
         [TestMethod]
@@ -237,7 +243,15 @@ namespace VoltageMeasurementLogger.Components.Test
             // assert
             var resultArray = logItems as LogItem[] ?? logItems.ToArray();
             Assert.AreEqual(1, resultArray.Length);
-            Assert.IsTrue(resultArray.Any(w => w.NumericContent.Equals(value1)));
+            Assert.IsTrue(resultArray.Any(w => w.LogValues[0].Value.Equals(value1)));
+            Assert.IsTrue(resultArray.Any(w => w.LogValues[1].Value.Equals(value2)));
+            Assert.IsTrue(resultArray.Any(w => w.LogValues[2].Value.Equals(value3)));
+            Assert.IsTrue(resultArray.Any(w => w.LogValues[3].Value.Equals(value4)));
+            for (int i = 0; i < resultArray.Length; i++)
+            {
+                Assert.IsTrue(resultArray.Any(w => w.LogValues[i].Divisor.Equals(divisor)));
+                Assert.IsTrue(resultArray.Any(w => w.LogValues[i].Multiplicator.Equals(multiplicator)));
+            }
         }
     }
 }

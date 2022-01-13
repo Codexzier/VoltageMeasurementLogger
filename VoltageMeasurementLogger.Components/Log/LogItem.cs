@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace VoltageMeasurementLogger.Components.Log
 {
@@ -23,7 +24,7 @@ namespace VoltageMeasurementLogger.Components.Log
                     this.NumericContent = s1;
                 }
 
-                if (int.TryParse(sa[0], out var s2))
+                if (int.TryParse(sa[1], out var s2))
                 {
                     this.Divisor = s2;
                 }
@@ -32,9 +33,22 @@ namespace VoltageMeasurementLogger.Components.Log
 
         public string Content { get; }
         public int NumericContent { get; }
-
+        
         public int Divisor { get; }
+        
+        public float Multiplicator { get; }
+        
+        public LogValue[] LogValues { get; }
 
         public DateTime Written { get; }
+    }
+
+    public class LogValue
+    {
+        public int Value { get; }
+        
+        public int Divisor { get; }
+        
+        public float Multiplicator { get; }
     }
 }
