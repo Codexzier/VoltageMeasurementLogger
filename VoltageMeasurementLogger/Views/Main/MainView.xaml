@@ -34,10 +34,10 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="0" Text="COM PORTS" />
-            <Button Grid.Column="1" Content="R" Style="{x:Null}" Command="{Binding CommandRefreshComPortList}" />
+            <Button Grid.Column="1" Content="R" Style="{x:Null}" Command="{Binding CommandRefreshComPortList}" Visibility="Collapsed" />
         </Grid>
 
-        <ListBox Grid.Row="1" ItemsSource="{Binding ComPorts}" SelectedItem="{Binding SelectedPortName}" />
+        <ListBox Grid.Row="1" ItemsSource="{Binding ComPorts, NotifyOnSourceUpdated=True}" SelectedItem="{Binding SelectedPortName}" />
 
         <Grid Grid.Row="2" Height="50" >
             <Grid.ColumnDefinitions>

@@ -35,7 +35,7 @@ namespace VoltageMeasurementLogger.Views.Main
             this._viewModel.VisibilityDisconnect = Visibility.Visible;
             this._viewModel.VisibilityConnect = Visibility.Collapsed;
 
-            EventBusManager.Send<MonitorLogView, BaseMessage>(new BaseMessage(this._viewModel.SelectedPortName), 1);
+            EventBusManager.Send<MonitorLogView, BaseMessage>(new BaseMessage(this._viewModel.SelectedPortName), SideHostChannel.MainRight);
         }
     }
 }

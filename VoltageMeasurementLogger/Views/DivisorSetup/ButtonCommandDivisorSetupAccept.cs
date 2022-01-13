@@ -17,7 +17,7 @@ namespace VoltageMeasurementLogger.Views.DivisorSetup
             var setting = UserSettingsLoaderHelper.Load();
 
             var rawValue = this._viewModel.DivisorValue;
-            setting.DivisorValue = this._viewModel.DivisorValue;
+            //setting.DivisorValue = this._viewModel.DivisorValue;
 
             var multi = this._viewModel.DivisorMultiplikator;
             setting.DivisorMultiplikator = multi;
@@ -32,8 +32,8 @@ namespace VoltageMeasurementLogger.Views.DivisorSetup
                     rawValue, 
                     multi,
                     reso), 
-                1);
-            EventBusManager.CloseView<DivisorSetupView>(99);
+                SideHostChannel.MainRight);
+            EventBusManager.CloseView<DivisorSetupView>(SideHostChannel.DialogWindow);
         }
     }
 }

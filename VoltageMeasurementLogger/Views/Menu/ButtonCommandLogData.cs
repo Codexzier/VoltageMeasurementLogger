@@ -10,16 +10,16 @@ namespace VoltageMeasurementLogger.Views.Menu
     {
         public override void Execute(object parameter)
         {
-            if (!EventBusManager.IsViewOpen<LogDataView>(0))
+            if (!EventBusManager.IsViewOpen<LogDataView>(SideHostChannel.Main))
             {
-                EventBusManager.OpenView<LogDataView>(0);
-                EventBusManager.Send<LogDataView, BaseMessage>(new BaseMessage(""), 0);
+                EventBusManager.OpenView<LogDataView>(SideHostChannel.Main);
+                EventBusManager.Send<LogDataView, BaseMessage>(new BaseMessage(""), SideHostChannel.Main);
             }
 
-            if (!EventBusManager.IsViewOpen<LogDataResultView>(1))
+            if (!EventBusManager.IsViewOpen<LogDataResultView>(SideHostChannel.MainRight))
             {
-                EventBusManager.OpenView<LogDataResultView>(1);
-                EventBusManager.Send<LogDataResultView, BaseMessage>(new BaseMessage(""), 1);
+                EventBusManager.OpenView<LogDataResultView>(SideHostChannel.MainRight);
+                EventBusManager.Send<LogDataResultView, BaseMessage>(new BaseMessage(""), SideHostChannel.MainRight);
             }
         }
     }

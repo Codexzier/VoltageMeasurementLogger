@@ -9,9 +9,6 @@ using System.Linq;
 
 namespace VoltageMeasurementLogger.Views.DivisorSetup
 {
-    /// <summary>
-    /// Interaction logic for DivisorSetupView.xaml
-    /// </summary>
     public partial class DivisorSetupView : UserControl
     {
         private readonly DivisorSetupViewModel _viewModel;
@@ -35,12 +32,19 @@ namespace VoltageMeasurementLogger.Views.DivisorSetup
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            this._viewModel.DivisorValue = this._uartConnection.RawValue;
-            var resolutionValue = this._viewModel.SelectedDivisorResolution.Resolution;
+            
 
-            var result = resolutionValue / this._viewModel.DivisorValue * this._viewModel.DivisorMultiplikator;
+            this._viewModel.DivisorValue = this._uartConnection.RawValue1;
+            int resolutionValue = this._viewModel.SelectedDivisorResolution.Resolution;
 
-            this._viewModel.CalculateResult = $"{resolutionValue} / {this._viewModel.DivisorValue} * {this._viewModel.DivisorMultiplikator} = {result}";
+            if (this._viewModel.MultiplikatorAutoSet)
+            {
+                this._viewModel.DivisorMultiplikator = 5f / ((float)resolutionValue / (float)this._viewModel.DivisorValue);
+            }
+
+            double result = (float)resolutionValue / (float)this._viewModel.DivisorValue * this._viewModel.DivisorMultiplikator;
+
+            this._viewModel.CalculateResult = $"{result:N5} = {resolutionValue} / {this._viewModel.DivisorValue} * {this._viewModel.DivisorMultiplikator}";
         }
 
         private void BaseMessageEvent(IMessageContainer obj)
@@ -58,7 +62,7 @@ namespace VoltageMeasurementLogger.Views.DivisorSetup
 
             this._viewModel.DivisorMultiplikator = setting.DivisorMultiplikator;
 
-            DivisiorResolutionItem refItem = null;
+            DivisorResolutionItem refItem = null;
             if(!string.IsNullOrEmpty(setting.DivisorValueResolution))
             {
                 var divItem = UartConnection.GetDivisorValueResolution(setting.DivisorValueResolution);
@@ -71,6 +75,8 @@ namespace VoltageMeasurementLogger.Views.DivisorSetup
             }
 
             this._viewModel.SelectedDivisorResolution = refItem;
+
+            this._timer.Start();
         }
     }
 }

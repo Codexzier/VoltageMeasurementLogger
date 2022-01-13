@@ -2,10 +2,8 @@
 using Codexzier.Wpf.ApplicationFramework.Components.Ui.EventBus;
 using Codexzier.Wpf.ApplicationFramework.Views.Base;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows.Controls;
-using System.Windows.Input;
 using VoltageMeasurementLogger.Components.Log;
 using VoltageMeasurementLogger.UserControls.LineDiagram;
 using VoltageMeasurementLogger.Views.LogData;
@@ -101,15 +99,6 @@ namespace VoltageMeasurementLogger.Views.LogDataResult
             double lastValue = this._viewModel.Values[this._viewModel.LevelItemIndex].Value;
             for (int index = this._viewModel.LevelItemIndex; index < this._viewModel.Values.Count; index++)
             {
-                //if (this._viewModel.Values[index].Value < lastValue - this._viewModel.DeviationTolerance ||
-                //    this._viewModel.Values[index].Value > lastValue + this._viewModel.DeviationTolerance)
-                //{
-                //    this._viewModel.LevelItemIndex = index;
-                //    this._viewModel.DataGridLogResult.UpdateLayout();
-                //    this._viewModel.DataGridLogResult.ScrollIntoView(this._viewModel.DataGridLogResult.SelectedItem);
-                //    return;
-                //}
-
                 if(IsDeviationViolated(lastValue, this._viewModel.Values[index], this._viewModel.DeviationTolerance))
                 {
                     this._viewModel.LevelItemIndex = index;
@@ -140,8 +129,6 @@ namespace VoltageMeasurementLogger.Views.LogDataResult
             double lastValue = this._viewModel.Values[this._viewModel.LevelItemIndex].Value;
             for (int index = this._viewModel.LevelItemIndex; index > 0; index--)
             {
-                //if (this._viewModel.Values[index].Value < lastValue - this._viewModel.DeviationTolerance ||
-                //    this._viewModel.Values[index].Value > lastValue + this._viewModel.DeviationTolerance)
                 if(ButtonCommandNextDeviations.IsDeviationViolated(lastValue, this._viewModel.Values[index], this._viewModel.DeviationTolerance))
                 {
                     this._viewModel.LevelItemIndex = index;

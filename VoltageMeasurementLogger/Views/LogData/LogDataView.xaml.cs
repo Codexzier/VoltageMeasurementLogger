@@ -26,7 +26,7 @@ namespace VoltageMeasurementLogger.Views.LogData
 
             EventBusManager.Register<LogDataView, BaseMessage>(this.BaseMessageEvent);
 
-            this._viewModel.CommandSelectedFileItem = new SelectChangedCommandSelectedFileItem(this._viewModel);
+            this._viewModel.CommandSelectedFileItem = new SelectChangedCommandSelectedFileItem();
         }
 
         private void BaseMessageEvent(IMessageContainer obj)

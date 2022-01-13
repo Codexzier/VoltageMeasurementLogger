@@ -8,7 +8,7 @@ namespace VoltageMeasurementLogger.Views.Main
 {
     internal class MainViewModel : BaseViewModel
     {
-        private ObservableCollection<string> _comPorts;
+        private ObservableCollection<string> _comPorts = new ObservableCollection<string>();
         private string _selectedPortName;
         private ICommand _commandConnectUart;
         private ICommand _commandRefreshComPortList;
@@ -21,6 +21,13 @@ namespace VoltageMeasurementLogger.Views.Main
         private Visibility _visibilityDisconnect = Visibility.Collapsed;
         private Visibility _visibilityConnect;
         private float _divisorMultiplikator;
+
+        public MainViewModel()
+        {
+            this._comPorts.CollectionChanged += this._comPorts_CollectionChanged;
+        }
+
+       
 
         public ICommand CommandConnectUart
         {
@@ -62,6 +69,8 @@ namespace VoltageMeasurementLogger.Views.Main
                 this.OnNotifyPropertyChanged(nameof(this.ComPorts));
             }
         }
+
+        private void _comPorts_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e) => this.OnNotifyPropertyChanged(nameof(this.ComPorts));
 
         public string SelectedPortName
         {
