@@ -88,6 +88,11 @@ namespace VoltageMeasurementLogger.Components.Log
             return logItems;
         }
 
-        
+
+        public void WriteValues(int value1, int value2, int value3, int value4, int divisor, float multiplicator)
+        {
+            
+            
+        }
     }
 }
