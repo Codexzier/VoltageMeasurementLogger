@@ -76,13 +76,33 @@ namespace VoltageMeasurementLogger.Components.Log
 
                     var sa = str.Split(';');
 
-                    if(!DateTime.TryParse(sa[1], out var date))
+                    switch(sa.Length)
                     {
-                        date = DateTime.MinValue;
-                    }
+                        case 5:
+                        {
+                            var li = new LogItem(sa);
+                            logItems.Add(li);
 
-                    var li = new LogItem(sa[0], date);
-                    logItems.Add(li);
+
+                            break;
+                        }
+                        case 2:
+                        {
+                            if (!DateTime.TryParse(sa[1], out var date))
+                            {
+                                date = DateTime.MinValue;
+                            }
+
+                            var li = new LogItem(sa[0], date);
+                            logItems.Add(li);
+                            break;
+                        }
+                        default:
+                        {
+                            break;
+                        }
+                    }
+                    
                 }
             }
 

@@ -1,4 +1,5 @@
 ﻿using Codexzier.Wpf.ApplicationFramework.Components.UserSettings;
+using VoltageMeasurementLogger.Components.ArduinoConnection;
 
 namespace VoltageMeasurementLogger.Components.UserSettings
 {
@@ -69,6 +70,7 @@ namespace VoltageMeasurementLogger.Components.UserSettings
         //    }
         //}
 
+        // TODO: Multiplikator für vier verschiedene Werte speichern.
         public float DivisorMultiplikator
         {
             get => _divisorMultiplikator;
@@ -79,6 +81,7 @@ namespace VoltageMeasurementLogger.Components.UserSettings
             }
         }
 
+        // TODO: ggf. als Beschreibung umbenennen.
         public string DivisorValueResolution
         {
             get => _divisorValueResolution; set
@@ -86,6 +89,12 @@ namespace VoltageMeasurementLogger.Components.UserSettings
                 this._divisorValueResolution = value;
                 this.SetChanged();
             }
+        }
+
+        // TODO: Ausweiten auf die vier divisor Werte, um verschiedene Skalierbare Inhalte anzuzeigen
+        public int DivisorValueResulution1()
+        {
+            return UartConnection.GetDivisorValueResolution(this.DivisorValueResolution).Resolution;
         }
     }
 }

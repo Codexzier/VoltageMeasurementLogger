@@ -147,7 +147,7 @@ namespace VoltageMeasurementLogger.Components.Test
                                                w.Contains($"{value4}") &&
                                                w.Contains($"{divisor}") &&
                                                w.Contains($"{multiplicator}")));
-            Assert.IsTrue(fileContent.Any(w => w.Split(';').Length == 4));
+            Assert.IsTrue(fileContent.Any(w => w.Split(';').Length == 5));
             Assert.AreEqual(1, fileContent.First().Split(';').Count(c => c.Contains($"{value1}")));
             Assert.AreEqual(1, fileContent.First().Split(';').Count(c => c.Contains($"{value2}")));
             Assert.AreEqual(1, fileContent.First().Split(';').Count(c => c.Contains($"{value3}")));

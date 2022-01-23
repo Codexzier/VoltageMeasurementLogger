@@ -79,13 +79,13 @@
                 <DataGridTextColumn Header="Nr" 
                                     Binding="{Binding Nr}"/>
                 <DataGridTextColumn Header="Raw Value 1"
-                                    Binding="{Binding Value, StringFormat=N2}"/>
+                                    Binding="{Binding RawValue1, StringFormat=N2}"/>
                 <DataGridTextColumn Header="Raw Value 2"
-                                    Binding="{Binding Value, StringFormat=N2}"/>
+                                    Binding="{Binding RawValue2, StringFormat=N2}"/>
                 <DataGridTextColumn Header="Raw Value 3"
-                                    Binding="{Binding Value, StringFormat=N2}"/>
+                                    Binding="{Binding RawValue3, StringFormat=N2}"/>
                 <DataGridTextColumn Header="Raw Value 4"
-                                    Binding="{Binding Value, StringFormat=N2}"/>
+                                    Binding="{Binding RawValue4, StringFormat=N2}"/>
                 
                 <!-- TODO: Feature muss noch implementiert werden -->
                 <!--<DataGridTextColumn Header="Min.Value"

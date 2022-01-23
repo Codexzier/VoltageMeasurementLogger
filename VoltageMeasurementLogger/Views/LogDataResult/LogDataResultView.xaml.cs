@@ -44,7 +44,7 @@ namespace VoltageMeasurementLogger.Views.LogDataResult
 
                 var data = LogManager.GetInstance().GetLogs(fileItem.Filename);
 
-                var list = new List<LineDiagramLevelItem>();
+                var list = new List<LogValueItem>();
                 var lineNr = 1;
 
                 if (data.Any())
@@ -63,14 +63,30 @@ namespace VoltageMeasurementLogger.Views.LogDataResult
                             this._viewModel.MinValue = item.NumericContent;
                         }
 
-                        list.Add(new LineDiagramLevelItem
+                        if (item.LogValues == null)
                         {
-                            Value = item.NumericContent,
-                            MinValue = item.NumericContent,
-                            MaxValue = item.NumericContent,
-                            Date = item.Written,
-                            Nr = lineNr
-                        });
+                            list.Add(new LogValueItem
+                            {
+                                RawValue1 = item.NumericContent,
+                                RawValue2 = 0,
+                                RawValue3 = 0,
+                                RawValue4 = 0,
+                                Date = item.Written,
+                                Nr = lineNr
+                            });
+                        }
+                        else
+                        {
+                            list.Add(new LogValueItem
+                            {
+                                RawValue1 = item.LogValues[0].Value,
+                                RawValue2 = item.LogValues[1].Value,
+                                RawValue3 = item.LogValues[2].Value,
+                                RawValue4 = item.LogValues[3].Value,
+                                Date = item.Written,
+                                Nr = lineNr
+                            });
+                        }
                         lineNr++;
                     }
                 }
@@ -80,7 +96,7 @@ namespace VoltageMeasurementLogger.Views.LogDataResult
                     this._viewModel.MaxValue = 0d;
                 }
 
-                this._viewModel.AverageValue = list.Count == 0 ? 0 : list.Average(a => a.Value);
+                this._viewModel.AverageValue = list.Count == 0 ? 0 : list.Average(a => a.RawValue1);
 
                 this._viewModel.CountMeasures = list.Count;
                 this._viewModel.Values = list;
@@ -96,7 +112,7 @@ namespace VoltageMeasurementLogger.Views.LogDataResult
 
         public override void Execute(object parameter)
         {
-            double lastValue = this._viewModel.Values[this._viewModel.LevelItemIndex].Value;
+            double lastValue = this._viewModel.Values[this._viewModel.LevelItemIndex].RawValue1;
             for (int index = this._viewModel.LevelItemIndex; index < this._viewModel.Values.Count; index++)
             {
                 if(IsDeviationViolated(lastValue, this._viewModel.Values[index], this._viewModel.DeviationTolerance))
@@ -107,14 +123,14 @@ namespace VoltageMeasurementLogger.Views.LogDataResult
                     return;
                 }
 
-                lastValue = this._viewModel.Values[index].Value;
+                lastValue = this._viewModel.Values[index].RawValue1;
             }
         }
 
-        internal static bool IsDeviationViolated(double lastValue, LineDiagramLevelItem item, double tolerance)
+        internal static bool IsDeviationViolated(double lastValue, LogValueItem item, double tolerance)
         {
-            return item.Value < lastValue - tolerance ||
-                   item.Value > lastValue + tolerance;
+            return item.RawValue1 < lastValue - tolerance ||
+                   item.RawValue1 > lastValue + tolerance;
         }
     }
 
@@ -126,7 +142,7 @@ namespace VoltageMeasurementLogger.Views.LogDataResult
 
         public override void Execute(object parameter)
         {
-            double lastValue = this._viewModel.Values[this._viewModel.LevelItemIndex].Value;
+            double lastValue = this._viewModel.Values[this._viewModel.LevelItemIndex].RawValue1;
             for (int index = this._viewModel.LevelItemIndex; index > 0; index--)
             {
                 if(ButtonCommandNextDeviations.IsDeviationViolated(lastValue, this._viewModel.Values[index], this._viewModel.DeviationTolerance))
@@ -137,7 +153,7 @@ namespace VoltageMeasurementLogger.Views.LogDataResult
                     return;
                 }
 
-                lastValue = this._viewModel.Values[index].Value;
+                lastValue = this._viewModel.Values[index].RawValue1;
             }
         }
     }

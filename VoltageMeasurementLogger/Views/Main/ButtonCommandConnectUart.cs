@@ -1,8 +1,11 @@
 ﻿using Codexzier.Wpf.ApplicationFramework.Commands;
 using Codexzier.Wpf.ApplicationFramework.Components.Ui.EventBus;
+using Codexzier.Wpf.ApplicationFramework.Components.UserSettings;
 using Codexzier.Wpf.ApplicationFramework.Views.Base;
 using System.Windows;
+using VoltageMeasurementLogger.Components;
 using VoltageMeasurementLogger.Components.ArduinoConnection;
+using VoltageMeasurementLogger.Components.UserSettings;
 using VoltageMeasurementLogger.Views.MonitorLog;
 
 namespace VoltageMeasurementLogger.Views.Main
@@ -23,9 +26,12 @@ namespace VoltageMeasurementLogger.Views.Main
                 return;
             }
 
-            var connector = UartConnection.GetInstance();
+            var usl = UserSettingsLoader<CustomSettingsFile>.GetInstance(
+                SerializeHelper.Serialize,
+                SerializeHelper.Deserialize).Load();
 
-            var result = connector.ConnectTo(this._viewModel.SelectedPortName, 115200, this._viewModel.DivisorValue);
+            var connector = UartConnection.GetInstance();
+            var result = connector.ConnectTo(usl.DivisorValueResulution1(), usl.DivisorMultiplikator,this._viewModel.SelectedPortName, 115200);
             if(!result.Success)
             {
                 SimpleStatusOverlays.Show("INFO", result.Message);
