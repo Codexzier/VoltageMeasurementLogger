@@ -86,6 +86,11 @@ namespace VoltageMeasurementLogger.Components.ArduinoConnection
 
         private void Sp_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
+            if(this._serialPort == null || !this._serialPort.IsOpen)
+            {
+                return;
+            }
+
             try
             {
                 byte[] buffer = new byte[9];
