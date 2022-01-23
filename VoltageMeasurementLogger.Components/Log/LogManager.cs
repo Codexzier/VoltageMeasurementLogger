@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace VoltageMeasurementLogger.Components.Log
 {
@@ -88,6 +89,15 @@ namespace VoltageMeasurementLogger.Components.Log
             return logItems;
         }
 
-        
+
+        public void WriteValues(int value1, int value2, int value3, int value4, int divisor, float multiplicator)
+        {
+            var sb = new StringBuilder();
+            sb.Append($"{value1}:{divisor}:{multiplicator};");
+            sb.Append($"{value2}:{divisor}:{multiplicator};");
+            sb.Append($"{value3}:{divisor}:{multiplicator};");
+            sb.Append($"{value4}:{divisor}:{multiplicator}");
+            this.WriteLine(sb.ToString());
+        }
     }
 }
