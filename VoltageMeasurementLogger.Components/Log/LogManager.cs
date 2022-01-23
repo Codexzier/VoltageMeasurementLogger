@@ -99,10 +99,9 @@ namespace VoltageMeasurementLogger.Components.Log
                         }
                         default:
                         {
-                            break;
+                            throw new LogManagerException("Unknown format detected!");
                         }
                     }
-                    
                 }
             }
 
