@@ -74,11 +74,11 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <TextBox Text="{Binding DivisorMultiplikator, StringFormat=N5}" 
-                             IsEnabled="{Binding ElementName=cbMultiplikatorAutoSet}"/>
+                    <TextBox Text="{Binding DivisorMultiplicator, StringFormat=N5}" 
+                             IsEnabled="{Binding ElementName=cbMultiplicatorAutoSet}"/>
                     <CheckBox Grid.Column="2" 
-                              IsChecked="{Binding MultiplikatorAutoSet, UpdateSourceTrigger=PropertyChanged}"
-                              x:Name="cbMultiplikatorAutoSet" />
+                              IsChecked="{Binding MultiplicatorAutoSet, UpdateSourceTrigger=PropertyChanged}"
+                              x:Name="cbMultiplicatorAutoSet" />
                     <TextBlock Grid.Column="3" 
                                Text="Auto Set" 
                                VerticalAlignment="Center"/>

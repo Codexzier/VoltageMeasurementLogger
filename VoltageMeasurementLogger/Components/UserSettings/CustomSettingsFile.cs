@@ -8,9 +8,7 @@ namespace VoltageMeasurementLogger.Components.UserSettings
         private string _lastImportDirectory;
         private string _lastImportFilename;
         private bool _loadFromService;
-        private bool _loadRkiDataByApplicationStart;
-        private int _divisorValue;
-        private float _divisorMultiplikator;
+        private float _divisorMultiplicator;
         private string _divisorValueResolution;
 
         public CustomSettingsFile() : base(false)
@@ -50,33 +48,13 @@ namespace VoltageMeasurementLogger.Components.UserSettings
             }
         }
 
-        public bool LoadRkiDataByApplicationStart
-        {
-            get => this._loadRkiDataByApplicationStart;
-            set
-            {
-                this._loadRkiDataByApplicationStart = value;
-                this.SetChanged();
-            }
-        }
-
-        //public int DivisorValue
-        //{
-        //    get => this._divisorValue;
-        //    set
-        //    {
-        //        this._divisorValue = value;
-        //        this.SetChanged();
-        //    }
-        //}
-
         // TODO: Multiplikator für vier verschiedene Werte speichern.
-        public float DivisorMultiplikator
+        public float DivisorMultiplicator
         {
-            get => _divisorMultiplikator;
+            get => this._divisorMultiplicator;
             set
             {
-                this._divisorMultiplikator = value;
+                this._divisorMultiplicator = value;
                 this.SetChanged();
             }
         }
@@ -92,7 +70,7 @@ namespace VoltageMeasurementLogger.Components.UserSettings
         }
 
         // TODO: Ausweiten auf die vier divisor Werte, um verschiedene Skalierbare Inhalte anzuzeigen
-        public int DivisorValueResulution1()
+        public int DivisorValueResolution1()
         {
             return UartConnection.GetDivisorValueResolution(this.DivisorValueResolution).Resolution;
         }

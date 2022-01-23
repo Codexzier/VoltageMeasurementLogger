@@ -7,7 +7,7 @@ namespace VoltageMeasurementLogger.Views.DivisorSetup
 {
     internal class ButtonCommandDivisorSetupAccept : BaseCommand
     {
-        private DivisorSetupViewModel _viewModel;
+        private readonly DivisorSetupViewModel _viewModel;
 
         public ButtonCommandDivisorSetupAccept(DivisorSetupViewModel viewModel) => this._viewModel = viewModel;
 
@@ -15,15 +15,12 @@ namespace VoltageMeasurementLogger.Views.DivisorSetup
         {
 
             var setting = UserSettingsLoaderHelper.Load();
-
             var rawValue = this._viewModel.DivisorValue;
-            //setting.DivisorValue = this._viewModel.DivisorValue;
+            var multi = this._viewModel.DivisorMultiplicator;
+            setting.DivisorMultiplicator = multi;
 
-            var multi = this._viewModel.DivisorMultiplikator;
-            setting.DivisorMultiplikator = multi;
-
-            var reso = this._viewModel.SelectedDivisorResolution.ToString();
-            setting.DivisorValueResolution = reso;
+            var resolution = this._viewModel.SelectedDivisorResolution.ToString();
+            setting.DivisorValueResolution = resolution;
 
             UserSettingsLoaderHelper.Save(setting);
 
@@ -31,7 +28,7 @@ namespace VoltageMeasurementLogger.Views.DivisorSetup
                 new UpdateDivisorMessage(
                     rawValue, 
                     multi,
-                    reso), 
+                    resolution), 
                 SideHostChannel.MainRight);
             EventBusManager.CloseView<DivisorSetupView>(SideHostChannel.DialogWindow);
         }

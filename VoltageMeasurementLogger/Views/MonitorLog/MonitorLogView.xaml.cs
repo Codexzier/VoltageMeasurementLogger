@@ -1,13 +1,9 @@
 ﻿using Codexzier.Wpf.ApplicationFramework.Commands;
 using Codexzier.Wpf.ApplicationFramework.Components.Ui.EventBus;
-using System.Windows.Controls;
 
 namespace VoltageMeasurementLogger.Views.MonitorLog
 {
-    /// <summary>
-    /// Interaction logic for MonitorLogView.xaml
-    /// </summary>
-    public partial class MonitorLogView : UserControl
+    public partial class MonitorLogView
     {
         private readonly MonitorLogViewModel _viewModel;
         private readonly LineDiagramHelper _lineDiagramHelper;
@@ -28,7 +24,7 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
         {
             if(obj is UpdateDivisorMessage update)
             {
-                this._lineDiagramHelper.SetDivisor(update);
+                LineDiagramHelper.SetDivisor(update);
             }
         }
 
@@ -41,7 +37,7 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
                     return;
                 }
 
-                this._viewModel.ComPortname = str;
+                this._viewModel.ComPortName = str;
 
                 this._lineDiagramHelper.Start();
                 
@@ -56,7 +52,7 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
                 }
             }
 
-            this._viewModel.ComPortname = "---";
+            this._viewModel.ComPortName = "---";
         }
     }
 }

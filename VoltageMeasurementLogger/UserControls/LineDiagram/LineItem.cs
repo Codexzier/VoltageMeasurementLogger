@@ -36,7 +36,6 @@ namespace VoltageMeasurementLogger.UserControls.LineDiagram
             var barColorNormal = new SolidColorBrush(this.SetUpValueIfOverHundred(value, setColor));
             var barColorHighlighted = new SolidColorBrush(Color.FromArgb(255, 160, 200, 219));
 
-
             // TODO: Ist fast doppelt vorhanden.
             // Wegen Ellipse. Soll aber nur in der Höhe des Werts angezeigt werden.
             this.Point = new Ellipse
@@ -51,9 +50,8 @@ namespace VoltageMeasurementLogger.UserControls.LineDiagram
                 ToolTip = toolTipText,
                 Margin = new Thickness(widthPerResultDistanceToLeft, 0, 0, heightValue - (sizeEllipse / 6)), 
                 RenderSize = new Size(sizeEllipse, sizeEllipse)
-        };
+            };
 
-            //this.Point.RenderSize = new Size(sizeEllipse, sizeEllipse);
             this.Point.Measure(new Size(sizeEllipse, sizeEllipse));
 
             var ttt = (UIElement)this.Point;
@@ -68,30 +66,6 @@ namespace VoltageMeasurementLogger.UserControls.LineDiagram
             }
 
             control.SimpleDiagram.Children.Add(this.Point);
-
-
-
-            // TODO: Ist nun doppelt vorhanden. Bereits in BarItem implementiert
-            //this.Point.MouseEnter += (e, r) =>
-            //{
-            //    if (!(e is Rectangle subRect))
-            //    {
-            //        return;
-            //    }
-
-            //    subRect.Fill = barColorHighlighted;
-            //};
-
-            //// TODO: Ist nun doppelt vorhanden. Bereits in BarItem implementiert
-            //this.Point.MouseLeave += (e, r) =>
-            //{
-            //    if (!(e is Ellipse subRect))
-            //    {
-            //        return;
-            //    }
-
-            //    subRect.Fill = barColorNormal;
-            //};
         }
 
         internal void SetPointMargin(double heightValue, double sizeEllipse)

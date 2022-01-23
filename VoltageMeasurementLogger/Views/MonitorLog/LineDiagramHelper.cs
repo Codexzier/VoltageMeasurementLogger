@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Timers;
 using VoltageMeasurementLogger.Components;
 using VoltageMeasurementLogger.Components.ArduinoConnection;
+using VoltageMeasurementLogger.Components.Helpers;
 using VoltageMeasurementLogger.UserControls.LineDiagram;
 
 namespace VoltageMeasurementLogger.Views.MonitorLog
@@ -12,7 +13,9 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
         private readonly MonitorLogViewModel _viewModel;
         private readonly Timer _timer = new();
         private int _index;
-        private float _divisorMultiplikator = 10;
+        private bool _isMessageBoxOpenWarningNoIncomingData;
+        // private int _divisorResolution;
+        // private float _divisorMultiplicator = 10;
         private readonly UartConnection _uartConnection;
 
         public LineDiagramHelper(MonitorLogViewModel viewModel)
@@ -23,8 +26,7 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
             this.Init();
         }
 
-        private bool _isMessageBoxOpenWarningNoIncomingData;
-        private int _divisorResolution;
+   
 
         private void UartConnection_NoIncomingDataEvent()
         {
@@ -92,30 +94,28 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
 
             var setting = UserSettingsLoaderHelper.Load();
    
-            this._divisorMultiplikator = setting.DivisorMultiplikator;
-
             var divItem = UartConnection.GetDivisorValueResolution(setting.DivisorValueResolution);
-            this._divisorResolution = divItem.Resolution;
+            
+            // this._divisorMultiplicator = setting.DivisorMultiplicator;
+            // this._divisorResolution = divItem.Resolution;
+            VoltageCalculateHelper.SetDivisorAndMultiplicator(
+                divItem.Resolution,
+                setting.DivisorMultiplicator);
         }
 
         public void Start() => this._timer.Start();
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            //var rawValue1 = this._uartConnection.RawValue1;
-            //var voltage1 = (float)this._divisorResolution / (float)rawValue1 * this._divisorMultiplikator;
-
-            //this._viewModel.ResultValue1 = voltage1;
-
             this._viewModel.RawValue1 = this._uartConnection.RawValue1;
             this._viewModel.RawValue2 = this._uartConnection.RawValue2;
             this._viewModel.RawValue3 = this._uartConnection.RawValue3;
             this._viewModel.RawValue4 = this._uartConnection.RawValue4;
 
-            this._viewModel.ResultValue1 = this.SetCalculatedVoltage(this._uartConnection.RawValue1);
-            this._viewModel.ResultValue2 = this.SetCalculatedVoltage(this._uartConnection.RawValue2);
-            this._viewModel.ResultValue3 = this.SetCalculatedVoltage(this._uartConnection.RawValue3);
-            this._viewModel.ResultValue4 = this.SetCalculatedVoltage(this._uartConnection.RawValue4);
+            this._viewModel.ResultValue1 = VoltageCalculateHelper.RawToVoltage(this._uartConnection.RawValue1);
+            this._viewModel.ResultValue2 = VoltageCalculateHelper.RawToVoltage(this._uartConnection.RawValue2);
+            this._viewModel.ResultValue3 = VoltageCalculateHelper.RawToVoltage(this._uartConnection.RawValue3);
+            this._viewModel.ResultValue4 = VoltageCalculateHelper.RawToVoltage(this._uartConnection.RawValue4);
 
             if (this._index < this._viewModel.MeasurementValues1.Count)
             {
@@ -131,24 +131,11 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
                 this._index = 0;
             }
         }
-        private float SetCalculatedVoltage(int rawValue)
+
+        internal static void SetDivisor(UpdateDivisorMessage divisorValues)
         {
-            var result = (float)this._divisorResolution / (float)rawValue * this._divisorMultiplikator;
-
-            if(float.IsInfinity(result))
-            {
-                return 0.0f;
-            }
-
-            return result;
-        }
-
-        internal void SetDivisor(UpdateDivisorMessage divisorValues)
-        {
-            //this._divisorValue = divisorValues.DivisorValue;
             var divItem = UartConnection.GetDivisorValueResolution(divisorValues.DivisorResolution);
-            this._divisorResolution = divItem.Resolution;
-            this._divisorMultiplikator = divisorValues.DivisorMultiplikator;
+            VoltageCalculateHelper.SetDivisorAndMultiplicator(divItem.Resolution, divisorValues.Multiplicator);
         }
 
         internal void Stop() => this._timer.Stop();

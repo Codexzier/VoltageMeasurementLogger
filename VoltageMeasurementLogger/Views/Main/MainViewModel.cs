@@ -8,7 +8,7 @@ namespace VoltageMeasurementLogger.Views.Main
 {
     internal class MainViewModel : BaseViewModel
     {
-        private ObservableCollection<string> _comPorts = new ObservableCollection<string>();
+        private ObservableCollection<string> _comPorts = new ();
         private string _selectedPortName;
         private ICommand _commandConnectUart;
         private ICommand _commandRefreshComPortList;
@@ -20,7 +20,7 @@ namespace VoltageMeasurementLogger.Views.Main
         private Brush _writeState = Brushes.Black;
         private Visibility _visibilityDisconnect = Visibility.Collapsed;
         private Visibility _visibilityConnect;
-        private float _divisorMultiplikator;
+        private float _divisorMultiplicator;
 
         public MainViewModel()
         {
@@ -92,13 +92,13 @@ namespace VoltageMeasurementLogger.Views.Main
             }
         }
 
-        public float DivisorMultiplikator
+        public float DivisorMultiplicator
         {
-            get => _divisorMultiplikator;
+            get => this._divisorMultiplicator;
             set
             {
-                _divisorMultiplikator = value;
-                this.OnNotifyPropertyChanged(nameof(this.DivisorMultiplikator));
+                this._divisorMultiplicator = value;
+                this.OnNotifyPropertyChanged(nameof(this.DivisorMultiplicator));
             }
         }
 

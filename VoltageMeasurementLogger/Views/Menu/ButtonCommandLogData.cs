@@ -16,11 +16,13 @@ namespace VoltageMeasurementLogger.Views.Menu
                 EventBusManager.Send<LogDataView, BaseMessage>(new BaseMessage(""), SideHostChannel.Main);
             }
 
-            if (!EventBusManager.IsViewOpen<LogDataResultView>(SideHostChannel.MainRight))
+            if (EventBusManager.IsViewOpen<LogDataResultView>(SideHostChannel.MainRight))
             {
-                EventBusManager.OpenView<LogDataResultView>(SideHostChannel.MainRight);
-                EventBusManager.Send<LogDataResultView, BaseMessage>(new BaseMessage(""), SideHostChannel.MainRight);
+                return;
             }
+
+            EventBusManager.OpenView<LogDataResultView>(SideHostChannel.MainRight);
+            EventBusManager.Send<LogDataResultView, BaseMessage>(new BaseMessage(""), SideHostChannel.MainRight);
         }
     }
 }

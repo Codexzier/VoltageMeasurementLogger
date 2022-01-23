@@ -133,7 +133,7 @@ namespace VoltageMeasurementLogger.Components.Test
             var multiplicator = 1.23f;
 
             // act
-            LogManager.GetInstance().WriteValues(value1, value2, value3, value4, divisor, multiplicator);
+            LogManager.GetInstance().WriteValues(divisor, multiplicator, value1, value2, value3, value4);
 
             // assert
             var files = Directory.GetFiles(LogManager.PathOfLogFiles);
@@ -235,7 +235,7 @@ namespace VoltageMeasurementLogger.Components.Test
             const float multiplicator = 1.23f;
             
             LogManager.GetInstance()
-                .WriteValues(value1, value2, value3, value4, divisor, multiplicator);
+                .WriteValues(divisor, multiplicator, value1, value2, value3, value4);
 
             // act
             var logItems = LogManager.GetInstance().GetLogs(filename);
@@ -247,7 +247,7 @@ namespace VoltageMeasurementLogger.Components.Test
             Assert.IsTrue(resultArray.Any(w => w.LogValues[1].Value.Equals(value2)));
             Assert.IsTrue(resultArray.Any(w => w.LogValues[2].Value.Equals(value3)));
             Assert.IsTrue(resultArray.Any(w => w.LogValues[3].Value.Equals(value4)));
-            for (int i = 0; i < resultArray.Length; i++)
+            for (var i = 0; i < resultArray.Length; i++)
             {
                 Assert.IsTrue(resultArray.Any(w => w.LogValues[i].Divisor.Equals(divisor)));
                 Assert.IsTrue(resultArray.Any(w => w.LogValues[i].Multiplicator.Equals(multiplicator)));

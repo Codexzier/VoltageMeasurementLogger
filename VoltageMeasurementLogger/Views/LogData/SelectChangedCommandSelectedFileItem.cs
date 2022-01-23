@@ -7,8 +7,6 @@ namespace VoltageMeasurementLogger.Views.LogData
 {
     internal class SelectChangedCommandSelectedFileItem : BaseCommand
     {
-        public SelectChangedCommandSelectedFileItem() { }
-
         public override void Execute(object parameter)
         {
             if (parameter == null)

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Windows.Input;
-using VoltageMeasurementLogger.UserControls.LineDiagram;
 
 namespace VoltageMeasurementLogger.Views.LogDataResult
 {

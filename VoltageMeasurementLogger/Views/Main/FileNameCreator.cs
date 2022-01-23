@@ -7,18 +7,18 @@ namespace VoltageMeasurementLogger.Views.Main
     {
         internal static string Create()
         {
-            int filenumber = 0;
+            var fileNumber = 0;
 
             string str;
             while (true)
             {
-                string newFilename = $"LoggingVoltage_{filenumber:0000}";
+                var newFilename = $"LoggingVoltage_{fileNumber:0000}";
                 if (!File.Exists($"{LogManager.PathOfLogFiles}{newFilename}"))
                 {
                     str = newFilename;
                     break;
                 }
-                filenumber++;
+                fileNumber++;
             }
 
             return str;

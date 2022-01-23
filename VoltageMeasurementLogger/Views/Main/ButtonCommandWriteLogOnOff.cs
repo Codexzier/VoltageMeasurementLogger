@@ -7,7 +7,7 @@ namespace VoltageMeasurementLogger.Views.Main
 {
     internal class ButtonCommandWriteLogOnOff : BaseCommand
     {
-        private MainViewModel _viewModel;
+        private readonly MainViewModel _viewModel;
         public static bool LogOnOff;
 
         public ButtonCommandWriteLogOnOff(MainViewModel viewModel) => this._viewModel = viewModel;

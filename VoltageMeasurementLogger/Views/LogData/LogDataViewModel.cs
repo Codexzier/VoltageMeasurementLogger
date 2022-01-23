@@ -48,10 +48,10 @@ namespace VoltageMeasurementLogger.Views.LogData
 
         public ICommand CommandSelectedFileItem
         {
-            get => _commandSelectedFileItem;
+            get => this._commandSelectedFileItem;
             set
             {
-                _commandSelectedFileItem = value;
+                this._commandSelectedFileItem = value;
                 this.OnNotifyPropertyChanged(nameof(this.CommandSelectedFileItem));
             }
         }
