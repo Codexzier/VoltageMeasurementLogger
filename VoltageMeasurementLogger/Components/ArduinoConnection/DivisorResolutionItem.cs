@@ -5,7 +5,7 @@ namespace VoltageMeasurementLogger.Components.ArduinoConnection
     public class DivisorResolutionItem
     {
         // TODO: eigentlich reichen nur die Anzahl der Bits
-        public DivisorResolutionItem(int countOfBits, int resolution, string description): base()
+        public DivisorResolutionItem(int countOfBits, int resolution, string description)
         {
             this.CountOfBits = countOfBits;
             this.Resolution = resolution;

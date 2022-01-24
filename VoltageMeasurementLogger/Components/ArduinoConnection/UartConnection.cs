@@ -141,12 +141,12 @@ namespace VoltageMeasurementLogger.Components.ArduinoConnection
             return (byte)bits.Sum(s => s ? 1 : 0);
         }
 
-        public int RawValue1 { get; private set; } = 0;
-        public int RawValue2 { get; private set; } = 0;
-        public int RawValue3 { get; private set; } = 0;
-        public int RawValue4 { get; private set; } = 0;
+        public int RawValue1 { get; private set; }
+        public int RawValue2 { get; private set; }
+        public int RawValue3 { get; private set; }
+        public int RawValue4 { get; private set; }
 
-        public bool IsOpen => _serialPort == null ? false : _serialPort.IsOpen;
+        public bool IsOpen => this._serialPort is { IsOpen: true };
 
         public void Dispose() => this.Close();
 
