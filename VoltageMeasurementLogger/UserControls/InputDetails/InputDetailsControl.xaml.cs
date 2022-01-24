@@ -15,13 +15,8 @@ using System.Windows.Shapes;
 
 namespace VoltageMeasurementLogger.UserControls.InputDetails
 {
-    /// <summary>
-    /// Interaction logic for InputDetailsControl.xaml
-    /// </summary>
-    public partial class InputDetailsControl : UserControl
+    public partial class InputDetailsControl
     {
-
-
         public string InputName
         {
             get => (string)this.GetValue(InputNameProperty);

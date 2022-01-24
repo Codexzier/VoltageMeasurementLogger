@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Windows.Input;
-using VoltageMeasurementLogger.UserControls.LineDiagram;
 
 namespace VoltageMeasurementLogger.Views.LogDataResult
 {
@@ -10,7 +9,7 @@ namespace VoltageMeasurementLogger.Views.LogDataResult
     {
         private string _filename;
         private int _countMeasures;
-        private List<LineDiagramLevelItem> _values;
+        private List<LogValueItem> _values;
         private double _averageValue;
         private double _minValue;
         private double _maxValue;
@@ -41,7 +40,7 @@ namespace VoltageMeasurementLogger.Views.LogDataResult
             }
         }
 
-        public List<LineDiagramLevelItem> Values
+        public List<LogValueItem> Values
         {
             get => this._values;
             set

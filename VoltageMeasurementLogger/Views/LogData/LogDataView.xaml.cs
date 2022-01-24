@@ -3,20 +3,18 @@ using Codexzier.Wpf.ApplicationFramework.Components.Ui.EventBus;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
 using VoltageMeasurementLogger.Components.Log;
 
 namespace VoltageMeasurementLogger.Views.LogData
 {
-    /// <summary>
-    /// Interaction logic for LogDataView.xaml
-    /// </summary>
-    public partial class LogDataView : UserControl
+    public partial class LogDataView
     {
-        public readonly LogDataViewModel _viewModel;
+        private readonly LogDataViewModel _viewModel;
 
-        private IList<FileItem> _allFileItems = new List<FileItem>();
+        private readonly IList<FileItem> _allFileItems = new List<FileItem>();
 
         public LogDataView()
         {
@@ -31,7 +29,7 @@ namespace VoltageMeasurementLogger.Views.LogData
 
         private void BaseMessageEvent(IMessageContainer obj)
         {
-            _allFileItems.Clear();
+            this._allFileItems.Clear();
 
             if (!Directory.Exists(LogManager.PathOfLogFiles))
             {
@@ -51,19 +49,17 @@ namespace VoltageMeasurementLogger.Views.LogData
 
         private void TextBoxSearch_KeyUp(object sender, KeyEventArgs e)
         {
-            var listSearchresult = new List<FileItem>();
+            var searchResult = new List<FileItem>();
 
             if(sender is TextBox tb && !string.IsNullOrEmpty(tb.Text))
             {
-                foreach (var item in _allFileItems)
-                {
-                    if (item.Filename.ToLower().Contains(tb.Text.ToLower()))
-                    {
-                        listSearchresult.Add(item);
-                    }
-                }
+                searchResult.AddRange(
+                    this._allFileItems
+                        .Where(item => item
+                            .Filename.ToLower()
+                            .Contains(tb.Text.ToLower())));
 
-                this._viewModel.Files = new ObservableCollection<FileItem>(listSearchresult);
+                this._viewModel.Files = new ObservableCollection<FileItem>(searchResult);
                 return;
             }
 

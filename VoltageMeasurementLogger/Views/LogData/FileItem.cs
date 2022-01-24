@@ -4,7 +4,7 @@ namespace VoltageMeasurementLogger.Views.LogData
 {
     public class FileItem
     {
-        private FileInfo _fileInfo;
+        private readonly FileInfo _fileInfo;
 
         public FileItem()
         {

@@ -76,13 +76,32 @@ namespace VoltageMeasurementLogger.Components.Log
 
                     var sa = str.Split(';');
 
-                    if(!DateTime.TryParse(sa[1], out var date))
+                    switch(sa.Length)
                     {
-                        date = DateTime.MinValue;
-                    }
+                        case 5:
+                        {
+                            var li = new LogItem(sa);
+                            logItems.Add(li);
 
-                    var li = new LogItem(sa[0], date);
-                    logItems.Add(li);
+
+                            break;
+                        }
+                        case 2:
+                        {
+                            if (!DateTime.TryParse(sa[1], out var date))
+                            {
+                                date = DateTime.MinValue;
+                            }
+
+                            var li = new LogItem(sa[0], date);
+                            logItems.Add(li);
+                            break;
+                        }
+                        default:
+                        {
+                            throw new LogManagerException($"Unknown format detected! {sa.Length}");
+                        }
+                    }
                 }
             }
 
@@ -90,14 +109,14 @@ namespace VoltageMeasurementLogger.Components.Log
         }
 
 
-        public void WriteValues(int value1, int value2, int value3, int value4, int divisor, float multiplicator)
+        public void WriteValues(int divisor, float multiplicator, params int[] values)
         {
             var sb = new StringBuilder();
-            sb.Append($"{value1}:{divisor}:{multiplicator};");
-            sb.Append($"{value2}:{divisor}:{multiplicator};");
-            sb.Append($"{value3}:{divisor}:{multiplicator};");
-            sb.Append($"{value4}:{divisor}:{multiplicator}");
-            this.WriteLine(sb.ToString());
+            foreach (var value in values)
+            {
+                sb.Append($"{value}:{divisor}:{multiplicator};");
+            }
+            this.WriteLine(sb.ToString().Remove(sb.Length - 1));
         }
     }
 }

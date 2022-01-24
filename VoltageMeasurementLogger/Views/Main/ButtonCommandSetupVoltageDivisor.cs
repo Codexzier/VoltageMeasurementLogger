@@ -8,8 +8,6 @@ namespace VoltageMeasurementLogger.Views.Main
 {
     internal class ButtonCommandSetupVoltageDivisor : BaseCommand
     {
-        public ButtonCommandSetupVoltageDivisor() { }
-
         public override void Execute(object parameter)
         {
             base.Execute(parameter);

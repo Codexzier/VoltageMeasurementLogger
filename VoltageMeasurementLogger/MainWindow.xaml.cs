@@ -136,7 +136,8 @@ namespace VoltageMeasurementLogger
                 return;
             }
 
-            var usl = UserSettingsLoader<CustomSettingsFile>.GetInstance(SerializeHelper.Serialize,
+            var usl = UserSettingsLoader<CustomSettingsFile>.GetInstance(
+                SerializeHelper.Serialize,
                 SerializeHelper.Deserialize);
             var file = usl.Load();
 

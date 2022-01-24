@@ -20,7 +20,7 @@ namespace VoltageMeasurementLogger.Views.Menu
 
         public ICommand CommandLogData
         {
-            get => _commandLogData;
+            get => this._commandLogData;
             set
             {
                 this._commandLogData = value;

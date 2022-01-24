@@ -9,7 +9,7 @@ namespace VoltageMeasurementLogger.Views.Main
 {
     internal class ButtonCommandDisconnectUart : BaseCommand
     {
-        private MainViewModel _viewModel;
+        private readonly MainViewModel _viewModel;
 
         public ButtonCommandDisconnectUart(MainViewModel viewModel) => this._viewModel = viewModel;
 

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
@@ -10,7 +9,7 @@ namespace VoltageMeasurementLogger.UserControls.LineDiagram
     /// <summary>
     /// TODO: Line Diagram kann mit dem Bar Diagramm zusammengelegt werden.
     /// </summary>
-    public partial class LineDiagramControl : UserControl
+    public partial class LineDiagramControl //: UserControl
     {
         public double Scale
         {
@@ -104,11 +103,11 @@ namespace VoltageMeasurementLogger.UserControls.LineDiagram
             }
         }
 
-        private bool UpdateLineDiagram = false;
+        private bool UpdateLineDiagram;
 
         private bool DebugOn = false;
 
-        internal PathFigure _pathFigure = new PathFigure();
+        internal PathFigure _pathFigure = new();
         private readonly IList<LineItem> _barItems = new List<LineItem>();
 
         private static void SetValueByIndex(LineDiagramControl control)

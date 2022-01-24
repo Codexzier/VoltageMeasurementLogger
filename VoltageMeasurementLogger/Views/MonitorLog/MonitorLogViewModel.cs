@@ -6,34 +6,32 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
 {
     public class MonitorLogViewModel : BaseViewModel
     {
+        private string _comPortName;
 
-        private string _comPortname;
-
-        private int _minRawValue = 0;
+        private int _minRawValue;
         private int _maxRawValue = 1024;
         private List<LineDiagramLevelItem> _measurementValues1;
         private int _measurementValueIndex;
         private List<LineDiagramLevelItem> _measurementValues2;
         private List<LineDiagramLevelItem> _measurementValues3;
         private List<LineDiagramLevelItem> _measurementValues4;
-        //private float _voltageValue;
         private string _levelLineText = "5.0V";
         private int _rawValue1;
         private int _rawValue2;
         private int _rawValue3;
         private int _rawValue4;
-        private float _resultValue1 = 0.0f;
-        private float _resultValue2 = 0.0f;
-        private float _resultValue3 = 0.0f;
-        private float _resultValue4 = 0.0f;
+        private float _resultValue1;
+        private float _resultValue2;
+        private float _resultValue3;
+        private float _resultValue4;
 
-        public string ComPortname
+        public string ComPortName
         {
-            get => this._comPortname;
+            get => this._comPortName;
             set
             {
-                this._comPortname = value;
-                this.OnNotifyPropertyChanged(nameof(this.ComPortname));
+                this._comPortName = value;
+                this.OnNotifyPropertyChanged(nameof(this.ComPortName));
             }
         }
 
@@ -43,7 +41,6 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
             set
             {
                 this._rawValue1 = value;
-                //this.RenewMinMax();
                 this.OnNotifyPropertyChanged(nameof(this.RawValue1));
             }
         }
@@ -110,19 +107,6 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
                 OnNotifyPropertyChanged(nameof(this.ResultValue4));
             }
         }
-
-        //private void RenewMinMax()
-        //{
-        //    if (this._rawValue1 < this._minRawValue)
-        //    {
-        //        this.MinRawValue = this._rawValue1;
-        //    }
-
-        //    if (this._rawValue1 > this._maxRawValue)
-        //    {
-        //        this.MaxRawValue = this._rawValue1;
-        //    }
-        //}
 
         public int MinRawValue
         {
@@ -193,16 +177,6 @@ namespace VoltageMeasurementLogger.Views.MonitorLog
                 this.OnNotifyPropertyChanged(nameof(this.MeasurementValues4));
             }
         }
-
-        //public float VoltageValue
-        //{
-        //    get => this._voltageValue;
-        //    set
-        //    {
-        //        this._voltageValue = value;
-        //        this.OnNotifyPropertyChanged(nameof(this.VoltageValue));
-        //    }
-        //}
 
         public string LevelLineText
         {

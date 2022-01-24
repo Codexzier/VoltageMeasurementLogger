@@ -9,17 +9,15 @@ namespace VoltageMeasurementLogger.Views.DivisorSetup
     internal class DivisorSetupViewModel : BaseViewModel
     {
         private int _divisorValue = 1024;
-        private float _divisorMultiplikator = 10.0f;
+        private float _divisorMultiplicator = 10.0f;
         private string _calculateResult = "1024 /  1024 * 10.0";
         private Brush _calculateResultOk = Brushes.Red;
         private DivisorResolutionItem _divisorValueResolution = UartConnection.GetDivisorValueResolutions()[0];
         private ICommand _commandDivisorSetupCancel;
         private ICommand _commandDivisorSetupAccept;
-        private ObservableCollection<DivisorResolutionItem> _divisorValueResolutions = new ObservableCollection<DivisorResolutionItem>();
+        private ObservableCollection<DivisorResolutionItem> _divisorValueResolutions = new ();
         private int _selectedDivisorResolutionIndex;
-        private bool _multiplikatorAutoSet = true;
-
-        //private string _selectedDivisorResolutionValuePath;
+        private bool _multiplicatorAutoSet = true;
 
         public DivisorSetupViewModel()
         {
@@ -67,13 +65,13 @@ namespace VoltageMeasurementLogger.Views.DivisorSetup
             }
         }
 
-        public float DivisorMultiplikator
+        public float DivisorMultiplicator
         {
-            get => _divisorMultiplikator;
+            get => this._divisorMultiplicator;
             set
             {
-                _divisorMultiplikator = value;
-                this.OnNotifyPropertyChanged(nameof(this.DivisorMultiplikator));
+                this._divisorMultiplicator = value;
+                this.OnNotifyPropertyChanged(nameof(this.DivisorMultiplicator));
             }
         }
 
@@ -125,12 +123,12 @@ namespace VoltageMeasurementLogger.Views.DivisorSetup
         //    }
         //}
 
-        public bool MultiplikatorAutoSet
+        public bool MultiplicatorAutoSet
         {
-            get => _multiplikatorAutoSet; set
+            get => this._multiplicatorAutoSet; set
             {
-                _multiplikatorAutoSet = value;
-                this.OnNotifyPropertyChanged(nameof(this.MultiplikatorAutoSet));
+                this._multiplicatorAutoSet = value;
+                this.OnNotifyPropertyChanged(nameof(this.MultiplicatorAutoSet));
             }
         }
     }

@@ -1,8 +1,12 @@
 ﻿using Codexzier.Wpf.ApplicationFramework.Commands;
 using Codexzier.Wpf.ApplicationFramework.Components.Ui.EventBus;
+using Codexzier.Wpf.ApplicationFramework.Components.UserSettings;
 using Codexzier.Wpf.ApplicationFramework.Views.Base;
 using System.Windows;
+using VoltageMeasurementLogger.Components;
 using VoltageMeasurementLogger.Components.ArduinoConnection;
+using VoltageMeasurementLogger.Components.Helpers;
+using VoltageMeasurementLogger.Components.UserSettings;
 using VoltageMeasurementLogger.Views.MonitorLog;
 
 namespace VoltageMeasurementLogger.Views.Main
@@ -23,9 +27,17 @@ namespace VoltageMeasurementLogger.Views.Main
                 return;
             }
 
-            var connector = UartConnection.GetInstance();
+            var usl = UserSettingsLoader<CustomSettingsFile>.GetInstance(
+                SerializeHelper.Serialize,
+                SerializeHelper.Deserialize).Load();
 
-            var result = connector.ConnectTo(this._viewModel.SelectedPortName, 115200, this._viewModel.DivisorValue);
+            var connector = UartConnection.GetInstance();
+            var result = connector.ConnectTo(
+                usl.DivisorValueResolution1(), 
+                usl.DivisorMultiplicator,
+                this._viewModel.SelectedPortName, 
+                115200);
+            
             if(!result.Success)
             {
                 SimpleStatusOverlays.Show("INFO", result.Message);
@@ -35,6 +47,16 @@ namespace VoltageMeasurementLogger.Views.Main
             this._viewModel.VisibilityDisconnect = Visibility.Visible;
             this._viewModel.VisibilityConnect = Visibility.Collapsed;
 
+            var divisor = UartConnection.GetDivisorValueResolution(usl.DivisorValueResolution).Resolution;
+            var multiplicator = usl.DivisorMultiplicator;
+
+            if (divisor == 0)
+                divisor = 1;
+            
+            if (multiplicator == 0f)
+                multiplicator = 1f;
+            
+            VoltageCalculateHelper.SetDivisorAndMultiplicator(divisor, multiplicator);
             EventBusManager.Send<MonitorLogView, BaseMessage>(new BaseMessage(this._viewModel.SelectedPortName), SideHostChannel.MainRight);
         }
     }

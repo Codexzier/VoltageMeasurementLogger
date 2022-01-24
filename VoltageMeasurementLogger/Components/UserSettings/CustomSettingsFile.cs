@@ -1,4 +1,5 @@
 ﻿using Codexzier.Wpf.ApplicationFramework.Components.UserSettings;
+using VoltageMeasurementLogger.Components.ArduinoConnection;
 
 namespace VoltageMeasurementLogger.Components.UserSettings
 {
@@ -7,9 +8,7 @@ namespace VoltageMeasurementLogger.Components.UserSettings
         private string _lastImportDirectory;
         private string _lastImportFilename;
         private bool _loadFromService;
-        private bool _loadRkiDataByApplicationStart;
-        private int _divisorValue;
-        private float _divisorMultiplikator;
+        private float _divisorMultiplicator;
         private string _divisorValueResolution;
 
         public CustomSettingsFile() : base(false)
@@ -49,36 +48,18 @@ namespace VoltageMeasurementLogger.Components.UserSettings
             }
         }
 
-        public bool LoadRkiDataByApplicationStart
+        // TODO: Multiplikator für vier verschiedene Werte speichern.
+        public float DivisorMultiplicator
         {
-            get => this._loadRkiDataByApplicationStart;
+            get => this._divisorMultiplicator;
             set
             {
-                this._loadRkiDataByApplicationStart = value;
+                this._divisorMultiplicator = value;
                 this.SetChanged();
             }
         }
 
-        //public int DivisorValue
-        //{
-        //    get => this._divisorValue;
-        //    set
-        //    {
-        //        this._divisorValue = value;
-        //        this.SetChanged();
-        //    }
-        //}
-
-        public float DivisorMultiplikator
-        {
-            get => _divisorMultiplikator;
-            set
-            {
-                this._divisorMultiplikator = value;
-                this.SetChanged();
-            }
-        }
-
+        // TODO: ggf. als Beschreibung umbenennen.
         public string DivisorValueResolution
         {
             get => _divisorValueResolution; set
@@ -86,6 +67,12 @@ namespace VoltageMeasurementLogger.Components.UserSettings
                 this._divisorValueResolution = value;
                 this.SetChanged();
             }
+        }
+
+        // TODO: Ausweiten auf die vier divisor Werte, um verschiedene Skalierbare Inhalte anzuzeigen
+        public int DivisorValueResolution1()
+        {
+            return UartConnection.GetDivisorValueResolution(this.DivisorValueResolution).Resolution;
         }
     }
 }

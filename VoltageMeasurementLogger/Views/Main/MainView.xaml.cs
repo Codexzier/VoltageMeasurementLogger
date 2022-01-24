@@ -2,7 +2,6 @@ using Codexzier.Wpf.ApplicationFramework.Commands;
 using Codexzier.Wpf.ApplicationFramework.Components.Ui.EventBus;
 using Codexzier.Wpf.ApplicationFramework.Views.Base;
 using System.Timers;
-using VoltageMeasurementLogger.Components;
 
 namespace VoltageMeasurementLogger.Views.Main
 {
@@ -42,7 +41,7 @@ namespace VoltageMeasurementLogger.Views.Main
         {
             SimpleStatusOverlays.ActivityOn();
 
-            var setting = UserSettingsLoaderHelper.Load();
+            //var setting = UserSettingsLoaderHelper.Load();
 
             //this._viewModel.DivisorValue = setting.DivisorValue;
             this._viewModel.Filename = FileNameCreator.Create();

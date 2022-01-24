@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Diagnostics;
 using System.IO.Ports;
 using System.Linq;
 using System.Timers;
@@ -13,6 +12,7 @@ namespace VoltageMeasurementLogger.Components.ArduinoConnection
         private static UartConnection _instance;
         private SerialPort _serialPort;
         private int _divisor;
+        private float _multiplicator;
         private readonly Timer _activity;
         private DateTime _lastUpdate;
 
@@ -50,9 +50,10 @@ namespace VoltageMeasurementLogger.Components.ArduinoConnection
             return _instance;
         }
 
-        public UartConnectionResult ConnectTo(string portName, int baud = 9600, int divisor = 0)
+        public UartConnectionResult ConnectTo(int divisor, float multiplicator, string portName, int baud = 9600)
         {
             this._divisor = divisor;
+            this._multiplicator = multiplicator;
 
             if(this._serialPort != null)
             {
@@ -86,6 +87,11 @@ namespace VoltageMeasurementLogger.Components.ArduinoConnection
 
         private void Sp_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
+            if(this._serialPort == null || !this._serialPort.IsOpen)
+            {
+                return;
+            }
+
             try
             {
                 byte[] buffer = new byte[9];
@@ -121,8 +127,14 @@ namespace VoltageMeasurementLogger.Components.ArduinoConnection
                 // TODO Moved to eventhandler
                 if (LogManager.GetInstance().IsOn)
                 {
-                    // TODO: Log all four values and add multiplikator
-                    LogManager.GetInstance().WriteLine(this.RawValue1, this._divisor);
+                    LogManager.GetInstance()
+                        .WriteValues(
+                            this._divisor, 
+                            this._multiplicator,
+                            this.RawValue1, 
+                            this.RawValue2, 
+                            this.RawValue3, 
+                            this.RawValue4);
                 }
 
                 this._lastUpdate = DateTime.Now;
@@ -141,16 +153,16 @@ namespace VoltageMeasurementLogger.Components.ArduinoConnection
             return (byte)bits.Sum(s => s ? 1 : 0);
         }
 
-        public int RawValue1 { get; private set; }
-        public int RawValue2 { get; private set; }
-        public int RawValue3 { get; private set; }
-        public int RawValue4 { get; private set; }
+        public int RawValue1 { get; private set; } 
+        public int RawValue2 { get; private set; } 
+        public int RawValue3 { get; private set; } 
+        public int RawValue4 { get; private set; } 
 
         public bool IsOpen => this._serialPort is { IsOpen: true };
 
         public void Dispose() => this.Close();
 
-        public bool IsIncomingDataActive { get; private set; }
+        public bool IsIncomingDataActive {  get; private set; }
 
         private void Activity_Elapsed(object sender, ElapsedEventArgs e)
         {

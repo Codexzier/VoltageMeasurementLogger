@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace VoltageMeasurementLogger.Views.DivisorSetup
 {
-    public partial class DivisorSetupView : UserControl
+    public partial class DivisorSetupView
     {
         private readonly DivisorSetupViewModel _viewModel;
         private UartConnection _uartConnection;
@@ -32,19 +32,17 @@ namespace VoltageMeasurementLogger.Views.DivisorSetup
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            
-
             this._viewModel.DivisorValue = this._uartConnection.RawValue1;
             int resolutionValue = this._viewModel.SelectedDivisorResolution.Resolution;
 
-            if (this._viewModel.MultiplikatorAutoSet)
+            if (this._viewModel.MultiplicatorAutoSet)
             {
-                this._viewModel.DivisorMultiplikator = 5f / ((float)resolutionValue / (float)this._viewModel.DivisorValue);
+                this._viewModel.DivisorMultiplicator = 5f / ((float)resolutionValue / (float)this._viewModel.DivisorValue);
             }
 
-            double result = (float)resolutionValue / (float)this._viewModel.DivisorValue * this._viewModel.DivisorMultiplikator;
+            double result = (float)resolutionValue / (float)this._viewModel.DivisorValue * this._viewModel.DivisorMultiplicator;
 
-            this._viewModel.CalculateResult = $"{result:N5} = {resolutionValue} / {this._viewModel.DivisorValue} * {this._viewModel.DivisorMultiplikator}";
+            this._viewModel.CalculateResult = $"{result:N5} = {resolutionValue} / {this._viewModel.DivisorValue} * {this._viewModel.DivisorMultiplicator}";
         }
 
         private void BaseMessageEvent(IMessageContainer obj)
@@ -60,7 +58,7 @@ namespace VoltageMeasurementLogger.Views.DivisorSetup
 
             var setting = UserSettingsLoaderHelper.Load();
 
-            this._viewModel.DivisorMultiplikator = setting.DivisorMultiplikator;
+            this._viewModel.DivisorMultiplicator = setting.DivisorMultiplicator;
 
             DivisorResolutionItem refItem = null;
             if(!string.IsNullOrEmpty(setting.DivisorValueResolution))
