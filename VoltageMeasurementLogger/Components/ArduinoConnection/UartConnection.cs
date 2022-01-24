@@ -42,12 +42,7 @@ namespace VoltageMeasurementLogger.Components.ArduinoConnection
 
         public static UartConnection GetInstance()
         {
-            if(_instance == null)
-            {
-                _instance = new UartConnection();
-            }
-
-            return _instance;
+            return _instance ??= new UartConnection();
         }
 
         public UartConnectionResult ConnectTo(int divisor, float multiplicator, string portName, int baud = 9600)
